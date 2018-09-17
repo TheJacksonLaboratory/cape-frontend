@@ -1,0 +1,18 @@
+
+<mat-card class="report">
+  <mat-card-content>
+    <mat-card-title>
+      {{ report.title }}
+    </mat-card-title>
+    <div class="panel-body">
+        <div class='cover-photo-holder'>
+            <img mat-card-image src="../../../assets/circular.png" />
+        </div>
+        <p>{{ report.description }}</p>
+        <div>
+            <div class='data-title'>Author:</div>
+            <div>{{ report.author }}</div>
+        </div>
+    </div>
+  </mat-card-content>
+</mat-card>
