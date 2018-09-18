@@ -1,7 +1,7 @@
 ﻿import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material';
-import {AuthenticationService} from '../_services';
+import {AuthenticationService, AlertService} from '../_services';
 
 
 @Component({
@@ -15,7 +15,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private route: ActivatedRoute,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    private alertService: AlertService) {
   }
 
 
@@ -30,15 +31,20 @@ export class LoginComponent implements OnInit {
 
   email: string;
   password: string;
+  loading = false;
   returnUrl: string;
 
   login(): void {
+    this.loading = true;
     this.authenticationService.login(this.email, this.password)
       .subscribe(
         data => {
-          this.router.navigate(['user']);
-        }
-      );
+          this.router.navigate([this.returnUrl]);
+        },
+        error => {
+          this.alertService.error(error);
+          this.loading = false;
+        });
   }
 
   logout(): void {

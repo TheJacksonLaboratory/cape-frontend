@@ -13,12 +13,6 @@ export class AuthenticationService {
   // the actual JWT token
   public token: string;
 
-  // the token expiration date
-  public token_expires: Date;
-
-  // the username of the logged in user
-  public username: string;
-
   // error messages received from the login attempt
   public errors: any = [];
 

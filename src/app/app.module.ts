@@ -8,6 +8,7 @@ import { AppComponent }  from './app.component';
 import { routing }        from './app.routing';
 
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+import { AlertService } from "./_services";
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -43,7 +44,8 @@ import { ReportGridComponent } from './reports/report-grid/report-grid.component
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-        ReportsService
+        ReportsService,
+        AlertService
     ],
     bootstrap: [AppComponent]
 })
