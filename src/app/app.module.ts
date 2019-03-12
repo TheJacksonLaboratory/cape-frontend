@@ -13,13 +13,11 @@ import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { CustomMaterialModule } from "./material.module";
-import { UsersComponent } from './users/users.component';;
-import { GroupListComponent } from './groups/group-list/group-list.component'
-import { ReportsService } from "./_services/reports.service";;
-import { ReportListComponent } from './reports/report-list/report-list.component';
-import { ReportSummaryComponent } from './reports/report-summary/report-summary.component';;
-import { ReportGridComponent } from './reports/report-grid/report-grid.component'
-
+import { UsersComponent } from './users/users.component';
+import { BaseLayoutComponent } from './layouts/base-layout/base-layout.component';
+import { FooterComponent } from "./components/footer/footer.component";
+import { SidebarComponent } from "./components/sidebar/sidebar.component";
+import { NavbarComponent } from "./components/navbar/navbar.component";
 
 @NgModule({
     imports: [
@@ -36,15 +34,14 @@ import { ReportGridComponent } from './reports/report-grid/report-grid.component
         HomeComponent,
         LoginComponent,
         UsersComponent ,
-        GroupListComponent ,
-        ReportListComponent ,
-        ReportSummaryComponent,
-        ReportGridComponent,
+        BaseLayoutComponent,
+        FooterComponent,
+        SidebarComponent,
+        NavbarComponent,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-        ReportsService,
         AlertService
     ],
     bootstrap: [AppComponent]

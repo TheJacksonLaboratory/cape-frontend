@@ -3,16 +3,24 @@
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { AuthGuard } from './_guards';
-import { GroupListComponent } from "./groups/group-list/group-list.component";
+import { BaseLayoutComponent } from "./layouts/base-layout/base-layout.component";
 
 const appRoutes: Routes = [
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'logout', component: LoginComponent },
 
     // API endpoints
     { path: 'users', component: HomeComponent },
-    { path: 'groups', component: GroupListComponent , canActivate: [AuthGuard] },
+
+    {
+      path: '',
+      canActivate: [AuthGuard],
+      component: BaseLayoutComponent,
+      children: [
+          {
+        path: '',
+        loadChildren: './layouts/base-layout/base-layout.module#BaseLayoutModule'
+    }]},
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' },

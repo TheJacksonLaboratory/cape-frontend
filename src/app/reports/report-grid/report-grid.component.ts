@@ -15,6 +15,7 @@ export class ReportGridComponent implements OnInit {
 
     ngOnInit() {
         this.reports = this.reportService.getAll();
+        console.log('grid loaded');
     }
 
 }
