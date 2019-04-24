@@ -1,0 +1,32 @@
+<div fxLayout="row">
+  <mat-form-field>
+    <input matInput placeholder="Search" (input)="filterChanged($event.target.value)">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+  <button mat-icon-button color="primary" matTooltip="Expand all" (click)="tree.treeControl.expandAll()">
+    <mat-icon matSuffix>unfold_more</mat-icon>
+  </button>
+  <button mat-icon-button color="primary" matTooltip="Collapse all" (click)="tree.treeControl.collapseAll()">
+    <mat-icon matSuffix>unfold_less</mat-icon>
+  </button>
+</div>
+<mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <button mat-icon-button disabled></button>
+    <mat-checkbox [checked]="descendantsAllSelected(node)" [indeterminate]="descendantsPartiallySelected(node)"
+      (change)="nodeSelectionToggle(node)">
+      {{node.name}}
+    </mat-checkbox>
+  </mat-tree-node>
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChildren" matTreeNodePadding>
+    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+      <mat-icon>
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </mat-icon>
+    </button>
+    <mat-checkbox [checked]="descendantsAllSelected(node)" [indeterminate]="descendantsPartiallySelected(node)"
+      (change)="nodeSelectionToggle(node)">
+      {{node.name}}
+    </mat-checkbox>
+  </mat-tree-node>
+</mat-tree>

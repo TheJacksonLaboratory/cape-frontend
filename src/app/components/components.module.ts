@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { UserProfileComponent } from "./user-profile/user-profile.component";
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   imports: [

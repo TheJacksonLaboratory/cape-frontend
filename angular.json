@@ -35,7 +35,7 @@
               "node_modules/arrive/src/arrive.js",
               "node_modules/moment/moment.js",
               "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
-              "node_modules/bootstrap-notify/bootstrap-notify.js",
+              "node_modules/bootstrap-notify/bootstrap-notify.js"
             ]
           },
           "configurations": {
@@ -89,7 +89,7 @@
               "node_modules/arrive/src/arrive.js",
               "node_modules/moment/moment.js",
               "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
-              "node_modules/bootstrap-notify/bootstrap-notify.js",
+              "node_modules/bootstrap-notify/bootstrap-notify.js"
             ],
             "styles": [
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",

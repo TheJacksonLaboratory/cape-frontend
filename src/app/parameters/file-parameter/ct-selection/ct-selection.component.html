@@ -1,0 +1,59 @@
+<div fxFlex fxLayout="row" fxLayout.lt-md="column">
+
+  <mat-card fxLayout="column" fxLayoutAlign=" none">
+    <mat-card-subtitle [ngStyle]="{'font-size':'16px'}">Covariate selection</mat-card-subtitle>
+    <app-tree>loading</app-tree>
+  </mat-card>
+  <mat-card fxLayout="column" fxLayoutAlign=" none">
+    <mat-card-subtitle [ngStyle]="{'font-size':'16px'}">Trait selection</mat-card-subtitle>
+    <app-tree>loading</app-tree>
+  </mat-card>
+</div>
+
+<div fxLayout="row" fxLayout.lt-md="column">
+  <mat-card fxFlex>
+    <p>There are {{ 4+4}} individuals with the selected traits measured.</p>
+    <mat-card-content>
+      <section class="example-section">
+        <p>Adjust Phenotypes:</p>
+        <mat-checkbox class="example-margin" [(ngModel)]="normalize">Normalize</mat-checkbox>
+        <mat-checkbox class="example-margin" [(ngModel)]="meanCenter">Mean Center</mat-checkbox>
+      </section>
+
+      <section class="example-section">
+        <mat-form-field class="example-margin" appearance="outline">
+          <mat-label>Traits to scan</mat-label>
+          <mat-select placeholder="Trait selected" [(value)]="traitSelected">
+            <mat-option *ngFor="let traitSelection of traitSelections" [value]="traitSelection">
+              {{ traitSelection }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="traitSelected=='Eigentraits'">
+          <mat-form-field appearance="outline">
+            <mat-label>Nb. of ET</mat-label>
+            <input matInput type="number" placeholder="2" min="2">
+          </mat-form-field>
+        </div>
+
+      </section>
+
+      <section class="example-section">
+        <mat-form-field class="example-margin" appearance="outline">
+          <mat-label>P value correction</mat-label>
+          <mat-select placeholder="P value correction" [(value)]="pValueCorrection">
+            <mat-option *ngFor="let pValueCorrection of pValueCorrectionList" [value]="pValueCorrection">
+              {{ pValueCorrection }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </section>
+      <div class="example-button-row" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary">
+          <mat-icon matSuffix>save_alt</mat-icon>
+          Download Parameter File
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
