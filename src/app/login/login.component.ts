@@ -1,7 +1,8 @@
-﻿import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {MatDialog} from '@angular/material';
-import {AuthenticationService, AlertService} from '../_services';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material';
+
+import { AuthenticationService, AlertService } from '../_services';
 
 
 @Component({
@@ -11,13 +12,17 @@ import {AuthenticationService, AlertService} from '../_services';
 })
 export class LoginComponent implements OnInit {
 
+  username: string;
+  password: string;
+  loading = false;
+  returnUrl: string;
+
   constructor(
     private router: Router,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService) {
-  }
+    private alertService: AlertService) {}
 
 
   ngOnInit() {
@@ -29,14 +34,9 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  email: string;
-  password: string;
-  loading = false;
-  returnUrl: string;
-
   login(): void {
     this.loading = true;
-    this.authenticationService.login(this.email, this.password)
+    this.authenticationService.login(this.username, this.password)
       .subscribe(
         data => {
           this.router.navigate([this.returnUrl]);

@@ -1,8 +1,18 @@
-import {Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit, SimpleChanges, Input, OnChanges, OnDestroy } from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {GroupService} from "../../_services/group.service";
-import {Group} from "../../_models/group";
+import {HttpClient} from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import {merge} from 'rxjs/observable/merge';
+import {of as observableOf} from 'rxjs/observable/of';
+import {catchError} from 'rxjs/operators/catchError';
+import {map} from 'rxjs/operators/map';
+import {startWith} from 'rxjs/operators/startWith';
+import {switchMap} from 'rxjs/operators/switchMap';
 
+import {GroupService} from '../../_services/group.service';
+import {Group} from '../../_models';
+import { GroupDatabase, GroupDataSource } from './group-list.datasource';
 
 
 @Component({
@@ -10,31 +20,35 @@ import {Group} from "../../_models/group";
   styleUrls: ['group-list.component.css'],
   templateUrl: 'group-list.component.html',
 })
-export class GroupListComponent implements OnInit {
+export class GroupListComponent implements OnInit, OnChanges, OnDestroy {
   displayedColumns: string[] = ['id', 'name'];
-  dataSource = new MatTableDataSource<Group>();
+  dataSource: GroupDataSource | null;
+
+  isLoadingResults = false;
+  isRateLimitReached = false;
+  private rolesSub: Subscription;
+
+
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @Input() filters: object;
 
   constructor(private groupService: GroupService) {}
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
   ngOnInit() {
-    this.groupService.getAll().subscribe( data => {
-      this.dataSource.data = data;
-;    });
+    this.dataSource = new GroupDataSource(new GroupDatabase(this.groupService, this.filters), this.paginator, this.sort);
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  ngOnDestroy() {
+    this.rolesSub.unsubscribe();
+  }
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes['filters'].isFirstChange()) {
+      this.dataSource = new GroupDataSource(new GroupDatabase(this.groupService, this.filters), this.paginator, this.sort);
     }
   }
 }
+
+
