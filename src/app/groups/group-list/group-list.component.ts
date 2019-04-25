@@ -1,18 +1,10 @@
-import {Component, OnInit, ViewChild, AfterViewInit, SimpleChanges, Input, OnChanges, OnDestroy } from '@angular/core';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {HttpClient} from '@angular/common/http';
+import { Component, OnInit, ViewChild, AfterViewInit, SimpleChanges, Input, OnChanges, OnDestroy } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Subscription } from 'rxjs';
-import {Observable} from 'rxjs/Observable';
-import {merge} from 'rxjs/observable/merge';
-import {of as observableOf} from 'rxjs/observable/of';
-import {catchError} from 'rxjs/operators/catchError';
-import {map} from 'rxjs/operators/map';
-import {startWith} from 'rxjs/operators/startWith';
-import {switchMap} from 'rxjs/operators/switchMap';
 
-import {GroupService} from '../../_services/group.service';
-import {Group} from '../../_models';
-import { GroupDatabase, GroupDataSource } from './group-list.datasource';
+import { GroupService } from '../../_services/group.service';
+import { Group } from '../../_models';
+import { GroupDataSource } from './group-list.datasource';
 
 
 @Component({
@@ -28,16 +20,21 @@ export class GroupListComponent implements OnInit, OnChanges, OnDestroy {
   isRateLimitReached = false;
   private rolesSub: Subscription;
 
-
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @Input() filters: object;
 
-  constructor(private groupService: GroupService) {}
+  constructor(private groupService: GroupService) {
+    this.rolesSub = this.groupService.getGroups().subscribe(resp => {
+      this.groupService.dataChange.next(resp);
+    }, err => {
+      // TODO: display our server error dialog?
+      console.log(err);
+    });
+  }
 
   ngOnInit() {
-    this.dataSource = new GroupDataSource(new GroupDatabase(this.groupService, this.filters), this.paginator, this.sort);
+    this.dataSource = new GroupDataSource(this.groupService, this.paginator, this.sort);
   }
 
   ngOnDestroy() {
@@ -46,7 +43,7 @@ export class GroupListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (!changes['filters'].isFirstChange()) {
-      this.dataSource = new GroupDataSource(new GroupDatabase(this.groupService, this.filters), this.paginator, this.sort);
+      this.dataSource = new GroupDataSource(this.groupService, this.paginator, this.sort);
     }
   }
 }

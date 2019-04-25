@@ -14,7 +14,7 @@ export class GroupDataSource extends DataSource<Group> {
     filterChange = new BehaviorSubject('');
     filteredData: Group[] = [];
 
-    constructor(private groupDatabase: GroupDatabase,
+    constructor(private groupService: GroupService,
         private paginator: MatPaginator,
         private sort: MatSort) {
         super();
@@ -25,7 +25,7 @@ export class GroupDataSource extends DataSource<Group> {
      */
     connect(): Observable<Group[]> {
         const displayDataChanges = [
-            this.groupDatabase.dataChange,
+            this.groupService.dataChange,
             this.sort.sortChange,
             this.filterChange,
             this.paginator.page
@@ -34,7 +34,7 @@ export class GroupDataSource extends DataSource<Group> {
         return merge(...displayDataChanges)
             .pipe(map(() => {
                 // first filter the data
-                this.filteredData = this.groupDatabase.data.slice()
+                this.filteredData = this.groupService.data.slice()
                     .filter((group: Group) => {
                         const searchStr = (group.id + group.name + group.permissions );
                         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
@@ -89,67 +89,5 @@ export class GroupDataSource extends DataSource<Group> {
 
             return (valueA < valueB ? -1 : 1) * (this.sort.direction === 'asc' ? 1 : -1);
         });
-    }
-}
-
-/**
- * "Database" backing the GroupDataSource,
- * calls the Group Service to get back a list of groups matching search
- * parameters
- */
-export class GroupDatabase {
-
-    /** Stream that emits whenever the data has been modified. */
-    dataChange: BehaviorSubject<Group[]> = new BehaviorSubject<Group[]>([]);
-
-    /** data to display in table */
-    get data(): Group[] {
-        return this.dataChange.value;
-    }
-
-    constructor(private groupService: GroupService, private params = {}) {
-        this.groupService.getGroups().subscribe(resp => {
-            this.dataChange.next(resp);
-        }, err => {
-            // TODO: display our server error dialog?
-            console.log(err);
-        });
-    }
-
-    /**
-     * add new group data to our list of groups
-     * @param data: list of groups to add
-     * */
-    public updateData(data: Group[]) {
-        const copiedData = this.data.slice();
-        copiedData.concat(data);
-        this.dataChange.next(copiedData);
-    }
-
-    /** set data to new list of groups */
-    public setData(data: Group[]) {
-        this.dataChange.next(data);
-    }
-
-    /**
-     * get a row index from a group ID
-     * @param id id of group to find
-     * @param data table data, if null will use this.data
-     * @returns index of row with given group id
-     */
-    public indexFromId(id: number, data: Group[] = null) {
-        const thisData = (data !== null) ? data : this.data;
-        return thisData.findIndex(row => +row.id === id);
-    }
-
-    /**
-     * remove a row from the table data
-     * @param id ID of group to remove
-     */
-    public deleteRow(id) {
-        const data = this.data,
-            idx = this.indexFromId(+id, data);
-        data.splice(idx, 1);
-        this.setData(data);
     }
 }
