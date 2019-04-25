@@ -68,6 +68,10 @@ export class TreeComponent implements OnInit, OnDestroy {
         this.dataSource.data = FileParameterData.getPhenotypeTree(filtered, this.nodeIds);;
     }
 
+    /**
+     * Returns a filtered list of selections given a filterValue
+     * @param filterValue string filter
+     */
     filterTreeDatasource(filterValue: string) {
         const sorted = FileParameterData.fileSelections[this.fileIdxSelected].sort((a, b) => a < b ? -1 : 1);
         if (!sorted) {
