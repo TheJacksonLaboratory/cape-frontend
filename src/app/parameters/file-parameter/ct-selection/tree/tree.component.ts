@@ -42,12 +42,15 @@ export class TreeComponent implements OnInit, OnDestroy {
         this.treeControl = new FlatTreeControl<PhenotypeNode>(
             this.getLevel, this.isExpandable);
         this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-        const sorted = FileParameterData.fileSelections[0].sort((a, b) => a < b ? -1 : 1);
+        this.fileIdxSelected = 0;
+        const sorted = FileParameterData.fileSelections[this.fileIdxSelected].sort((a, b) => a < b ? -1 : 1);
         this.dataSource.data = FileParameterData.getPhenotypeTree(sorted, this.nodeIds);
     }
 
     refreshTreeDatasource(idx: number) {
         const sorted = FileParameterData.fileSelections[idx].sort((a, b) => a < b ? -1 : 1);
+        // we repopulate the tree so we need to clear the list of node keys
+        this.nodeIds.clear();
         this.dataSource.data = FileParameterData.getPhenotypeTree(sorted, this.nodeIds);
     }
 
@@ -56,6 +59,33 @@ export class TreeComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         // prevent memory leak when component destroyed
         this.mainSelectionSubscription.unsubscribe();
+    }
+
+    applyFilter(filterValue: string) {
+        const filtered = this.filterTreeDatasource(filterValue);
+        // we repopulate the tree so we need to clear the list of node keys
+        this.nodeIds.clear();
+        this.dataSource.data = FileParameterData.getPhenotypeTree(filtered, this.nodeIds);;
+    }
+
+    filterTreeDatasource(filterValue: string) {
+        const sorted = FileParameterData.fileSelections[this.fileIdxSelected].sort((a, b) => a < b ? -1 : 1);
+        if (!sorted) {
+            return [];
+        }
+        if (!filterValue) {
+            return sorted;
+        }
+        const filteredSelection = [];
+        if (sorted.length > 0) {
+            filterValue = filterValue.toLocaleLowerCase();
+            sorted.forEach(item => {
+                if (item.toLocaleLowerCase().includes(filterValue)) {
+                    filteredSelection.push(item);
+                }
+            });
+        }
+        return filteredSelection;
     }
 
     getLevel = (node: PhenotypeNode): number => {

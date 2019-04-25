@@ -1,6 +1,6 @@
 <div fxLayout="row">
   <mat-form-field>
-    <input matInput placeholder="Search" (input)="filterChanged($event.target.value)">
+    <input matInput placeholder="Search" (keyup)="applyFilter($event.target.value)">
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
   <button mat-icon-button color="primary" matTooltip="Expand all" (click)="tree.treeControl.expandAll()">
