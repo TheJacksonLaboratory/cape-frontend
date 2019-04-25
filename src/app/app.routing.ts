@@ -3,7 +3,9 @@
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { AuthGuard } from './_guards';
-import { BaseLayoutComponent } from "./layouts/base-layout/base-layout.component";
+import { BaseLayoutComponent } from './layouts/base-layout/base-layout.component';
+import { FileParameterComponent } from './parameters/file-parameter/file-parameter.component';
+import { GroupListComponent } from './groups/group-list/group-list.component';
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
