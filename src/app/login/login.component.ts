@@ -11,7 +11,7 @@ import { AuthenticationService, AlertService } from '../_services';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  hide = true;
   username: string;
   password: string;
   loading = false;
@@ -50,4 +50,5 @@ export class LoginComponent implements OnInit {
   logout(): void {
     this.authenticationService.logout();
   }
+
 }

@@ -7,4 +7,6 @@ import { environment } from '../environments/environment';
     styleUrls: ['./login/login.component.css']
 })
 
-export class AppComponent {}
+export class AppComponent {
+    title = 'CAPE';
+}
