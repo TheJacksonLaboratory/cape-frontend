@@ -7,9 +7,9 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display title Header', () => {
     page.navigateTo();
 
-    expect(page.getParagraphText()).toEqual('Welcome to CAPE!');
+    expect(page.getTitle()).toEqual('CAPE Web');
   });
 });
