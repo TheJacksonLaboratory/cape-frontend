@@ -1,17 +1,20 @@
 import { LoginPage } from './login.po';
-import { browser } from 'protractor';
+import { browser, protractor } from 'protractor';
+import { HomePage } from './home.po';
 
 describe('Login tests', () => {
     let page: LoginPage;
+    const EC = protractor.ExpectedConditions;
 
     beforeEach(() => {
         page = new LoginPage();
         page.navigateTo();
+        browser.executeScript('localStorage.setItem("foo", "bar");');
     });
 
     it('Login form should be valid', () => {
-        page.getUsernameTextbox().sendKeys('user');
-        page.getPasswordTextbox().sendKeys('1234');
+        page.username.sendKeys('user');
+        page.password.sendKeys('1234');
 
         const form = page.getForm().getAttribute('class');
 
@@ -19,22 +22,32 @@ describe('Login tests', () => {
     });
 
     it('Login form should be invalid', () => {
-        page.getUsernameTextbox().sendKeys('');
-        page.getPasswordTextbox().sendKeys('');
+        page.username.sendKeys('');
+        page.password.sendKeys('');
 
         const form = page.getForm().getAttribute('class');
 
-        expect(form).toContain('ng-invalid');
+        expect(form).toContain('ng-pristine ng-invalid ng-touched');
     });
 
-    it('Should set username value to local storage', () => {
-        page.getUsernameTextbox().sendKeys('myuser');
-        page.getPasswordTextbox().sendKeys('aworkingpassword');
-
-        page.getSubmitButton().click();
-
-        const valLocalStorage = browser.executeScript('return window.localStorage.getItem(\'currentUser\');');
-        // TODO have it equal 'user'
-        expect(valLocalStorage).toEqual(null);
+    it('should display an error message to the user if they provided incorrect credentials', () => {
+        page.trySignIn('idontexist', 'incorrect');
+        browser.wait(EC.visibilityOf(page.errorMessage));
+        expect(page.errorMessage.getText()).toEqual('(\'Unable to authenticate username/password:\', LDAPBindError())');
     });
-})
+
+    it('should redirect the user to the home page if they provided correct credentials', () => {
+        const homePage = new HomePage();
+        page.trySignIn('testuser', 'pa55word');
+
+        // const valLocalStorage = browser.executeScript("return window.localStorage.getItem('currentUser');");
+        // expect(valLocalStorage).toEqual('user');
+        browser.wait(EC.visibilityOf(homePage.navBar));
+        expect(homePage.title).toEqual('Dashboard');
+        // return to login page
+        homePage.trySignOut();
+        const form = page.getForm().getAttribute('class');
+        expect(form).toContain('ng-untouched ng-pristine ng-invalid');
+    });
+
+});

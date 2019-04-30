@@ -5,20 +5,30 @@ export class LoginPage {
         return browser.get('/login');
     }
 
-    getUsernameTextbox() {
+    get username() {
         return element(by.name('username'));
     }
 
-    getPasswordTextbox() {
+    get password() {
         return element(by.name('password'));
+    }
+
+    get signIn() {
+        return element(by.className('login-button'));
+    }
+
+    get errorMessage() {
+        return element(by.className('login-error'));
     }
 
     getForm() {
         return element(by.css('#loginForm'));
     }
 
-    getSubmitButton() {
-        return element(by.css('#btnSubmit'));
+    trySignIn(username: string, password: string) {
+        this.username.sendKeys(username);
+        this.password.sendKeys(password);
+        this.signIn.click();
     }
 
 }

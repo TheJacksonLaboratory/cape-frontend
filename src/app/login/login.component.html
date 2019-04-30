@@ -1,25 +1,29 @@
 ﻿﻿<mat-card class="login-card">
 
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
+  <mat-card-header>
+    <mat-card-title>Login</mat-card-title>
+  </mat-card-header>
 
-    <mat-card-content>
+  <mat-card-content>
 
-      <form id="loginForm">
-        <mat-form-field appearance="outline" matTooltip="Username">
-          <input matInput placeholder="Username" [(ngModel)]="username" name="username" required>
-        </mat-form-field>
-        <mat-form-field appearance="outline" matTooltip="Password">
-          <input matInput placeholder="Enter your password" [(ngModel)]="password" [type]="hide ? 'password' : 'text'"
-            name="password" required>
-          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </mat-form-field>
+    <form id="loginForm">
+      <mat-form-field appearance="outline" matTooltip="Username">
+        <input name="username" matInput placeholder="Username" [(ngModel)]="username" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline" matTooltip="Password">
+        <input name="password" matInput placeholder="Enter your password" [(ngModel)]="password"
+          [type]="hide ? 'password' : 'text'" required>
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-form-field>
 
-        
-      </form>
-      <mat-card-actions id="btnSubmit" class="center">
-          <button  mat-raised-button (click)="login()" color="primary">Login</button>
-        </mat-card-actions>
-    </mat-card-content>
+      <div class="login-error" *ngIf="error.length">
+        {{error}}
+      </div>
+
+    </form>
+    <mat-card-actions class="center">
+      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login()"
+        color="primary">Login</button>
+    </mat-card-actions>
+  </mat-card-content>
 </mat-card>

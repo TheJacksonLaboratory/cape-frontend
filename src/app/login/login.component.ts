@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   password: string;
   loading = false;
   returnUrl: string;
+  error = '';
 
   constructor(
     private router: Router,
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.error = '';
     this.loading = true;
     this.authenticationService.login(this.username, this.password)
       .subscribe(
@@ -42,6 +44,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate([this.returnUrl]);
         },
         error => {
+          this.error = error;
           this.alertService.error(error);
           this.loading = false;
         });
