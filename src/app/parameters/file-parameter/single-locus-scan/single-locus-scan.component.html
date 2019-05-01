@@ -14,7 +14,7 @@
     <div *ngIf="useKinship">
       <mat-form-field appearance="outline">
         <mat-label>Kinship Type</mat-label>
-        <mat-select placeholder="Kinship Type" 16[(value)]="kinshipType">
+        <mat-select placeholder="Kinship Type" [(value)]="kinshipType">
            <mat-option *ngFor="let kinshipType of kinshipTypes" [value]="kinshipType">
             {{ kinshipType }}
           </mat-option>
