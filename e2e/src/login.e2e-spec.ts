@@ -9,7 +9,6 @@ describe('Login tests', () => {
     beforeEach(() => {
         page = new LoginPage();
         page.navigateTo();
-        browser.executeScript('localStorage.setItem("foo", "bar");');
     });
 
     it('Login form should be valid', () => {
@@ -39,9 +38,7 @@ describe('Login tests', () => {
     it('should redirect the user to the home page if they provided correct credentials', () => {
         const homePage = new HomePage();
         page.trySignIn('testuser', 'pa55word');
-
-        // const valLocalStorage = browser.executeScript("return window.localStorage.getItem('currentUser');");
-        // expect(valLocalStorage).toEqual('user');
+		// Go to home page
         browser.wait(EC.visibilityOf(homePage.navBar));
         expect(homePage.title).toEqual('Dashboard');
         // return to login page
