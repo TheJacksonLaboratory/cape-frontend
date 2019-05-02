@@ -8,10 +8,11 @@ import { MatTreeModule,
          MatRadioModule,
          MatTabsModule,
          MatButtonModule,
-         MatTooltipModule} from '@angular/material';
+         MatTooltipModule,
+         MatExpansionModule} from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MainSelectionComponent } from './main-selection/main-selection.component';
+import { MainSelectionComponent } from './ct-selection/main-selection/main-selection.component';
 import { TreeComponent } from './ct-selection/tree/tree.component';
 import { FileParameterComponent } from './file-parameter.component';
 import { MarkerSelectionComponent } from './marker-selection/marker-selection.component';
@@ -35,7 +36,8 @@ import { FormsModule } from '@angular/forms';
     MatRadioModule,
     MatTabsModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatExpansionModule
   ],
   declarations: [
     FileParameterComponent,

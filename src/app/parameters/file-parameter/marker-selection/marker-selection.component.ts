@@ -9,6 +9,8 @@ import { ViewEncapsulation } from '@angular/core';
 })
 export class MarkerSelectionComponent implements OnInit {
 
+  numberOfMarkersToTest = 1500;
+  snpsFileName = 'filteredSNPs.txt';
   markerSelected: null;
   markerSelectionMethod: string;
   markerSelectionMethods = this.createMarkerSelections();

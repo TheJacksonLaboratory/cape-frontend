@@ -1,25 +1,20 @@
-<mat-card>
-  <mat-card-content>
-    <mat-card-subtitle [ngStyle]="{'font-size':'16px'}">Single Locus Scan</mat-card-subtitle>
-    <mat-form-field appearance="outline">
-      <mat-label>Reference Allele</mat-label>
-      <input matInput placeholder="A">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Number of Permutations</mat-label>
-      <input matInput type="number" placeholder="1">
-    </mat-form-field>
-    <mat-checkbox [(ngModel)]="useKinship">Use Kinship Correction</mat-checkbox>
+<mat-form-field appearance="outline">
+  <mat-label>Reference Allele</mat-label>
+  <input matInput placeholder="A">
+</mat-form-field>
+<mat-form-field appearance="outline">
+  <mat-label>Number of Permutations</mat-label>
+  <input matInput type="number" placeholder="1">
+</mat-form-field>
+<mat-checkbox [(ngModel)]="useKinship">Use Kinship Correction</mat-checkbox>
 
-    <div *ngIf="useKinship">
-      <mat-form-field appearance="outline">
-        <mat-label>Kinship Type</mat-label>
-        <mat-select placeholder="Kinship Type" [(value)]="kinshipType">
-           <mat-option *ngFor="let kinshipType of kinshipTypes" [value]="kinshipType">
-            {{ kinshipType }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </mat-card-content>
-</mat-card>
+<div *ngIf="useKinship">
+  <mat-form-field appearance="outline">
+    <mat-label>Kinship Type</mat-label>
+    <mat-select placeholder="Kinship Type" [(value)]="kinshipType">
+      <mat-option *ngFor="let kinshipType of kinshipTypes" [value]="kinshipType">
+        {{ kinshipType }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

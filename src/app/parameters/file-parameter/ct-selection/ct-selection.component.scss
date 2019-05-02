@@ -1,19 +1,13 @@
-.example-h2 {
-    margin: 10px;
-  }
-  
-  .example-section {
+
+  .section {
     display: flex;
     align-content: center;
     align-items: center;
     height: 60px;
   }
   
-  .example-margin {
-    margin: 0 10px;
+  .margin {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
   }
-
-.example-button-row button,
-.example-button-row a {
-  margin: auto;
-}

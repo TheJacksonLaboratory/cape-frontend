@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Output, EventEmitter, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Output, EventEmitter, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -18,6 +18,7 @@ import { ParametersService } from 'src/app/_services';
 export class TreeComponent implements OnInit, OnDestroy {
     @ViewChild('tree') tree: any;
 
+    @Input() title: string;
     nodeIds = new Set();
 
     levels = new Map<PhenotypeNode, number>();

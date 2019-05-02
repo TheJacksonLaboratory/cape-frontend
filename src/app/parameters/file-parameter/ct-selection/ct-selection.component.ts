@@ -7,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CtSelectionComponent implements OnInit {
 
-  normalize = false;
-  meanCenter = false;
+  normalize = true;
+  meanCenter = true;
+  numberOfIndividuals = 0;
 
   traitSelected: string;
   traitSelections = [ 'Eigentraits', 'Raw Traits' ];
@@ -21,4 +22,11 @@ export class CtSelectionComponent implements OnInit {
   ngOnInit() {
   }
 
+  getCovariateTitle() {
+    return 'Covariate selection';
+  }
+
+  getTraitTitle() {
+    return 'Trait selection';
+  }
 }

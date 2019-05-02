@@ -1,0 +1,22 @@
+<mat-form-field appearance="outline">
+  <mat-label>Select file</mat-label>
+  <mat-select placeholder="Select file" (selectionChange)="setFileIdxSelected(fileSelected)" [(value)]="fileSelected">
+    <mat-option *ngFor="let file of files" [value]="file">
+      {{ file }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline">
+  <mat-label>Select plot</mat-label>
+  <mat-select placeholder="Select plot">
+    <mat-option *ngFor="let plotType of plotTypes" [value]="plotType">
+      {{ plotType }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline">
+  <mat-label>Color by</mat-label>
+  <mat-select placeholder="Color by">
+    <mat-option *ngFor="let selection of selections" [value]="selection">{{ selection }}</mat-option>
+  </mat-select>
+</mat-form-field>

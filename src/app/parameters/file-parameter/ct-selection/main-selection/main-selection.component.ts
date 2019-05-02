@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ParametersService } from 'src/app/_services';
-import { FileParameterData } from '../file-parameter-data';
+import { FileParameterData } from '../../file-parameter-data';
 
 
 @Component({
