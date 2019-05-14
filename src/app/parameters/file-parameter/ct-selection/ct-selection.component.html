@@ -14,28 +14,28 @@
         <p>There are {{ numberOfIndividuals }} individuals with the selected traits measured.</p>
         <div class="row">
           <p>Adjust Phenotypes:</p>
-          <mat-checkbox class="margin" [(ngModel)]="normalize">Normalize</mat-checkbox>
-          <mat-checkbox class="margin" [(ngModel)]="meanCenter">Mean Center</mat-checkbox>
+          <mat-checkbox class="margin" [(ngModel)]="normalize" (click)="setNormalize()">Normalize</mat-checkbox>
+          <mat-checkbox class="margin" [(ngModel)]="meanCenter" (click)="setMeanCenter()">Mean Center</mat-checkbox>
         </div>
 
         <div class="row">
           <mat-form-field appearance="outline">
             <mat-label>Traits to scan</mat-label>
-            <mat-select placeholder="Trait selected" [(value)]="traitSelected">
-              <mat-option *ngFor="let traitSelection of traitSelections" [value]="traitSelection">
-                {{ traitSelection }}
+            <mat-select placeholder="Trait selected" [(value)]="traitSelected" (selectionChange)="setTraitsToScan()">
+              <mat-option *ngFor="let traitSelected of traitsToScan" [value]="traitSelected">
+                {{ traitSelected }}
               </mat-option>
             </mat-select>
           </mat-form-field>
           <div *ngIf="traitSelected=='Eigentraits'">
             <mat-form-field appearance="outline">
               <mat-label>Nb. of ET</mat-label>
-              <input matInput type="number" placeholder="2" min="2">
+              <input matInput [(ngModel)]="numberOfEigentraits" (change)="setNumberofET()" type="number" placeholder="2" min="2">
             </mat-form-field>
           </div>
           <mat-form-field appearance="outline">
             <mat-label>P value correction</mat-label>
-            <mat-select placeholder="P value correction" [(value)]="pValueCorrection">
+            <mat-select placeholder="P value correction" [(value)]="pValueCorrection" (selectionChange)="setPValueCorrection()">
               <mat-option *ngFor="let pValueCorrection of pValueCorrectionList" [value]="pValueCorrection">
                 {{ pValueCorrection }}
               </mat-option>

@@ -1,11 +1,12 @@
-import { ChangeDetectorRef, Component, Output, EventEmitter, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Subscription } from 'rxjs';
-
+// import { Set } from 'typescript-collections';
 import { FileParameterData, PhenotypeNode } from '../../file-parameter-data';
 import { ParametersService } from 'src/app/_services';
+import { CtSelectionComponent} from 'src/app/parameters/file-parameter/ct-selection/ct-selection.component';
 
 /**
  * @title Tree with checklist
@@ -20,6 +21,8 @@ export class TreeComponent implements OnInit, OnDestroy {
 
     @Input() title: string;
     nodeIds = new Set();
+
+    checkedNode = new Set<string>();
 
     levels = new Map<PhenotypeNode, number>();
     treeControl: FlatTreeControl<PhenotypeNode>;
@@ -56,6 +59,11 @@ export class TreeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
+            this.parametersService.setCovariateSelection(this.checkedNode);
+        } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
+            this.parametersService.setTraitSelection(this.checkedNode);
+        }
     }
     ngOnDestroy(): void {
         // prevent memory leak when component destroyed
@@ -66,7 +74,7 @@ export class TreeComponent implements OnInit, OnDestroy {
         const filtered = this.filterTreeDatasource(filterValue);
         // we repopulate the tree so we need to clear the list of node keys
         this.nodeIds.clear();
-        this.dataSource.data = FileParameterData.getPhenotypeTree(filtered, this.nodeIds);;
+        this.dataSource.data = FileParameterData.getPhenotypeTree(filtered, this.nodeIds);
     }
 
     /**
@@ -98,11 +106,11 @@ export class TreeComponent implements OnInit, OnDestroy {
     }
 
     isExpandable = (node: PhenotypeNode): boolean => {
-        return node.children.value.length > 0;
+        return node.getChildren().length > 0;
     }
 
     getChildren = (node: PhenotypeNode) => {
-        return node.children;
+        return node.getChildren();
     }
 
     transformer = (node: PhenotypeNode, level: number) => {
@@ -146,13 +154,39 @@ export class TreeComponent implements OnInit, OnDestroy {
         return result && !this.descendantsAllSelected(node);
     }
 
-    /** Toggle the game selection. Select/deselect all the descendants node */
+
+    /** Toggle the selection. Select/deselect all the descendants node */
     nodeSelectionToggle(node: PhenotypeNode): void {
         this.checklistSelection.toggle(node);
         const descendants = this.treeControl.getDescendants(node);
+        const selected = this.checklistSelection.isSelected(node);
         this.checklistSelection.isSelected(node)
             ? this.checklistSelection.select(...descendants, node)
             : this.checklistSelection.deselect(...descendants, node);
+
+        this.checkedNode = this.findChecked(node, this.checkedNode, selected);
+        if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
+            this.parametersService.setCovariateSelection(this.checkedNode);
+        } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
+            this.parametersService.setTraitSelection(this.checkedNode);
+        }
         this.changeDetectorRef.markForCheck();
+    }
+
+    /**
+     * updates the checked/unchecked nodes in the given Set an returns the updated Set
+     * @param node
+     * @param checked 
+     * @param selected 
+     */
+    findChecked(node: PhenotypeNode, checked: Set<string>, selected: boolean): Set<string> {
+        if (node.hasChildren()) {
+            for (const child of node.getChildren()) {
+                checked = this.findChecked(child, checked, selected);
+            }
+        } else {
+            selected ? checked.add(node.name) : checked.delete(node.name);
+        }
+        return checked;
     }
 }

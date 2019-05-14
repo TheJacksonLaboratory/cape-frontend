@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
+import { ParametersService } from '../../../_services/parameters.service';
 
 @Component({
   selector: 'app-marker-selection',
@@ -11,16 +12,21 @@ export class MarkerSelectionComponent implements OnInit {
 
   numberOfMarkersToTest = 1500;
   snpsFileName = 'filteredSNPs.txt';
-  markerSelected: null;
+  markerSelected: any;
   markerSelectionMethod: string;
+  peakDensity = 0.5;
+  tolerance = 10;
   markerSelectionMethods = this.createMarkerSelections();
   peakDensityDescription = 'Peak density is the fraction of markers under a large effect peak you would like to select.';
   toleranceDescription = 'Tolerance is the number of markers away from the target number you will tolerate selecting.';
+  organism: string;
   organisms = ['human', 'mouse'];
 
-  constructor() {}
+  constructor(private parameterService: ParametersService) {}
 
   ngOnInit() {
+    this.parameterService.setMsNumberToTest(this.numberOfMarkersToTest);
+
   }
 
   createMarkerSelections() {
@@ -38,5 +44,31 @@ export class MarkerSelectionComponent implements OnInit {
 
   getMarkerSelectionDescription(selected: any) {
     return this.markerSelectionMethods.get(selected);
+  }
+
+  setNumberOfMarkersToTest() {
+    this.parameterService.setMsNumberToTest(this.numberOfMarkersToTest);
+  }
+  setMarkerSelectionMethod() {
+    this.parameterService.setMsMethod(this.markerSelected);
+    // We initialize if Top effect or From list is chosen as the UI input fields already have some default data
+    if (this.markerSelected === 'Top Effects') {
+      this.setPeakDensity();
+      this.setTolerance();
+    } else if (this.markerSelected === 'From List') {
+      this.setSNPFileName();
+    }
+  }
+  setPeakDensity() {
+    this.parameterService.setMsPeakDensity(this.peakDensity);
+  }
+  setTolerance() {
+    this.parameterService.setMsTolerance(this.tolerance);
+  }
+  setOrganism() {
+    this.parameterService.setMsOrganism(this.organism);
+  }
+  setSNPFileName() {
+    this.parameterService.setMsSnpFileName(this.snpsFileName);
   }
 }

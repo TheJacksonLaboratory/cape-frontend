@@ -1,11 +1,11 @@
 <mat-form-field appearance="outline">
   <mat-label>Number of Markers to Test</mat-label>
-  <input matInput type="number" placeholder="1500" min="0" [(ngModel)]="numberOfMarkersToTest">
+  <input matInput type="number" placeholder="1500" min="0" [(ngModel)]="numberOfMarkersToTest" (change)="setNumberOfMarkersToTest()">
 </mat-form-field>
 <mat-form-field appearance="outline">
   <mat-label>Marker Selection Method</mat-label>
   <mat-select [(value)]="markerSelectionMethod" [(ngModel)]="markerSelected"
-    matTooltip="{{ getMarkerSelectionDescription(markerSelected) }}">
+    matTooltip="{{ getMarkerSelectionDescription(markerSelected) }}" (selectionChange)="setMarkerSelectionMethod()">
     <mat-option *ngFor="let markerSelectionMethod of getMarkerSelections()" [value]="markerSelectionMethod">
       {{ markerSelectionMethod }}
     </mat-option>
@@ -15,18 +15,18 @@
 <div *ngIf="markerSelectionMethod==getMarkerSelections()[0]">
   <mat-form-field appearance="outline" matTooltip="{{ peakDensityDescription }}">
     <mat-label>Peak Density</mat-label>
-    <input matInput type="number" placeholder="0.5" min="0.1" max="1" step="0.1">
+    <input matInput [(ngModel)]="peakDensity" (change)="setPeakDensity()" type="number" placeholder="0.5" min="0.1" max="1" step="0.1">
   </mat-form-field>
   <mat-form-field appearance="outline" matTooltip="{{ toleranceDescription }}">
     <mat-label>Tolerance</mat-label>
-    <input matInput type="number" placeholder="10" min="1" step="0.1">
+    <input matInput [(ngModel)]="tolerance" (change)="setTolerance()" type="number" placeholder="10" min="1" step="0.1">
   </mat-form-field>
 </div>
 
 <div *ngIf="markerSelectionMethod==getMarkerSelections()[2]">
   <mat-form-field appearance="outline">
     <mat-label>Organism</mat-label>
-    <mat-select placeholder="Organism">
+    <mat-select [(ngModel)]="organism" (selectionChange)="setOrganism()" placeholder="Organism">
       <mat-option *ngFor="let organism of organisms" [value]="organism">
         {{ organism }}
       </mat-option>
@@ -37,6 +37,6 @@
 <div *ngIf="markerSelectionMethod==getMarkerSelections()[3]">
   <mat-form-field appearance="outline">
     <mat-label>SNP File Name</mat-label>
-    <input matInput type="text" placeholder="SNP File Name" [(ngModel)]="snpsFileName">
+    <input matInput type="text" placeholder="SNP File Name" [(ngModel)]="snpsFileName" (change)="setSNPFileName()">
   </mat-form-field>
 </div>

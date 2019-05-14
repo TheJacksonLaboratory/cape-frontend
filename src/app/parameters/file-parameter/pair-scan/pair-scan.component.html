@@ -1,11 +1,11 @@
 <mat-form-field appearance="outline">
   <mat-label>Null Size</mat-label>
-  <input matInput type="number" placeholder="1500000" [value]="1500000">
+  <input matInput [(ngModel)]="nullSize" (change)="setNullSize()" type="number" placeholder="1500000" [value]="1500000">
 </mat-form-field>
 
 <mat-form-field appearance="outline">
   <mat-label>Marker Pair Constraints</mat-label>
-  <mat-select [(value)]="markerPairConstraint">
+  <mat-select [(value)]="markerPairConstraint" (selectionChange)="setMarkerPairConstraints()">
     <mat-option *ngFor="let markerPairConstraint of markerPairConstraints" [value]="markerPairConstraint">
       {{ markerPairConstraint }}
     </mat-option>
@@ -15,13 +15,13 @@
 <div *ngIf="markerPairConstraint==markerPairConstraints[0]">
   <mat-form-field appearance="outline">
     <mat-label>Maximum Marker Correlation</mat-label>
-    <input matInput type="number" placeholder="0.5" min="0" max="0.9" step="0.1" [value]="0.1">
+    <input matInput [(ngModel)]="maxMarkerCorrelation" (change)="setMaxMarkerCorrelation()" type="number" placeholder="0.5" min="0" max="0.9" step="0.1" [value]="0.1">
   </mat-form-field>
 </div>
 
 <div *ngIf="markerPairConstraint==markerPairConstraints[1]">
   <mat-form-field appearance="outline">
     <mat-label>Minimum Individuals per Genotype</mat-label>
-    <input matInput type="number" placeholder="5" min="0" [value]="5">
+    <input matInput [(ngModel)]="minIndPerGenotype" (change)="setMinIndPerGenotype()" type="number" placeholder="5" min="0" [value]="5">
   </mat-form-field>
 </div>

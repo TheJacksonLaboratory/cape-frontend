@@ -1,17 +1,17 @@
 <mat-form-field appearance="outline">
   <mat-label>Reference Allele</mat-label>
-  <input matInput placeholder="A">
+  <input matInput [(ngModel)]="referenceAllele" (change)="setReferenceAllele()" placeholder="A">
 </mat-form-field>
 <mat-form-field appearance="outline">
   <mat-label>Number of Permutations</mat-label>
-  <input matInput type="number" placeholder="1">
+  <input matInput [(ngModel)]="numberOfPermutations" (change)="setNumberOfPermutations()" type="number" placeholder="1">
 </mat-form-field>
-<mat-checkbox [(ngModel)]="useKinship">Use Kinship Correction</mat-checkbox>
+<mat-checkbox [(ngModel)]="useKinship" (click)="setUseKinship()">Use Kinship Correction</mat-checkbox>
 
 <div *ngIf="useKinship">
   <mat-form-field appearance="outline">
     <mat-label>Kinship Type</mat-label>
-    <mat-select placeholder="Kinship Type" [(value)]="kinshipType">
+    <mat-select placeholder="Kinship Type" [(ngModel)]="kinshipType" (selectionChange)="setKinshipType()">
       <mat-option *ngFor="let kinshipType of kinshipTypes" [value]="kinshipType">
         {{ kinshipType }}
       </mat-option>
