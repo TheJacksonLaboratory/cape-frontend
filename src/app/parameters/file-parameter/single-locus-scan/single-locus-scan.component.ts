@@ -30,6 +30,9 @@ export class SingleLocusScanComponent implements OnInit {
   }
   setUseKinship() {
     this.parametersService.setUseKinship(!this.useKinship);
+    if (this.useKinship) {  // if the useKinship checkbox is unchecked we reset the kinshipType
+      this.parametersService.setKinshipType(undefined);
+    }
   }
   setKinshipType() {
     this.parametersService.setKinshipType(this.kinshipType);

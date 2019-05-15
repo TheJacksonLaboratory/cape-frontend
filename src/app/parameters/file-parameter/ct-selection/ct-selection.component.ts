@@ -27,7 +27,6 @@ export class CtSelectionComponent implements OnInit {
     this.parametersService.setNormalize(this.normalize);
     this.parametersService.setMeanCenter(this.meanCenter);
     this.parametersService.setTraitsToScan(this.traitSelected);
-    this.parametersService.setNumOfEignentraits(this.numberOfEigentraits);
     this.parametersService.setPValueCorrection(this.pValueCorrection);
   }
 
@@ -49,6 +48,11 @@ export class CtSelectionComponent implements OnInit {
   }
   setTraitsToScan() {
     this.parametersService.setTraitsToScan(this.traitSelected);
+    if (this.traitSelected === 'Eigentraits') {
+      this.parametersService.setNumOfEignentraits(this.numberOfEigentraits);
+    } else if (this.traitSelected === 'Raw Traits') {
+      this.parametersService.setNumOfEignentraits(undefined);
+    }
   }
   setNumberofET() {
     this.parametersService.setNumOfEignentraits(this.numberOfEigentraits);

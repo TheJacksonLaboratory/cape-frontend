@@ -53,10 +53,25 @@ export class MarkerSelectionComponent implements OnInit {
     this.parameterService.setMsMethod(this.markerSelected);
     // We initialize if Top effect or From list is chosen as the UI input fields already have some default data
     if (this.markerSelected === 'Top Effects') {
-      this.setPeakDensity();
-      this.setTolerance();
+      this.parameterService.setMsPeakDensity(this.peakDensity);
+      this.parameterService.setMsTolerance(this.tolerance);
+      this.parameterService.setMsSnpFileName(undefined);
+      this.parameterService.setMsOrganism(undefined);
     } else if (this.markerSelected === 'From List') {
-      this.setSNPFileName();
+      this.parameterService.setMsSnpFileName(this.snpsFileName);
+      this.parameterService.setMsPeakDensity(undefined);
+      this.parameterService.setMsTolerance(undefined);
+      this.parameterService.setMsOrganism(undefined);
+    } else if (this.markerSelected === 'By Gene') {
+      this.parameterService.setMsOrganism(this.organism);
+      this.parameterService.setMsPeakDensity(undefined);
+      this.parameterService.setMsTolerance(undefined);
+      this.parameterService.setMsSnpFileName(undefined);
+    } else if (this.markerSelected === 'Uniform') {
+      this.parameterService.setMsOrganism(undefined);
+      this.parameterService.setMsPeakDensity(undefined);
+      this.parameterService.setMsTolerance(undefined);
+      this.parameterService.setMsSnpFileName(undefined);
     }
   }
   setPeakDensity() {

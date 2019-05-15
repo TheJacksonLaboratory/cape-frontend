@@ -196,7 +196,7 @@ export class FileParameterComponent implements OnInit, OnDestroy {
     const traitsNormalized = this.normalize !== undefined ? 'traits_normalized:\n - ' + this.normalize + '\n' : '';
     const traitsScaled = this.meanCenter !== undefined ? 'traits_scaled:\n - ' + this.meanCenter + '\n' : '';
     const pvalCorrection = this.pValueCorrection !== undefined ? 'pval_correction:\n - ' + this.pValueCorrection + '\n' : '';
-    let eigWhich = 'eig_which:\n';
+    let eigWhich = this.numberOfEigentraits !== undefined ? 'eig_which:\n' : '';
     for (let i = 1; i <= this.numberOfEigentraits; i++) {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
@@ -210,7 +210,7 @@ export class FileParameterComponent implements OnInit, OnDestroy {
     const kintshipType = this.kinshipType !== undefined ? 'kingship_type:\n - ' + this.kinshipType + '\n' : '';
 
     const markerSelectionComment = '\n#================================================\n' +
-      '# Marker Slection Parameters\n' +
+      '# Marker Selection Parameters\n' +
       '#================================================\n';
     const markerSelectionMethod = this.msMethod !== undefined ? 'marker_selection_method:\n - ' + this.msMethod + '\n' : '';
     const windowSize = this.msNumberToTest !== undefined ? 'window_size:\n - ' + this.msNumberToTest + '\n' : ''; // ????

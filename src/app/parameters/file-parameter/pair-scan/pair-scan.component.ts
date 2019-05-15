@@ -28,9 +28,11 @@ export class PairScanComponent implements OnInit {
     this.parameterService.setPsMarkerPairConstraints(this.markerPairConstraint);
     // We initialize the max marker correlation and min individual per Genotype as the input fields have already a default value
     if (this.markerPairConstraint === this.markerPairConstraints[0]) {
-      this.setMaxMarkerCorrelation();
-    } else {
-      this.setMinIndPerGenotype();
+      this.parameterService.setPsMaxMarkerCorrelation(this.maxMarkerCorrelation);
+      this.parameterService.setPsMinIndPerGenotype(undefined);
+    } else if (this.markerPairConstraint === this.markerPairConstraints[1]) {
+      this.parameterService.setPsMaxMarkerCorrelation(undefined);
+      this.parameterService.setPsMinIndPerGenotype(this.minIndPerGenotype);
     }
   }
   setMaxMarkerCorrelation() {
