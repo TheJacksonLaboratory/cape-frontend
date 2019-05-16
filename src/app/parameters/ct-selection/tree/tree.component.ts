@@ -38,6 +38,9 @@ export class TreeComponent implements OnInit, OnDestroy {
 
     private dialogRef: MatDialogRef<DescriptionComponent> = null;
 
+     /** The selection for checklist */
+     checklistSelection = new SelectionModel<PhenotypeNode>(true /* multiple */);
+
     constructor(private changeDetectorRef: ChangeDetectorRef, private parametersService: ParametersService, public dialog: MatDialog) {
         // subscribe to main selection component selections
         this.mainSelectionSubscription = this.parametersService.getParameterFileIdxSelected().subscribe(fileIdx => {
@@ -130,9 +133,6 @@ export class TreeComponent implements OnInit, OnDestroy {
         tree.treeModel.filterNodes(text);
     }
 
-    /** The selection for checklist */
-    checklistSelection = new SelectionModel<PhenotypeNode>(true /* multiple */);
-
     /** Whether all the descendants of the node are selected */
     descendantsAllSelected(node: PhenotypeNode): boolean {
         const descendants = this.treeControl.getDescendants(node);
@@ -180,8 +180,8 @@ export class TreeComponent implements OnInit, OnDestroy {
     /**
      * updates the checked/unchecked nodes in the given Set an returns the updated Set
      * @param node
-     * @param checked 
-     * @param selected 
+     * @param checked
+     * @param selected
      */
     findChecked(node: PhenotypeNode, checked: Set<string>, selected: boolean): Set<string> {
         if (node.hasChildren()) {

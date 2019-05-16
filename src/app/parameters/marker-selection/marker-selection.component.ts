@@ -38,7 +38,8 @@ export class MarkerSelectionComponent implements OnInit {
     const map = new Map();
     map.set('Top Effects', 'This method selects the top effect size markers from under peaks of single-locus effect size curves.');
     map.set('Uniform', 'This method selects the specified number of markers to be uniformly spaced across the genome.');
-    map.set('By Gene', 'This method selects SNPs that are near genes. It requires an ordered list of genes, for example from NetWAS output.');
+    map.set('By Gene', 'This method selects SNPs that are near genes. It requires an ordered list of genes, for example ' +
+            'from NetWAS output.');
     map.set('From List', 'Select the marker selections using a file.');
     return map;
   }

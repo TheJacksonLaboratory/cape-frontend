@@ -104,7 +104,7 @@ export class ParametersComponent implements OnInit, OnDestroy {
     });
     this.useKinshipSubscription = this.parameterService.getUseKinship().subscribe(useKinship => {
       this.useKinship = useKinship;
-    })
+    });
     this.kinshipTypeSubscription = this.parameterService.getKinshipType().subscribe(kinshipType => {
       this.kinshipType = kinshipType;
     });
@@ -212,12 +212,11 @@ export class ParametersComponent implements OnInit, OnDestroy {
       '# Marker Selection Parameters\n' +
       '#================================================\n';
     const markerSelectionMethod = this.msMethod !== undefined ? 'marker_selection_method:\n - ' + this.msMethod + '\n' : '';
-    const windowSize = this.msNumberToTest !== undefined ? 'window_size:\n - ' + this.msNumberToTest + '\n' : ''; // ????
+    const windowSize = this.msNumberToTest !== undefined ? 'num_alleles_in_pairscan:\n - ' + this.msNumberToTest + '\n' : '';
     const peakDensity = this.msPeakDensity !== undefined ? 'peak_density:\n - ' + this.msPeakDensity + '\n' : '';
     const tolerance = this.msTolerance !== undefined ? 'tolerance:\n - ' + this.msTolerance + '\n' : '';
     const snpFile = this.msSnpFileName !== undefined ? 'SNPfile:\n - ' + this.msSnpFileName + '\n' : '';
     const organism = this.msOrganism !== undefined ? 'organism:\n - ' + this.msOrganism + '\n' : '';
-    // "num_alleles_in_pairscan", "bp_buffer ????
 
     const pairScanComment = '\n#================================================\n' +
       '# Pairscan Parameters\n' +
