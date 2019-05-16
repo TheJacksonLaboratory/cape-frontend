@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ParametersService } from '../../../_services/parameters.service';
+import { ParametersService } from 'src/app/_services';
 
 @Component({
   selector: 'app-pair-scan',

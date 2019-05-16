@@ -10,7 +10,6 @@ import { ReportSummaryComponent } from '../../reports/report-summary/report-summ
 import { CustomMaterialModule } from '../../material.module';
 import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { GroupListComponent} from '../../groups/group-list/group-list.component';
-import { FileParameterModule } from '../../parameters/file-parameter/file-parameter.module';
 
 
 import {
@@ -19,6 +18,7 @@ import {
   MatRippleModule,
   MatTooltipModule
 } from '@angular/material';
+import { ParametersModule } from 'src/app/parameters';
 
 @NgModule({
   imports: [
@@ -30,7 +30,7 @@ import {
     MatInputModule,
     MatTooltipModule,
     CustomMaterialModule,
-    FileParameterModule
+    ParametersModule
   ],
   declarations: [
     ReportGridComponent,

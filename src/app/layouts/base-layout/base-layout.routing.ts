@@ -3,12 +3,12 @@ import {ReportGridComponent} from '../../reports/report-grid/report-grid.compone
 import {UserProfileComponent} from '../../components/user-profile/user-profile.component';
 import {GroupListComponent} from '../../groups/group-list/group-list.component';
 import {AuthGuard} from '../../_guards';
-import { FileParameterComponent } from '../../parameters/file-parameter/file-parameter.component';
+import { ParametersComponent } from 'src/app/parameters/parameters.component';
 
 export const BaseLayoutRoutes: Routes = [
 
     { path: 'dashboard', component: ReportGridComponent },
     { path: 'user-profile', component: UserProfileComponent },
     { path: 'groups', component: GroupListComponent , canActivate: [AuthGuard] },
-    { path: 'parameters', component: FileParameterComponent }
+    { path: 'parameters', component: ParametersComponent }
 ];

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
-import { ParametersService } from '../../../_services/parameters.service';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { DescriptionComponent } from 'src/app/shared/description/description.component';
+import { ParametersService } from 'src/app/_services';
+import { Documentation } from '../documentation';
 
 @Component({
   selector: 'app-marker-selection',
@@ -22,7 +25,9 @@ export class MarkerSelectionComponent implements OnInit {
   organism: string;
   organisms = ['human', 'mouse'];
 
-  constructor(private parameterService: ParametersService) {}
+  dialogRef: MatDialogRef<DescriptionComponent> = null;
+
+  constructor(private parameterService: ParametersService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.parameterService.setMsNumberToTest(this.numberOfMarkersToTest);
@@ -85,5 +90,19 @@ export class MarkerSelectionComponent implements OnInit {
   }
   setSNPFileName() {
     this.parameterService.setMsSnpFileName(this.snpsFileName);
+  }
+
+  openDetailsDialog() {
+    this.closeDialogIfOpen();
+    this.dialogRef = this.dialog.open(DescriptionComponent, {
+      data: { description: Documentation.MARKER_SELECTION_DOC }
+    });
+  }
+
+  private closeDialogIfOpen() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    }
   }
 }

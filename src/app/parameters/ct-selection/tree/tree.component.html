@@ -1,6 +1,5 @@
 <mat-expansion-panel [expanded]="true">
   <mat-expansion-panel-header>{{ title }}</mat-expansion-panel-header>
-
   <div class="container">
     <div class="row">
       <mat-form-field>
@@ -13,6 +12,9 @@
       <button mat-icon-button color="primary" matTooltip="Collapse all" (click)="tree.treeControl.collapseAll()">
         <mat-icon matSuffix>unfold_less</mat-icon>
       </button>
+      <button mat-icon-button color="primary" matTooltip="Description" (click)="openDetailsDialog()">
+          <mat-icon>info</mat-icon>
+        </button>
     </div>
     <div class="row">
       <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl">

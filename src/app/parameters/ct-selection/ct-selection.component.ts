@@ -1,8 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import { PhenotypeNode } from '../file-parameter-data';
 import { ParametersService } from 'src/app/_services';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { DescriptionComponent } from 'src/app/shared/description/description.component';
+import { Documentation } from '../documentation';
 
 @Component({
   selector: 'app-ct-selection',
@@ -12,8 +14,9 @@ import { ParametersService } from 'src/app/_services';
 export class CtSelectionComponent implements OnInit {
   public static COVARIATE_TITLE = 'Covariate selection';
   public static TRAIT_TITLE = 'Trait selection';
-  traitsToScan = [ 'Eigentraits', 'Raw Traits' ];
-  pValueCorrectionList = [ 'none', 'holm', 'hochberg',  'hommel', 'bonferroni', 'BH', 'BY', 'FDR' ];
+
+  traitsToScan = ['Eigentraits', 'Raw Traits'];
+  pValueCorrectionList = ['none', 'holm', 'hochberg', 'hommel', 'bonferroni', 'BH', 'BY', 'FDR'];
 
   normalize = true;
   meanCenter = true;
@@ -21,8 +24,9 @@ export class CtSelectionComponent implements OnInit {
   numberOfEigentraits = 2;
   traitSelected: string;
   pValueCorrection: string;
+  dialogRef: MatDialogRef<DescriptionComponent> = null;
 
-  constructor(private parametersService: ParametersService) {
+  constructor(private parametersService: ParametersService, public dialog: MatDialog) {
     // set default values
     this.parametersService.setNormalize(this.normalize);
     this.parametersService.setMeanCenter(this.meanCenter);
@@ -39,6 +43,12 @@ export class CtSelectionComponent implements OnInit {
 
   getTraitTitle() {
     return CtSelectionComponent.TRAIT_TITLE;
+  }
+  getCovariateDescription() {
+    return Documentation.COVARIATE_SELECTION_DOC;
+  }
+  getTraitDescription() {
+    return Documentation.TRAIT_SELECTION_DOC;
   }
   setNormalize() {
     this.parametersService.setNormalize(!this.normalize);
@@ -59,5 +69,19 @@ export class CtSelectionComponent implements OnInit {
   }
   setPValueCorrection() {
     this.parametersService.setPValueCorrection(this.pValueCorrection);
+  }
+
+  openDetailsDialog() {
+    this.closeDialogIfOpen();
+    this.dialogRef = this.dialog.open(DescriptionComponent, {
+      data: { description: Documentation.TRAIT_DOC }
+    });
+  }
+
+  private closeDialogIfOpen() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    }
   }
 }

@@ -17,7 +17,8 @@ import { BaseLayoutComponent } from './layouts/base-layout/base-layout.component
 import { FooterComponent } from './components/footer/footer.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { FileParameterModule } from './parameters/file-parameter';
+import { ParametersModule } from './parameters';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { FileParameterModule } from './parameters/file-parameter';
         FormsModule,
         HttpClientModule,
         routing,
-        FileParameterModule
+        ParametersModule,
+        SharedModule
     ],
     declarations: [
         AppComponent,
@@ -38,7 +40,7 @@ import { FileParameterModule } from './parameters/file-parameter';
         BaseLayoutComponent,
         FooterComponent,
         SidebarComponent,
-        NavbarComponent,
+        NavbarComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

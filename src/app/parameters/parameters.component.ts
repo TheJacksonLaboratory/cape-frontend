@@ -1,16 +1,15 @@
 import { Component, OnInit, ViewChild, OnDestroy, Output } from '@angular/core';
 import { MatAccordion } from '@angular/material';
-import { Document, createNode } from 'yaml';
-import { ParametersService } from '../../_services/parameters.service';
 import { Subscription } from 'rxjs';
+import { ParametersService } from '../_services';
 
 @Component({
-  selector: 'app-file-parameter',
-  templateUrl: './file-parameter.component.html',
-  styleUrls: ['./file-parameter.component.scss']
+  selector: 'app-parameter',
+  templateUrl: './parameters.component.html',
+  styleUrls: ['./parameters.component.scss']
 })
 
-export class FileParameterComponent implements OnInit, OnDestroy {
+export class ParametersComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
   displayMode = 'default';

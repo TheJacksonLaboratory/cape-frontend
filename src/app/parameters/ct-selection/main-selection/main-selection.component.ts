@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ParametersService } from 'src/app/_services';
-import { FileParameterData } from '../../file-parameter-data';
+import { ParametersData } from '../../parameters-data';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class MainSelectionComponent implements OnInit {
   setFileIdxSelected(selected) {
     this.fileIdx = this.files.findIndex(item => item === selected);
     this.parametersService.setParameterFileIdxSelected(this.fileIdx);
-    this.selections = FileParameterData.fileSelections[this.fileIdx];
+    this.selections = ParametersData.fileSelections[this.fileIdx];
   }
 
   ngOnInit() {}

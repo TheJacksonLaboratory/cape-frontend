@@ -9,12 +9,13 @@ import { MatTreeModule,
          MatTabsModule,
          MatButtonModule,
          MatTooltipModule,
-         MatExpansionModule} from '@angular/material';
+         MatExpansionModule,
+         MatMenuModule} from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MainSelectionComponent } from './ct-selection/main-selection/main-selection.component';
 import { TreeComponent } from './ct-selection/tree/tree.component';
-import { FileParameterComponent } from './file-parameter.component';
+import { ParametersComponent } from './parameters.component';
 import { MarkerSelectionComponent } from './marker-selection/marker-selection.component';
 import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
 import { PairScanComponent } from './pair-scan/pair-scan.component';
@@ -37,10 +38,11 @@ import { FormsModule } from '@angular/forms';
     MatTabsModule,
     MatButtonModule,
     MatTooltipModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatMenuModule
   ],
   declarations: [
-    FileParameterComponent,
+    ParametersComponent,
     CtSelectionComponent,
     TreeComponent,
     MainSelectionComponent,
@@ -49,7 +51,7 @@ import { FormsModule } from '@angular/forms';
     PairScanComponent
   ],
   exports: [
-    FileParameterComponent,
+    ParametersComponent,
     CtSelectionComponent,
     TreeComponent,
     MainSelectionComponent,
@@ -58,4 +60,4 @@ import { FormsModule } from '@angular/forms';
     PairScanComponent
   ]
 })
-export class FileParameterModule { }
+export class ParametersModule { }

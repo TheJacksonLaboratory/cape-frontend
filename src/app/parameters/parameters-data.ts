@@ -64,7 +64,7 @@ export class PhenotypeNode {
 
 }
 
-export class FileParameterData {
+export class ParametersData {
 
         /**
          * Data used to populate the File Parameter component
@@ -249,7 +249,7 @@ export class FileParameterData {
                         for (let j = 0; j < node.length; j++) {
                                 let child = new PhenotypeNode(node[j], nodeIds);
                                 child.setParent(parent);
-                                const foundNode = FileParameterData.findNode(root, child);
+                                const foundNode = ParametersData.findNode(root, child);
                                 if (foundNode === null) {
                                         if (j < node.length - 1) {
                                                 child.setParent(parent);
@@ -277,7 +277,6 @@ export class FileParameterData {
         }
 
         public static createTestTree(): PhenotypeNode[] {
-                let nodeid = 0;
                 const nodeIds = new Set();
                 const root = [];
                 const simulation = new PhenotypeNode('Simulation', nodeIds);

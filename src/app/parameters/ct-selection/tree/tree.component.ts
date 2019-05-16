@@ -3,10 +3,11 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Subscription } from 'rxjs';
-// import { Set } from 'typescript-collections';
-import { FileParameterData, PhenotypeNode } from '../../file-parameter-data';
 import { ParametersService } from 'src/app/_services';
-import { CtSelectionComponent} from 'src/app/parameters/file-parameter/ct-selection/ct-selection.component';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { DescriptionComponent } from 'src/app/shared/description/description.component';
+import { PhenotypeNode, ParametersData } from '../../parameters-data';
+import { CtSelectionComponent } from '../ct-selection.component';
 
 /**
  * @title Tree with checklist
@@ -20,6 +21,7 @@ export class TreeComponent implements OnInit, OnDestroy {
     @ViewChild('tree') tree: any;
 
     @Input() title: string;
+    @Input() description: string;
     nodeIds = new Set();
 
     checkedNode = new Set<string>();
@@ -34,7 +36,9 @@ export class TreeComponent implements OnInit, OnDestroy {
     fileIdxSelected: any;
     mainSelectionSubscription: Subscription;
 
-    constructor(private changeDetectorRef: ChangeDetectorRef, private parametersService: ParametersService) {
+    private dialogRef: MatDialogRef<DescriptionComponent> = null;
+
+    constructor(private changeDetectorRef: ChangeDetectorRef, private parametersService: ParametersService, public dialog: MatDialog) {
         // subscribe to main selection component selections
         this.mainSelectionSubscription = this.parametersService.getParameterFileIdxSelected().subscribe(fileIdx => {
             this.fileIdxSelected = fileIdx;
@@ -47,15 +51,15 @@ export class TreeComponent implements OnInit, OnDestroy {
             this.getLevel, this.isExpandable);
         this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
         this.fileIdxSelected = 0;
-        const sorted = FileParameterData.fileSelections[this.fileIdxSelected].sort((a, b) => a < b ? -1 : 1);
-        this.dataSource.data = FileParameterData.getPhenotypeTree(sorted, this.nodeIds);
+        const sorted = ParametersData.fileSelections[this.fileIdxSelected].sort((a, b) => a < b ? -1 : 1);
+        this.dataSource.data = ParametersData.getPhenotypeTree(sorted, this.nodeIds);
     }
 
     refreshTreeDatasource(idx: number) {
-        const sorted = FileParameterData.fileSelections[idx].sort((a, b) => a < b ? -1 : 1);
+        const sorted = ParametersData.fileSelections[idx].sort((a, b) => a < b ? -1 : 1);
         // we repopulate the tree so we need to clear the list of node keys
         this.nodeIds.clear();
-        this.dataSource.data = FileParameterData.getPhenotypeTree(sorted, this.nodeIds);
+        this.dataSource.data = ParametersData.getPhenotypeTree(sorted, this.nodeIds);
     }
 
     ngOnInit() {
@@ -74,7 +78,7 @@ export class TreeComponent implements OnInit, OnDestroy {
         const filtered = this.filterTreeDatasource(filterValue);
         // we repopulate the tree so we need to clear the list of node keys
         this.nodeIds.clear();
-        this.dataSource.data = FileParameterData.getPhenotypeTree(filtered, this.nodeIds);
+        this.dataSource.data = ParametersData.getPhenotypeTree(filtered, this.nodeIds);
     }
 
     /**
@@ -82,7 +86,7 @@ export class TreeComponent implements OnInit, OnDestroy {
      * @param filterValue string filter
      */
     filterTreeDatasource(filterValue: string) {
-        const sorted = FileParameterData.fileSelections[this.fileIdxSelected].sort((a, b) => a < b ? -1 : 1);
+        const sorted = ParametersData.fileSelections[this.fileIdxSelected].sort((a, b) => a < b ? -1 : 1);
         if (!sorted) {
             return [];
         }
@@ -188,5 +192,19 @@ export class TreeComponent implements OnInit, OnDestroy {
             selected ? checked.add(node.name) : checked.delete(node.name);
         }
         return checked;
+    }
+
+    openDetailsDialog() {
+        this.closeDialogIfOpen();
+        this.dialogRef = this.dialog.open(DescriptionComponent, {
+            data: { description: this.description }
+        });
+    }
+
+    private closeDialogIfOpen() {
+        if (this.dialogRef) {
+            this.dialogRef.close();
+            this.dialogRef = null;
+        }
     }
 }

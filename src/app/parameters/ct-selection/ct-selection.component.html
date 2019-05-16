@@ -4,14 +4,15 @@
       <app-main-selection>loading</app-main-selection>
       <div class="row">
         <div class="margin">
-          <app-tree [title]="getCovariateTitle()">loading</app-tree>
+          <app-tree [title]="getCovariateTitle()" [description]="getCovariateDescription()">loading</app-tree>
         </div>
         <div class="margin">
-          <app-tree [title]="getTraitTitle()">loading</app-tree>
+          <app-tree [title]="getTraitTitle()" [description]="getTraitDescription()">loading</app-tree>
         </div>
       </div>
       <div class="margin">
         <p>There are {{ numberOfIndividuals }} individuals with the selected traits measured.</p>
+
         <div class="row">
           <p>Adjust Phenotypes:</p>
           <mat-checkbox class="margin" [(ngModel)]="normalize" (click)="setNormalize()">Normalize</mat-checkbox>
@@ -30,17 +31,22 @@
           <div *ngIf="traitSelected=='Eigentraits'">
             <mat-form-field appearance="outline">
               <mat-label>Nb. of ET</mat-label>
-              <input matInput [(ngModel)]="numberOfEigentraits" (change)="setNumberofET()" type="number" placeholder="2" min="2">
+              <input matInput [(ngModel)]="numberOfEigentraits" (change)="setNumberofET()" type="number" placeholder="2"
+                min="2">
             </mat-form-field>
           </div>
           <mat-form-field appearance="outline">
             <mat-label>P value correction</mat-label>
-            <mat-select placeholder="P value correction" [(value)]="pValueCorrection" (selectionChange)="setPValueCorrection()">
+            <mat-select placeholder="P value correction" [(value)]="pValueCorrection"
+              (selectionChange)="setPValueCorrection()">
               <mat-option *ngFor="let pValueCorrection of pValueCorrectionList" [value]="pValueCorrection">
                 {{ pValueCorrection }}
               </mat-option>
             </mat-select>
           </mat-form-field>
+          <button mat-icon-button color="primary" matTooltip="Description" (click)="openDetailsDialog()">
+            <mat-icon>info</mat-icon>
+          </button>
         </div>
       </div>
     </div>
