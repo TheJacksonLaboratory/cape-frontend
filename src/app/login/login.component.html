@@ -15,7 +15,9 @@
           [type]="hide ? 'password' : 'text'" required>
         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       </mat-form-field>
-
+      <div fxLayout="row" fxLayoutAlign="center" class="spinner" *ngIf="loading">
+        <mat-progress-bar mode="query"></mat-progress-bar>
+      </div>
       <div class="login-error" *ngIf="error.length">
         {{error}}
       </div>

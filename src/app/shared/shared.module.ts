@@ -14,7 +14,8 @@ import {
   MatInputModule,
   MatProgressSpinnerModule,
   MatTableModule,
-  MatSelectModule
+  MatSelectModule,
+  MatProgressBarModule
 } from '@angular/material';
 import { NgxMdModule } from 'ngx-md';
 import { DescriptionComponent } from './description/description.component';
@@ -37,6 +38,7 @@ import { DescriptionComponent } from './description/description.component';
     NgxMdModule.forRoot(),
     MatTableModule,
     MatSelectModule,
+    MatProgressBarModule
     ],
   declarations: [
     DescriptionComponent,
@@ -47,7 +49,8 @@ import { DescriptionComponent } from './description/description.component';
   ],
   exports: [
     DescriptionComponent,
-    CommonModule
+    CommonModule,
+    MatProgressBarModule
   ]
 })
 export class SharedModule { }
