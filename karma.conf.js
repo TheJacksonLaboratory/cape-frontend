@@ -37,13 +37,9 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: false,
-    browsers: ['ChromeHeadless'],
-    customLaunchers: {
-      MyHeadlessChrome: {
-        base: 'ChromeHeadless',
-        flags: ['--disable-translate', '--disable-extensions', '--remote-debugging-port=9223']
-      }
-    },
+    captureTimeout: 60000,
+    browserNoActivityTimeout: 360000,
+    browser: ["Firefox"],
     singleRun: true,
     junitReporter: {
       outputDir: 'test-reports', // results will be saved as $outputDir/$browserName.xml
