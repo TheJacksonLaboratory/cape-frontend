@@ -44,7 +44,7 @@ module.exports = function (config) {
         flags: ['--disable-translate', '--disable-extensions', '--remote-debugging-port=9223']
       }
     },
-    singleRun: false,
+    singleRun: true,
     junitReporter: {
       outputDir: 'test-reports', // results will be saved as $outputDir/$browserName.xml
       outputFile: 'junit-report.xml', // if included, results will be saved as $outputDir/$browserName/$outputFile
