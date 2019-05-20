@@ -1,20 +1,27 @@
-import { Component, OnInit, ViewChild, OnDestroy, Output } from '@angular/core';
-import { MatAccordion } from '@angular/material';
+import { Component, OnInit, ViewChild, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { MatAccordion, MatDialog, MatDialogRef } from '@angular/material';
 import { Subscription } from 'rxjs';
-import { ParametersService } from '../_services';
+import { ParametersService, AuthenticationService } from '../_services';
+import { DescriptionComponent } from '../shared/description/description.component';
+import { MarkerSelectionComponent } from './marker-selection/marker-selection.component';
+import { PairScanComponent } from './pair-scan/pair-scan.component';
+import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
+import { CanActivate } from '@angular/router';
 
 @Component({
   selector: 'app-parameter',
   templateUrl: './parameters.component.html',
-  styleUrls: ['./parameters.component.scss']
+  styleUrls: ['./parameters.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
-export class ParametersComponent implements OnInit, OnDestroy {
+export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, CanActivate {
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
   displayMode = 'default';
   multi = true;
 
+  // parameters
   fileNameSubscription: Subscription;
   selectPlotSubscription: Subscription;
   colorBySubscription: Subscription;
@@ -65,7 +72,17 @@ export class ParametersComponent implements OnInit, OnDestroy {
   psMaxMarkerCorrelation: number;
   psMinIndPerGenotype: number;
 
-  constructor(private parameterService: ParametersService) {
+  // documentation
+  @ViewChild(SingleLocusScanComponent) singleScanChildDoc: SingleLocusScanComponent;
+  @ViewChild(MarkerSelectionComponent) markerSelectionChildDoc: MarkerSelectionComponent;
+  @ViewChild(PairScanComponent) pairScanChildDoc: PairScanComponent;
+
+  singleLocusScanDocumentation: string;
+  markerSelectionDocumentation: string;
+  pairScanDocumentation: string;
+  dialogRef: MatDialogRef<DescriptionComponent> = null;
+
+  constructor(private parameterService: ParametersService, private authService: AuthenticationService, private dialog: MatDialog) {
     this.fileNameSubscription = this.parameterService.getFileName().subscribe(fileName => {
       this.fileName = fileName;
     });
@@ -146,6 +163,12 @@ export class ParametersComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
+  ngAfterViewInit(): void {
+    this.singleLocusScanDocumentation = this.singleScanChildDoc ? this.singleScanChildDoc.documentation : '';
+    this.markerSelectionDocumentation = this.markerSelectionChildDoc ? this.markerSelectionChildDoc.documentation : '';
+    this.pairScanDocumentation = this.pairScanChildDoc ? this.pairScanChildDoc.documentation : '';
+  }
+
   ngOnDestroy(): void {
     this.fileNameSubscription.unsubscribe();
     this.selectPlotSubscription.unsubscribe();
@@ -172,6 +195,34 @@ export class ParametersComponent implements OnInit, OnDestroy {
     this.psMaxMarkerCorrelationSubscription.unsubscribe();
     this.psMinIndPerGenotypeSubscription.unsubscribe();
 
+  }
+
+  canActivate() {
+    return this.authService.isAuthenticated();
+  }
+
+  private openDetailsDialog(documentation: string) {
+    this.closeDialogIfOpen();
+    this.dialogRef = this.dialog.open(DescriptionComponent, {
+      data: { description: documentation }
+    });
+  }
+
+  private closeDialogIfOpen() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    }
+  }
+
+  openSingleLocusDialog() {
+    this.openDetailsDialog(this.singleLocusScanDocumentation);
+  }
+  openMarkerSelectionDialog() {
+    this.openDetailsDialog(this.markerSelectionDocumentation);
+  }
+  openPairScanDialog() {
+    this.openDetailsDialog(this.pairScanDocumentation);
   }
 
   /*

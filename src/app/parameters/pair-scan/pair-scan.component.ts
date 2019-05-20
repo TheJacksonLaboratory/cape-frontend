@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ParametersService } from 'src/app/_services';
+import { Documentation } from '../documentation';
 
 @Component({
   selector: 'app-pair-scan',
@@ -14,6 +15,8 @@ export class PairScanComponent implements OnInit {
   markerPairConstraint: string;
   maxMarkerCorrelation = 0.1;
   minIndPerGenotype = 5;
+
+  documentation = Documentation.PAIR_SCAN_DOC;
 
   constructor(private parameterService: ParametersService) { }
 

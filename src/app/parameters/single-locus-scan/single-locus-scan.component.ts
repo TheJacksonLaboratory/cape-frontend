@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ParametersService } from 'src/app/_services';
+import { Documentation } from '../documentation';
 
 @Component({
   selector: 'app-single-locus-scan',
@@ -13,6 +14,8 @@ export class SingleLocusScanComponent implements OnInit {
   useKinship = false;
   kinshipType: string;
   kinshipTypes = [ 'Overall', 'LTCO' ];
+
+  documentation = Documentation.SINGLE_LOCUS_SCAN_DOC;
 
   constructor(private parametersService: ParametersService) { }
 
