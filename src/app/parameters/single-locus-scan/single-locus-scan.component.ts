@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { ParametersService } from 'src/app/_services';
 import { Documentation } from '../documentation';
+import { Parameters } from '../../_models/parameters';
 
 @Component({
   selector: 'app-single-locus-scan',
   templateUrl: './single-locus-scan.component.html',
   styleUrls: ['./single-locus-scan.component.scss']
 })
-export class SingleLocusScanComponent implements OnInit {
+export class SingleLocusScanComponent implements OnInit, OnDestroy {
 
   referenceAllele = 'A';
   numberOfPermutations = 1;
@@ -17,27 +20,36 @@ export class SingleLocusScanComponent implements OnInit {
 
   documentation = Documentation.SINGLE_LOCUS_SCAN_DOC;
 
-  constructor(private parametersService: ParametersService) { }
+  parametersSubscription: Subscription;
+  parameters: Parameters;
+
+  constructor(private parametersService: ParametersService) {
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+      this.parameters = parameters;
+    });
+  }
 
   ngOnInit() {
-    this.parametersService.setReferenceAllele(this.referenceAllele);
-    this.parametersService.setNumberOfPermutations(this.numberOfPermutations);
-    this.parametersService.setUseKinship(this.useKinship);
+    this.parameters.slsReferenceAllele = this.referenceAllele;
+    this.parameters.slsNumberOfPermutations = this.numberOfPermutations;
+    this.parameters.slsUseKinship = this.useKinship;
   }
-
+  ngOnDestroy(): void {
+    this.parametersSubscription.unsubscribe();
+  }
   setReferenceAllele() {
-    this.parametersService.setReferenceAllele(this.referenceAllele);
+    this.parameters.slsReferenceAllele = this.referenceAllele;
   }
   setNumberOfPermutations() {
-    this.parametersService.setNumberOfPermutations(this.numberOfPermutations);
+    this.parameters.slsNumberOfPermutations = this.numberOfPermutations;
   }
   setUseKinship() {
-    this.parametersService.setUseKinship(!this.useKinship);
+    this.parameters.slsUseKinship = !this.useKinship;
     if (this.useKinship) {  // if the useKinship checkbox is unchecked we reset the kinshipType
-      this.parametersService.setKinshipType(undefined);
+      this.parameters.slsKinshipType = undefined;
     }
   }
   setKinshipType() {
-    this.parametersService.setKinshipType(this.kinshipType);
+    this.parameters.slsKinshipType = this.kinshipType;
   }
 }

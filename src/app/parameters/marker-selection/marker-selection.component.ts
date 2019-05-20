@@ -1,13 +1,16 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+
 import { ParametersService } from 'src/app/_services';
 import { Documentation } from '../documentation';
+import { Parameters } from '../../_models/parameters';
 
 @Component({
   selector: 'app-marker-selection',
   templateUrl: './marker-selection.component.html',
   styleUrls: ['./marker-selection.component.scss'],
 })
-export class MarkerSelectionComponent implements OnInit {
+export class MarkerSelectionComponent implements OnInit, OnDestroy {
 
   numberOfMarkersToTest = 1500;
   snpsFileName = 'filteredSNPs.txt';
@@ -23,11 +26,20 @@ export class MarkerSelectionComponent implements OnInit {
 
   documentation = Documentation.MARKER_SELECTION_DOC;
 
-  constructor(private parameterService: ParametersService) {}
+  parametersSubscription: Subscription;
+  parameters: Parameters;
+
+  constructor(private parametersService: ParametersService) {
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+      this.parameters = parameters;
+    });
+  }
 
   ngOnInit() {
-    this.parameterService.setMsNumberToTest(this.numberOfMarkersToTest);
-
+    this.parameters.msNumberToTest = this.numberOfMarkersToTest;
+  }
+  ngOnDestroy(): void {
+    this.parametersSubscription.unsubscribe();
   }
 
   createMarkerSelections() {
@@ -49,43 +61,43 @@ export class MarkerSelectionComponent implements OnInit {
   }
 
   setNumberOfMarkersToTest() {
-    this.parameterService.setMsNumberToTest(this.numberOfMarkersToTest);
+    this.parameters.msNumberToTest = this.numberOfMarkersToTest;
   }
   setMarkerSelectionMethod() {
-    this.parameterService.setMsMethod(this.markerSelected);
+    this.parameters.msMethod = this.markerSelected;
     // We initialize if Top effect or From list is chosen as the UI input fields already have some default data
     if (this.markerSelected === 'Top Effects') {
-      this.parameterService.setMsPeakDensity(this.peakDensity);
-      this.parameterService.setMsTolerance(this.tolerance);
-      this.parameterService.setMsSnpFileName(undefined);
-      this.parameterService.setMsOrganism(undefined);
+      this.parameters.msPeakDensity = this.peakDensity;
+      this.parameters.msTolerance = this.tolerance;
+      this.parameters.msSnpFileName = undefined;
+      this.parameters.msOrganism = undefined;
     } else if (this.markerSelected === 'From List') {
-      this.parameterService.setMsSnpFileName(this.snpsFileName);
-      this.parameterService.setMsPeakDensity(undefined);
-      this.parameterService.setMsTolerance(undefined);
-      this.parameterService.setMsOrganism(undefined);
+      this.parameters.msSnpFileName = this.snpsFileName;
+      this.parameters.msPeakDensity = undefined;
+      this.parameters.msTolerance = undefined;
+      this.parameters.msOrganism = undefined;
     } else if (this.markerSelected === 'By Gene') {
-      this.parameterService.setMsOrganism(this.organism);
-      this.parameterService.setMsPeakDensity(undefined);
-      this.parameterService.setMsTolerance(undefined);
-      this.parameterService.setMsSnpFileName(undefined);
+      this.parameters.msOrganism = this.organism;
+      this.parameters.msPeakDensity = undefined;
+      this.parameters.msTolerance = undefined;
+      this.parameters.msSnpFileName = undefined;
     } else if (this.markerSelected === 'Uniform') {
-      this.parameterService.setMsOrganism(undefined);
-      this.parameterService.setMsPeakDensity(undefined);
-      this.parameterService.setMsTolerance(undefined);
-      this.parameterService.setMsSnpFileName(undefined);
+      this.parameters.msOrganism = undefined;
+      this.parameters.msPeakDensity = undefined;
+      this.parameters.msTolerance = undefined;
+      this.parameters.msSnpFileName = undefined;
     }
   }
   setPeakDensity() {
-    this.parameterService.setMsPeakDensity(this.peakDensity);
+    this.parameters.msPeakDensity = this.peakDensity;
   }
   setTolerance() {
-    this.parameterService.setMsTolerance(this.tolerance);
+    this.parameters.msTolerance = this.tolerance;
   }
   setOrganism() {
-    this.parameterService.setMsOrganism(this.organism);
+    this.parameters.msOrganism = this.organism;
   }
   setSNPFileName() {
-    this.parameterService.setMsSnpFileName(this.snpsFileName);
+    this.parameters.msSnpFileName = this.snpsFileName;
   }
 }

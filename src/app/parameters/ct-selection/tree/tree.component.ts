@@ -8,6 +8,7 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { DescriptionComponent } from 'src/app/shared/description/description.component';
 import { PhenotypeNode, ParametersData } from '../../parameters-data';
 import { CtSelectionComponent } from '../ct-selection.component';
+import { Parameters } from '../../../_models/parameters';
 
 /**
  * @title Tree with checklist
@@ -36,6 +37,9 @@ export class TreeComponent implements OnInit, OnDestroy {
     fileIdxSelected: any;
     mainSelectionSubscription: Subscription;
 
+    parameters: Parameters;
+    parametersSubscription: Subscription;
+
     private dialogRef: MatDialogRef<DescriptionComponent> = null;
 
      /** The selection for checklist */
@@ -46,6 +50,9 @@ export class TreeComponent implements OnInit, OnDestroy {
         this.mainSelectionSubscription = this.parametersService.getParameterFileIdxSelected().subscribe(fileIdx => {
             this.fileIdxSelected = fileIdx;
             this.refreshTreeDatasource(fileIdx);
+        });
+        this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+            this.parameters = parameters;
         });
 
         this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
@@ -67,14 +74,15 @@ export class TreeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
-            this.parametersService.setCovariateSelection(this.checkedNode);
+            this.parameters.covariateSelection = this.checkedNode;
         } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
-            this.parametersService.setTraitSelection(this.checkedNode);
+            this.parameters.traitSelection = this.checkedNode;
         }
     }
     ngOnDestroy(): void {
         // prevent memory leak when component destroyed
         this.mainSelectionSubscription.unsubscribe();
+        this.parametersSubscription.unsubscribe();
     }
 
     applyFilter(filterValue: string) {
@@ -170,9 +178,9 @@ export class TreeComponent implements OnInit, OnDestroy {
 
         this.checkedNode = this.findChecked(node, this.checkedNode, selected);
         if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
-            this.parametersService.setCovariateSelection(this.checkedNode);
+            this.parameters.covariateSelection = this.checkedNode;
         } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
-            this.parametersService.setTraitSelection(this.checkedNode);
+            this.parameters.traitSelection = this.checkedNode;
         }
         this.changeDetectorRef.markForCheck();
     }
