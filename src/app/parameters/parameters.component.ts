@@ -37,14 +37,16 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
   pairScanDocumentation: string;
   dialogRef: MatDialogRef<DescriptionComponent> = null;
 
-  constructor(private parameterService: ParametersService, private authService: AuthenticationService, private dialog: MatDialog) {
-    this.parametersSubscription = this.parameterService.getParameters().subscribe(parameters => {
+  constructor(private parametersService: ParametersService, private authService: AuthenticationService, private dialog: MatDialog) {
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
       this.parameters = parameters;
     });
 
   }
 
   ngOnInit() {
+    this.parameters = new Parameters();
+    this.parametersService.setParameters(this.parameters);
   }
 
   ngAfterViewInit(): void {
