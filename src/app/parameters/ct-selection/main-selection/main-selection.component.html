@@ -1,4 +1,11 @@
 <mat-form-field appearance="outline">
+  <mat-label>Title input</mat-label>
+  <input matInput placeholder="Title" (change)="setTitle()" [formControl]="titleFormControl">
+  <mat-error *ngIf="titleFormControl.hasError('required')">
+    Title is <strong>required</strong>
+  </mat-error>
+</mat-form-field>
+<mat-form-field appearance="outline">
   <mat-label>Select file</mat-label>
   <mat-select placeholder="Select file" (selectionChange)="setFileIdxSelected(fileSelected)" [(value)]="fileSelected">
     <mat-option *ngFor="let file of files" [value]="file">
