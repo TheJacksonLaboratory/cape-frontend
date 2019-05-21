@@ -1,16 +1,15 @@
 export class Parameters {
     private _id: number;
-    private _name: string;
-    private _created: Date;
+    private _title: string;
     private _filename: string;
     private _selectPlot: string;
     private _colorBy: string;
-    private _covariateSelection: Set<string>;
-    private _traitSelection: Set<string>;
+    private _covariateSelection: string[];
+    private _traitSelection: string[];
     private _normalize: boolean;
     private _meanCenter: boolean;
     private _traitsToScan: string;
-    private _numOfEignenTraits: number;
+    private _numOfEigentraits: number;
     private _pValueCorrection: string;
     private _slsReferenceAllele: string;
     private _slsNumberOfPermutations: number;
@@ -26,24 +25,20 @@ export class Parameters {
     private _psMarkerPairConstraints: string;
     private _psMaxMarkerCorrelation: number;
     private _psMinIndPerGenotype: number;
+    private _dateCreated: Date;
+    private _yamlFile: string;
 
-     public get id(): number {
+    public get id(): number {
         return this._id;
     }
     public set id(value: number) {
         this._id = value;
     }
-    public get name(): string {
-        return this._name;
+    public get title(): string {
+        return this._title;
     }
-    public set name(value: string) {
-        this._name = value;
-    }
-    public get created(): Date {
-        return this._created;
-    }
-    public set created(value: Date) {
-        this._created = value;
+    public set title(value: string) {
+        this._title = value;
     }
     public get filename(): string {
         return this._filename;
@@ -63,16 +58,16 @@ export class Parameters {
     public set colorBy(value: string) {
         this._colorBy = value;
     }
-    public get covariateSelection(): Set<string> {
+    public get covariateSelection(): string[] {
         return this._covariateSelection;
     }
-    public set covariateSelection(value: Set<string>) {
+    public set covariateSelection(value: string[]) {
         this._covariateSelection = value;
     }
-    public get traitSelection(): Set<string> {
+    public get traitSelection(): string[] {
         return this._traitSelection;
     }
-    public set traitSelection(value: Set<string>) {
+    public set traitSelection(value: string[]) {
         this._traitSelection = value;
     }
     public get normalize(): boolean {
@@ -93,11 +88,11 @@ export class Parameters {
     public set traitsToScan(value: string) {
         this._traitsToScan = value;
     }
-    public get numOfEignenTraits(): number {
-        return this._numOfEignenTraits;
+    public get numOfEigentraits(): number {
+        return this._numOfEigentraits;
     }
-    public set numOfEignenTraits(value: number) {
-        this._numOfEignenTraits = value;
+    public set numOfEigentraits(value: number) {
+        this._numOfEigentraits = value;
     }
     public get pValueCorrection(): string {
         return this._pValueCorrection;
@@ -186,7 +181,19 @@ export class Parameters {
     public get psMinIndPerGenotype(): number {
         return this._psMinIndPerGenotype;
     }
-    public set psMinIndPerGenotype(value: number) {
+    public set psMinIndividualPerGenotype(value: number) {
         this._psMinIndPerGenotype = value;
+    }
+    public get dateCreated(): Date {
+        return this._dateCreated;
+    }
+    public set dateCreated(value: Date) {
+        this._dateCreated = value;
+    }
+    public get yamlFile(): string {
+        return this._yamlFile;
+    }
+    public set yamlFile(value: string) {
+        this._yamlFile = value;
     }
 }

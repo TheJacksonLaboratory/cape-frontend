@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { MatAccordion, MatDialog, MatDialogRef } from '@angular/material';
 import { Subscription } from 'rxjs';
-import { CanActivate } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 
-import { ParametersService, AuthenticationService } from '../_services';
+import { ParametersService, AuthenticationService, AlertService } from '../_services';
 import { DescriptionComponent } from '../shared/description/description.component';
 import { MarkerSelectionComponent } from './marker-selection/marker-selection.component';
 import { PairScanComponent } from './pair-scan/pair-scan.component';
@@ -18,26 +18,29 @@ import { Parameters } from '../_models/parameters';
 })
 
 export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, CanActivate {
-
+  // expansion panels
   @ViewChild(MatAccordion) accordion: MatAccordion;
   displayMode = 'default';
   multi = true;
 
+  loading = false;
+  returnUrl: string;
+  error = '';
+  // parameters file
   parametersSubscription: Subscription;
-  // parameters
   parameters: Parameters;
 
   // documentation
   @ViewChild(SingleLocusScanComponent) singleScanChildDoc: SingleLocusScanComponent;
   @ViewChild(MarkerSelectionComponent) markerSelectionChildDoc: MarkerSelectionComponent;
   @ViewChild(PairScanComponent) pairScanChildDoc: PairScanComponent;
-
   singleLocusScanDocumentation: string;
   markerSelectionDocumentation: string;
   pairScanDocumentation: string;
   dialogRef: MatDialogRef<DescriptionComponent> = null;
 
-  constructor(private parametersService: ParametersService, private authService: AuthenticationService, private dialog: MatDialog) {
+  constructor(private parametersService: ParametersService, private authService: AuthenticationService,
+    private alertService: AlertService, private router: Router, private dialog: MatDialog) {
     this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
       this.parameters = parameters;
     });
@@ -77,12 +80,21 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
     }
   }
 
+  /**
+   * Open documentation for Single Locus Scan component
+   */
   openSingleLocusDialog() {
     this.openDetailsDialog(this.singleLocusScanDocumentation);
   }
+  /**
+   * Open documentation for Marker Selection component
+   */
   openMarkerSelectionDialog() {
     this.openDetailsDialog(this.markerSelectionDocumentation);
   }
+  /**
+   * Open documentation for Pair Scan component
+   */
   openPairScanDialog() {
     this.openDetailsDialog(this.pairScanDocumentation);
   }
@@ -90,41 +102,46 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
   /*
    * Creates a Yaml file with all the parameters
    */
-  createYaml(): string {
+  private createYaml(): string {
     const first_comment = '# CAPE parameters YAML file\n' +
       '#================================================\n' +
       '# General Parameters \n' +
       '#================================================\n';
-    let traits = this.parameters.traitSelection.size > 0 ? 'traits:\n' : '';
+    let traits = this.parameters.traitSelection.length > 0 ? 'traits:\n' : '';
     this.parameters.traitSelection.forEach(trait => {
       traits = traits + (' - ' + trait + '\n');
     });
-    let covariates = this.parameters.covariateSelection.size > 0 ? 'covariates:\n' : '';
+    let covariates = this.parameters.covariateSelection.length > 0 ? 'covariates:\n' : '';
     this.parameters.covariateSelection.forEach(covariate => {
       covariates = covariates + (' - ' + covariate + '\n');
     });
     const scanWhat = this.parameters.traitsToScan !== undefined ? 'scan_what:\n - ' + this.parameters.traitsToScan + '\n' : '';
     const traitsNormalized = this.parameters.normalize !== undefined ? 'traits_normalized:\n - ' + this.parameters.normalize + '\n' : '';
     const traitsScaled = this.parameters.meanCenter !== undefined ? 'traits_scaled:\n - ' + this.parameters.meanCenter + '\n' : '';
-    const pvalCorrection = this.parameters.pValueCorrection !== undefined ? 'pval_correction:\n - ' + this.parameters.pValueCorrection + '\n' : '';
-    let eigWhich = this.parameters.numOfEignenTraits !== undefined ? 'eig_which:\n' : '';
-    for (let i = 1; i <= this.parameters.numOfEignenTraits; i++) {
+    const pvalCorrection = this.parameters.pValueCorrection !== undefined ? 'pval_correction:\n - ' +
+      this.parameters.pValueCorrection + '\n' : '';
+    let eigWhich = this.parameters.numOfEigentraits !== undefined ? 'eig_which:\n' : '';
+    for (let i = 1; i <= this.parameters.numOfEigentraits; i++) {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
 
     const singleScanComment = '\n#================================================\n' +
       '# Single Scan Parameters \n' +
       '#================================================\n';
-    const refAllele = this.parameters.slsReferenceAllele !== undefined ? 'ref_allele:\n - ' + this.parameters.slsReferenceAllele + '\n' : '';
-    const singleScanPerm = this.parameters.slsNumberOfPermutations !== undefined ? 'singlescan_perm:\n - ' + this.parameters.slsNumberOfPermutations + '\n' : '';
+    const refAllele = this.parameters.slsReferenceAllele !== undefined ? 'ref_allele:\n - ' +
+      this.parameters.slsReferenceAllele + '\n' : '';
+    const singleScanPerm = this.parameters.slsNumberOfPermutations !== undefined ? 'singlescan_perm:\n - ' +
+      this.parameters.slsNumberOfPermutations + '\n' : '';
     const useKinship = this.parameters.slsUseKinship !== undefined ? 'use_kinship:\n - ' + this.parameters.slsUseKinship + '\n' : '';
     const kintshipType = this.parameters.slsKinshipType !== undefined ? 'kingship_type:\n - ' + this.parameters.slsKinshipType + '\n' : '';
 
     const markerSelectionComment = '\n#================================================\n' +
       '# Marker Selection Parameters\n' +
       '#================================================\n';
-    const markerSelectionMethod = this.parameters.msMethod !== undefined ? 'marker_selection_method:\n - ' + this.parameters.msMethod + '\n' : '';
-    const windowSize = this.parameters.msNumberToTest !== undefined ? 'num_alleles_in_pairscan:\n - ' + this.parameters.msNumberToTest + '\n' : '';
+    const markerSelectionMethod = this.parameters.msMethod !== undefined ? 'marker_selection_method:\n - ' +
+      this.parameters.msMethod + '\n' : '';
+    const windowSize = this.parameters.msNumberToTest !== undefined ? 'num_alleles_in_pairscan:\n - ' +
+      this.parameters.msNumberToTest + '\n' : '';
     const peakDensity = this.parameters.msPeakDensity !== undefined ? 'peak_density:\n - ' + this.parameters.msPeakDensity + '\n' : '';
     const tolerance = this.parameters.msTolerance !== undefined ? 'tolerance:\n - ' + this.parameters.msTolerance + '\n' : '';
     const snpFile = this.parameters.msSnpFileName !== undefined ? 'SNPfile:\n - ' + this.parameters.msSnpFileName + '\n' : '';
@@ -134,8 +151,10 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
       '# Pairscan Parameters\n' +
       '#================================================\n';
     const pairScanNullSize = this.parameters.psNullSize !== undefined ? 'pairscan_null_size:\n - ' + this.parameters.psNullSize + '\n' : '';
-    const maxPairCor = this.parameters.psMaxMarkerCorrelation !== undefined ? 'max_pair_cor:\n - ' + this.parameters.psMaxMarkerCorrelation + '\n' : '';
-    const minPerGeno = this.parameters.psMinIndPerGenotype !== undefined ? 'min_per_geno:\n -  ' + this.parameters.psMinIndPerGenotype + '\n' : '';
+    const maxPairCor = this.parameters.psMaxMarkerCorrelation !== undefined ? 'max_pair_cor:\n - ' +
+      this.parameters.psMaxMarkerCorrelation + '\n' : '';
+    const minPerGeno = this.parameters.psMinIndPerGenotype !== undefined ? 'min_per_geno:\n -  ' +
+      this.parameters.psMinIndPerGenotype + '\n' : '';
 
     // build the yaml string from the strings above
     const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection + eigWhich
@@ -146,7 +165,7 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
     return data;
   }
 
-  saveFile(data: string) {
+  private saveFile(data: string) {
     const filename = 'cape.parameters.yml';
     const blob = new Blob([data], { type: 'text/yaml' });
     if (window.navigator.msSaveOrOpenBlob) {
@@ -161,16 +180,29 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
     }
   }
 
+  /**
+   * Saves the YAML file to disk
+   */
   saveYaml() {
     const yamlString = this.createYaml();
     this.saveFile(yamlString);
   }
 
   /**
-   * Creates a new data file
+   * Creates a new parameters file by calling the corresponding back end API endpoint
    */
-  createDataFile() {
-
+  createParametersFile() {
+    this.loading = true;
+    // Add the full yaml file to the list of parameters
+    this.parameters.yamlFile = this.createYaml();
+    this.parametersService.createParametersFile(this.parameters).subscribe(data => {
+      this.router.navigate([this.returnUrl]);
+    },
+      error => {
+        this.error = error;
+        this.alertService.error(error);
+        this.loading = false;
+      });
   }
 
 }

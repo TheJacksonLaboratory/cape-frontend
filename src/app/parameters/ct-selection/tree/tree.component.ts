@@ -3,8 +3,9 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Subscription } from 'rxjs';
-import { ParametersService } from 'src/app/_services';
 import { MatDialogRef, MatDialog } from '@angular/material';
+
+import { ParametersService } from 'src/app/_services';
 import { DescriptionComponent } from 'src/app/shared/description/description.component';
 import { PhenotypeNode, ParametersData } from '../../parameters-data';
 import { CtSelectionComponent } from '../ct-selection.component';
@@ -34,6 +35,7 @@ export class TreeComponent implements OnInit, OnDestroy {
 
     dataSource: MatTreeFlatDataSource<PhenotypeNode, PhenotypeNode>;
 
+    // Selection of the input file. For now we are using the data found in ParameterData
     fileIdxSelected: any;
     mainSelectionSubscription: Subscription;
 
@@ -74,9 +76,9 @@ export class TreeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
-            this.parameters.covariateSelection = this.checkedNode;
+            this.parameters.covariateSelection = Array.from(this.checkedNode);
         } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
-            this.parameters.traitSelection = this.checkedNode;
+            this.parameters.traitSelection = Array.from(this.checkedNode);
         }
     }
     ngOnDestroy(): void {
@@ -178,20 +180,21 @@ export class TreeComponent implements OnInit, OnDestroy {
 
         this.checkedNode = this.findChecked(node, this.checkedNode, selected);
         if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
-            this.parameters.covariateSelection = this.checkedNode;
+            this.parameters.covariateSelection = Array.from(this.checkedNode);
         } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
-            this.parameters.traitSelection = this.checkedNode;
+            this.parameters.traitSelection = Array.from(this.checkedNode);
         }
         this.changeDetectorRef.markForCheck();
     }
 
     /**
-     * updates the checked/unchecked nodes in the given Set an returns the updated Set
-     * @param node
-     * @param checked
-     * @param selected
+     * Updates the checked/unchecked nodes in the given Set an returns the updated Set
+     * @param node a phenotype node
+     * @param checked the Set of checked nodes as strings
+     * @param selected flag to tell whether a node is selected or not
+     * @returns the set of checked nodes as strings
      */
-    findChecked(node: PhenotypeNode, checked: Set<string>, selected: boolean): Set<string> {
+    private findChecked(node: PhenotypeNode, checked: Set<string>, selected: boolean): Set<string> {
         if (node.hasChildren()) {
             for (const child of node.getChildren()) {
                 checked = this.findChecked(child, checked, selected);

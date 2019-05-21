@@ -14,6 +14,7 @@ export class PairScanComponent implements OnInit, OnDestroy {
 
   markerPairConstraints = ['Maximum Marker Correlation', 'Minimum Individuals per Genotype'];
 
+  // parameters
   nullSize = 1500000;
   markerPairConstraint: string;
   maxMarkerCorrelation = 0.1;
@@ -45,16 +46,16 @@ export class PairScanComponent implements OnInit, OnDestroy {
     // We initialize the max marker correlation and min individual per Genotype as the input fields have already a default value
     if (this.markerPairConstraint === this.markerPairConstraints[0]) {
       this.parameters.psMaxMarkerCorrelation = this.maxMarkerCorrelation;
-      this.parameters.psMinIndPerGenotype = undefined;
+      this.parameters.psMinIndividualPerGenotype = undefined;
     } else if (this.markerPairConstraint === this.markerPairConstraints[1]) {
       this.parameters.psMaxMarkerCorrelation = undefined;
-      this.parameters.psMinIndPerGenotype = this.minIndPerGenotype;
+      this.parameters.psMinIndividualPerGenotype = this.minIndPerGenotype;
     }
   }
   setMaxMarkerCorrelation() {
     this.parameters.psMaxMarkerCorrelation = this.maxMarkerCorrelation;
   }
   setMinIndPerGenotype() {
-    this.parameters.psMinIndPerGenotype = this.minIndPerGenotype;
+    this.parameters.psMinIndividualPerGenotype = this.minIndPerGenotype;
   }
 }

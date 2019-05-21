@@ -19,14 +19,17 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   traitsToScan = ['Eigentraits', 'Raw Traits'];
   pValueCorrectionList = ['none', 'holm', 'hochberg', 'hommel', 'bonferroni', 'BH', 'BY', 'FDR'];
 
-  parametersSubscription: Subscription;
-  parameters: Parameters;
+  // parameters
   normalize = true;
   meanCenter = true;
   numberOfIndividuals = 0;
   numberOfEigentraits = 2;
   traitSelected: string;
   pValueCorrection: string;
+
+  parametersSubscription: Subscription;
+  parameters: Parameters;
+
   dialogRef: MatDialogRef<DescriptionComponent> = null;
 
   constructor(private parametersService: ParametersService, public dialog: MatDialog) {
@@ -54,9 +57,15 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   getTraitTitle() {
     return CtSelectionComponent.TRAIT_TITLE;
   }
+  /**
+   * Get the documentation for the Covariate tree selection
+   */
   getCovariateDescription() {
     return Documentation.COVARIATE_SELECTION_DOC;
   }
+  /**
+   * Get the documentation for the trait tree selection
+   */
   getTraitDescription() {
     return Documentation.TRAIT_SELECTION_DOC;
   }
@@ -66,21 +75,27 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   setMeanCenter() {
     this.parameters.meanCenter = !this.meanCenter;
   }
+  /**
+   * Set the type of trait to scan and reset the number of Eigentraits if raw traits is chosen
+   */
   setTraitsToScan() {
     this.parameters.traitsToScan = this.traitSelected;
     if (this.traitSelected === 'Eigentraits') {
-      this.parameters.numOfEignenTraits = this.numberOfEigentraits;
+      this.parameters.numOfEigentraits = this.numberOfEigentraits;
     } else if (this.traitSelected === 'Raw Traits') {
-      this.parameters.numOfEignenTraits = undefined;
+      this.parameters.numOfEigentraits = undefined;
     }
   }
   setNumberofET() {
-    this.parameters.numOfEignenTraits = this.numberOfEigentraits;
+    this.parameters.numOfEigentraits = this.numberOfEigentraits;
   }
   setPValueCorrection() {
     this.parameters.pValueCorrection = this.pValueCorrection;
   }
 
+  /**
+   * Open the documentation for this component of the Parameter UI
+   */
   openDetailsDialog() {
     this.closeDialogIfOpen();
     this.dialogRef = this.dialog.open(DescriptionComponent, {

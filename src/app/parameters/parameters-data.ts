@@ -1,7 +1,4 @@
 import { BehaviorSubject, throwError } from 'rxjs';
-import { ChildrenOutletContexts } from '@angular/router';
-import { nodeChildrenAsMap } from '@angular/router/src/utils/tree';
-import { TreeComponent } from './ct-selection/tree/tree.component';
 
 /**
  * Node for phenotypes
@@ -64,11 +61,11 @@ export class PhenotypeNode {
 
 }
 
-export class ParametersData {
 
-        /**
-         * Data used to populate the File Parameter component
-         */
+/**
+ * Data used to populate the File Parameter component
+ */
+export class ParametersData {
 
         public static fileSelections = [
                 ['Sex', 'Genotype', 'APP_grch37', 'PS1_grch37', 'PS1_mm10',
@@ -232,12 +229,22 @@ export class ParametersData {
 
         public static testSelection = ['this.is.a.test', 'hello2', 'hello.world', 'this.is.not', 'my.name.is.baha', 'my.name.is.jake'];
 
+        /**
+         * Clean up strings by replacing ... by . or .. by .
+         * Remove trailing points.
+         * @param str string to be cleand
+         */
         private static getCleanString(str: string) {
                 str = str.replace((/[[..]|[...]]+/), '.'); // replace .. or ... by .
                 str = str.endsWith('.') ? str.substring(0, str.length - 2) : str; // remove . at the end of a string
                 return str;
         }
 
+        /**
+         * Creates a tree of PhenotypeNode given an array of phenotype strings and a mutable Set
+         * @param phenotypes array of phenotype strings
+         * @param nodeIds Set used to store unique nodes ID
+         */
         public static getPhenotypeTree(phenotypes: string[], nodeIds: Set<number>): PhenotypeNode[] {
                 const result = [];
                 let nodeid = 0;
@@ -276,6 +283,9 @@ export class ParametersData {
                 return result;
         }
 
+        /**
+         * Test tree to be used in Unit Tests
+         */
         public static createTestTree(): PhenotypeNode[] {
                 const nodeIds = new Set();
                 const root = [];

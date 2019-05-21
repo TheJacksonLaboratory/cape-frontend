@@ -12,10 +12,12 @@ import { Parameters } from '../../_models/parameters';
 })
 export class SingleLocusScanComponent implements OnInit, OnDestroy {
 
+  // parameters
   referenceAllele = 'A';
   numberOfPermutations = 1;
   useKinship = false;
   kinshipType: string;
+
   kinshipTypes = [ 'Overall', 'LTCO' ];
 
   documentation = Documentation.SINGLE_LOCUS_SCAN_DOC;

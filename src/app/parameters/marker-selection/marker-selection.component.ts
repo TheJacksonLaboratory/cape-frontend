@@ -12,16 +12,18 @@ import { Parameters } from '../../_models/parameters';
 })
 export class MarkerSelectionComponent implements OnInit, OnDestroy {
 
+  // parameters
   numberOfMarkersToTest = 1500;
   snpsFileName = 'filteredSNPs.txt';
-  markerSelected: any;
   markerSelectionMethod: string;
   peakDensity = 0.5;
   tolerance = 10;
+  organism: string;
+
+  markerSelected: any;
   markerSelectionMethods = this.createMarkerSelections();
   peakDensityDescription = 'Peak density is the fraction of markers under a large effect peak you would like to select.';
   toleranceDescription = 'Tolerance is the number of markers away from the target number you will tolerate selecting.';
-  organism: string;
   organisms = ['human', 'mouse'];
 
   documentation = Documentation.MARKER_SELECTION_DOC;
@@ -42,7 +44,10 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
     this.parametersSubscription.unsubscribe();
   }
 
-  createMarkerSelections() {
+  /**
+   * Used to populate the Marker Selection input selection with its content and the corresponding tooltip data.
+   */
+  private createMarkerSelections() {
     const map = new Map();
     map.set('Top Effects', 'This method selects the top effect size markers from under peaks of single-locus effect size curves.');
     map.set('Uniform', 'This method selects the specified number of markers to be uniformly spaced across the genome.');
@@ -63,6 +68,10 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
   setNumberOfMarkersToTest() {
     this.parameters.msNumberToTest = this.numberOfMarkersToTest;
   }
+  /**
+   * Set the marker selection method. Setting it qlso requires to set up the other parameters
+   * in order to reset them given what marker selection method has been chosen.
+   */
   setMarkerSelectionMethod() {
     this.parameters.msMethod = this.markerSelected;
     // We initialize if Top effect or From list is chosen as the UI input fields already have some default data
