@@ -1,40 +1,53 @@
-import { Component, OnInit } from '@angular/core';
-import { ViewEncapsulation } from '@angular/core';
-import { MatDialogRef, MatDialog } from '@angular/material';
-import { DescriptionComponent } from 'src/app/shared/description/description.component';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+
 import { ParametersService } from 'src/app/_services';
 import { Documentation } from '../documentation';
+import { Parameters } from '../../_models/parameters';
 
 @Component({
   selector: 'app-marker-selection',
   templateUrl: './marker-selection.component.html',
   styleUrls: ['./marker-selection.component.scss'],
-  encapsulation: ViewEncapsulation.None
 })
-export class MarkerSelectionComponent implements OnInit {
+export class MarkerSelectionComponent implements OnInit, OnDestroy {
 
+  // parameters
   numberOfMarkersToTest = 1500;
   snpsFileName = 'filteredSNPs.txt';
-  markerSelected: any;
   markerSelectionMethod: string;
   peakDensity = 0.5;
   tolerance = 10;
+  organism: string;
+
+  markerSelected: any;
   markerSelectionMethods = this.createMarkerSelections();
   peakDensityDescription = 'Peak density is the fraction of markers under a large effect peak you would like to select.';
   toleranceDescription = 'Tolerance is the number of markers away from the target number you will tolerate selecting.';
-  organism: string;
   organisms = ['human', 'mouse'];
 
-  dialogRef: MatDialogRef<DescriptionComponent> = null;
+  documentation = Documentation.MARKER_SELECTION_DOC;
 
-  constructor(private parameterService: ParametersService, public dialog: MatDialog) {}
+  parametersSubscription: Subscription;
+  parameters: Parameters;
 
-  ngOnInit() {
-    this.parameterService.setMsNumberToTest(this.numberOfMarkersToTest);
-
+  constructor(private parametersService: ParametersService) {
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+      this.parameters = parameters;
+    });
   }
 
-  createMarkerSelections() {
+  ngOnInit() {
+    this.parameters.msNumberToTest = this.numberOfMarkersToTest;
+  }
+  ngOnDestroy(): void {
+    this.parametersSubscription.unsubscribe();
+  }
+
+  /**
+   * Used to populate the Marker Selection input selection with its content and the corresponding tooltip data.
+   */
+  private createMarkerSelections() {
     const map = new Map();
     map.set('Top Effects', 'This method selects the top effect size markers from under peaks of single-locus effect size curves.');
     map.set('Uniform', 'This method selects the specified number of markers to be uniformly spaced across the genome.');
@@ -53,57 +66,47 @@ export class MarkerSelectionComponent implements OnInit {
   }
 
   setNumberOfMarkersToTest() {
-    this.parameterService.setMsNumberToTest(this.numberOfMarkersToTest);
+    this.parameters.msNumberToTest = this.numberOfMarkersToTest;
   }
+  /**
+   * Set the marker selection method. Setting it qlso requires to set up the other parameters
+   * in order to reset them given what marker selection method has been chosen.
+   */
   setMarkerSelectionMethod() {
-    this.parameterService.setMsMethod(this.markerSelected);
+    this.parameters.msMethod = this.markerSelected;
     // We initialize if Top effect or From list is chosen as the UI input fields already have some default data
     if (this.markerSelected === 'Top Effects') {
-      this.parameterService.setMsPeakDensity(this.peakDensity);
-      this.parameterService.setMsTolerance(this.tolerance);
-      this.parameterService.setMsSnpFileName(undefined);
-      this.parameterService.setMsOrganism(undefined);
+      this.parameters.msPeakDensity = this.peakDensity;
+      this.parameters.msTolerance = this.tolerance;
+      this.parameters.msSnpFileName = undefined;
+      this.parameters.msOrganism = undefined;
     } else if (this.markerSelected === 'From List') {
-      this.parameterService.setMsSnpFileName(this.snpsFileName);
-      this.parameterService.setMsPeakDensity(undefined);
-      this.parameterService.setMsTolerance(undefined);
-      this.parameterService.setMsOrganism(undefined);
+      this.parameters.msSnpFileName = this.snpsFileName;
+      this.parameters.msPeakDensity = undefined;
+      this.parameters.msTolerance = undefined;
+      this.parameters.msOrganism = undefined;
     } else if (this.markerSelected === 'By Gene') {
-      this.parameterService.setMsOrganism(this.organism);
-      this.parameterService.setMsPeakDensity(undefined);
-      this.parameterService.setMsTolerance(undefined);
-      this.parameterService.setMsSnpFileName(undefined);
+      this.parameters.msOrganism = this.organism;
+      this.parameters.msPeakDensity = undefined;
+      this.parameters.msTolerance = undefined;
+      this.parameters.msSnpFileName = undefined;
     } else if (this.markerSelected === 'Uniform') {
-      this.parameterService.setMsOrganism(undefined);
-      this.parameterService.setMsPeakDensity(undefined);
-      this.parameterService.setMsTolerance(undefined);
-      this.parameterService.setMsSnpFileName(undefined);
+      this.parameters.msOrganism = undefined;
+      this.parameters.msPeakDensity = undefined;
+      this.parameters.msTolerance = undefined;
+      this.parameters.msSnpFileName = undefined;
     }
   }
   setPeakDensity() {
-    this.parameterService.setMsPeakDensity(this.peakDensity);
+    this.parameters.msPeakDensity = this.peakDensity;
   }
   setTolerance() {
-    this.parameterService.setMsTolerance(this.tolerance);
+    this.parameters.msTolerance = this.tolerance;
   }
   setOrganism() {
-    this.parameterService.setMsOrganism(this.organism);
+    this.parameters.msOrganism = this.organism;
   }
   setSNPFileName() {
-    this.parameterService.setMsSnpFileName(this.snpsFileName);
-  }
-
-  openDetailsDialog() {
-    this.closeDialogIfOpen();
-    this.dialogRef = this.dialog.open(DescriptionComponent, {
-      data: { description: Documentation.MARKER_SELECTION_DOC }
-    });
-  }
-
-  private closeDialogIfOpen() {
-    if (this.dialogRef) {
-      this.dialogRef.close();
-      this.dialogRef = null;
-    }
+    this.parameters.msSnpFileName = this.snpsFileName;
   }
 }

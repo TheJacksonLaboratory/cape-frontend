@@ -1,44 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { ParametersService } from 'src/app/_services';
+import { Documentation } from '../documentation';
+import { Parameters } from '../../_models/parameters';
 
 @Component({
   selector: 'app-pair-scan',
   templateUrl: './pair-scan.component.html',
   styleUrls: ['./pair-scan.component.scss']
 })
-export class PairScanComponent implements OnInit {
+export class PairScanComponent implements OnInit, OnDestroy {
 
   markerPairConstraints = ['Maximum Marker Correlation', 'Minimum Individuals per Genotype'];
 
+  // parameters
   nullSize = 1500000;
   markerPairConstraint: string;
   maxMarkerCorrelation = 0.1;
   minIndPerGenotype = 5;
 
-  constructor(private parameterService: ParametersService) { }
+  documentation = Documentation.PAIR_SCAN_DOC;
+
+  parametersSubscription: Subscription;
+  parameters: Parameters;
+
+  constructor(private parametersService: ParametersService) {
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+      this.parameters = parameters;
+    });
+  }
 
   ngOnInit() {
     this.setNullSize();
   }
+  ngOnDestroy(): void {
+    this.parametersSubscription.unsubscribe();
+  }
 
   setNullSize() {
-    this.parameterService.setPsNullSize(this.nullSize);
+    this.parameters.psNullSize = this.nullSize;
   }
   setMarkerPairConstraints() {
-    this.parameterService.setPsMarkerPairConstraints(this.markerPairConstraint);
+    this.parameters.psMarkerPairConstraints = this.markerPairConstraint;
     // We initialize the max marker correlation and min individual per Genotype as the input fields have already a default value
     if (this.markerPairConstraint === this.markerPairConstraints[0]) {
-      this.parameterService.setPsMaxMarkerCorrelation(this.maxMarkerCorrelation);
-      this.parameterService.setPsMinIndPerGenotype(undefined);
+      this.parameters.psMaxMarkerCorrelation = this.maxMarkerCorrelation;
+      this.parameters.psMinIndividualPerGenotype = undefined;
     } else if (this.markerPairConstraint === this.markerPairConstraints[1]) {
-      this.parameterService.setPsMaxMarkerCorrelation(undefined);
-      this.parameterService.setPsMinIndPerGenotype(this.minIndPerGenotype);
+      this.parameters.psMaxMarkerCorrelation = undefined;
+      this.parameters.psMinIndividualPerGenotype = this.minIndPerGenotype;
     }
   }
   setMaxMarkerCorrelation() {
-    this.parameterService.setPsMaxMarkerCorrelation(this.maxMarkerCorrelation);
+    this.parameters.psMaxMarkerCorrelation = this.maxMarkerCorrelation;
   }
   setMinIndPerGenotype() {
-    this.parameterService.setPsMinIndPerGenotype(this.minIndPerGenotype);
+    this.parameters.psMinIndividualPerGenotype = this.minIndPerGenotype;
   }
 }

@@ -16,22 +16,46 @@
                 <mat-expansion-panel #panel1 [expanded]="true">
                   <mat-expansion-panel-header>Single Locus Scan</mat-expansion-panel-header>
                   <app-single-locus-scan>loading</app-single-locus-scan>
+                  <mat-action-row>
+                    <button mat-icon-button color="primary" matTooltip="More info..." (click)="openSingleLocusDialog()">
+                      <mat-icon>more</mat-icon>
+                    </button>
+                  </mat-action-row>
                 </mat-expansion-panel>
                 <mat-expansion-panel #panel2 [expanded]="true">
                   <mat-expansion-panel-header>Marker Selection</mat-expansion-panel-header>
                   <app-marker-selection>loading</app-marker-selection>
+                  <mat-action-row>
+                    <button mat-icon-button color="primary" matTooltip="More info..."
+                      (click)="openMarkerSelectionDialog()">
+                      <mat-icon>more</mat-icon>
+                    </button>
+                  </mat-action-row>
                 </mat-expansion-panel>
                 <mat-expansion-panel #panel3 [expanded]="true">
                   <mat-expansion-panel-header>Pair Scan</mat-expansion-panel-header>
                   <app-pair-scan>loading</app-pair-scan>
+                  <mat-action-row>
+                    <button mat-icon-button color="primary" matTooltip="More info..." (click)="openPairScanDialog()">
+                      <mat-icon>more</mat-icon>
+                    </button>
+                  </mat-action-row>
                 </mat-expansion-panel>
               </mat-accordion>
 
             </div>
-            <button mat-raised-button color="primary" (click)='saveYaml()'>
-              <mat-icon matSuffix>save_alt</mat-icon>
-              Download Parameter File
-            </button>
+            <div fxLayout="row" fxLayoutAlign="space-between end">
+              <button mat-raised-button color="primary" (click)='saveYaml()'>
+                <mat-icon matSuffix>save_alt</mat-icon>
+                Download Parameter File
+              </button>
+              <button mat-raised-button color="primary"
+                matTooltip="Create the parameters file associated with the parameters set up on this page"
+                (click)='createParametersFile()'>
+                <mat-icon matSuffix>create</mat-icon>
+                Create Data File
+              </button>
+            </div>
             <div class="clearfix"></div>
           </div>
         </div>

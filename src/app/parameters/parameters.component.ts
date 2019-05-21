@@ -1,235 +1,172 @@
-import { Component, OnInit, ViewChild, OnDestroy, Output } from '@angular/core';
-import { MatAccordion } from '@angular/material';
+import { Component, OnInit, ViewChild, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { MatAccordion, MatDialog, MatDialogRef } from '@angular/material';
 import { Subscription } from 'rxjs';
-import { ParametersService } from '../_services';
+import { CanActivate, Router } from '@angular/router';
+
+import { ParametersService, AuthenticationService, AlertService } from '../_services';
+import { DescriptionComponent } from '../shared/description/description.component';
+import { MarkerSelectionComponent } from './marker-selection/marker-selection.component';
+import { PairScanComponent } from './pair-scan/pair-scan.component';
+import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
+import { Parameters } from '../_models/parameters';
 
 @Component({
   selector: 'app-parameter',
   templateUrl: './parameters.component.html',
-  styleUrls: ['./parameters.component.scss']
+  styleUrls: ['./parameters.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
-export class ParametersComponent implements OnInit, OnDestroy {
-
+export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, CanActivate {
+  // expansion panels
   @ViewChild(MatAccordion) accordion: MatAccordion;
   displayMode = 'default';
   multi = true;
 
-  fileNameSubscription: Subscription;
-  selectPlotSubscription: Subscription;
-  colorBySubscription: Subscription;
-  traitSelectionSubscription: Subscription;
-  covariateSelectionSubscription: Subscription;
-  normalizeSubscription: Subscription;
-  meanCenterSubscription: Subscription;
-  traitsToScanSubscription: Subscription;
-  numberOfEigentraitsSubscription: Subscription;
-  pValueCorrectionSubscription: Subscription;
-  referenceAlleleSubscription: Subscription;
-  numberOfPermutationsSubscription: Subscription;
-  useKinshipSubscription: Subscription;
-  kinshipTypeSubscription: Subscription;
-  msNumberToTestSubscription: Subscription;
-  msMethodSubscription: Subscription;
-  msPeakDensitySubscription: Subscription;
-  msToleranceSubscription: Subscription;
-  msOrganismSubscription: Subscription;
-  msSnpFileNameSubscription: Subscription;
-  psNullSizeSubscription: Subscription;
-  psMarkerPairConstraintsSubscription: Subscription;
-  psMaxMarkerCorrelationSubscription: Subscription;
-  psMinIndPerGenotypeSubscription: Subscription;
+  loading = false;
+  returnUrl: string;
+  error = '';
+  // parameters file
+  parametersSubscription: Subscription;
+  parameters: Parameters;
 
-  fileName: string;
-  selectPlot: string;
-  colorBy: string;
-  traitTreeSelection: Set<string>;
-  covariateTreeSelection: Set<string>;
-  normalize: boolean;
-  meanCenter: boolean;
-  traitsToScan: string;
-  numberOfEigentraits: number;
-  pValueCorrection: string;
-  referenceAllele: string;
-  numberOfPermutations: number;
-  useKinship: boolean;
-  kinshipType: string;
-  msNumberToTest: number;
-  msMethod: string;
-  msPeakDensity: number;
-  msTolerance: number;
-  msOrganism: string;
-  msSnpFileName: string;
-  psNullSize: number;
-  psMarkerPairConstraints: string;
-  psMaxMarkerCorrelation: number;
-  psMinIndPerGenotype: number;
+  // documentation
+  @ViewChild(SingleLocusScanComponent) singleScanChildDoc: SingleLocusScanComponent;
+  @ViewChild(MarkerSelectionComponent) markerSelectionChildDoc: MarkerSelectionComponent;
+  @ViewChild(PairScanComponent) pairScanChildDoc: PairScanComponent;
+  singleLocusScanDocumentation: string;
+  markerSelectionDocumentation: string;
+  pairScanDocumentation: string;
+  dialogRef: MatDialogRef<DescriptionComponent> = null;
 
-  constructor(private parameterService: ParametersService) {
-    this.fileNameSubscription = this.parameterService.getFileName().subscribe(fileName => {
-      this.fileName = fileName;
+  constructor(private parametersService: ParametersService, private authService: AuthenticationService,
+    private alertService: AlertService, private router: Router, private dialog: MatDialog) {
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+      this.parameters = parameters;
     });
-    this.selectPlotSubscription = this.parameterService.getSelectPlot().subscribe(selectPlot => {
-      this.selectPlot = selectPlot;
-    });
-    this.colorBySubscription = this.parameterService.getColorBy().subscribe(colorBy => {
-      this.colorBy = colorBy;
-    });
-    this.traitSelectionSubscription = this.parameterService.getTraitSelection().subscribe(traitTreeSelection => {
-      this.traitTreeSelection = traitTreeSelection;
-    });
-    this.covariateSelectionSubscription = this.parameterService.getCovariateSelection().subscribe(covariateTreeSelection => {
-      this.covariateTreeSelection = covariateTreeSelection;
-    });
-    this.normalizeSubscription = this.parameterService.getNormalize().subscribe(normalize => {
-      this.normalize = normalize;
-    });
-    this.meanCenterSubscription = this.parameterService.getMeanCenter().subscribe(meanCenter => {
-      this.meanCenter = meanCenter;
-    });
-    this.traitsToScanSubscription = this.parameterService.getTraitsToScan().subscribe(traitsToScan => {
-      this.traitsToScan = traitsToScan;
-    });
-    this.numberOfEigentraitsSubscription = this.parameterService.getNumOfEigentraits().subscribe(numberOfEigentraits => {
-      this.numberOfEigentraits = numberOfEigentraits;
-    });
-    this.pValueCorrectionSubscription = this.parameterService.getPValueCorrection().subscribe(pValueCorrection => {
-      this.pValueCorrection = pValueCorrection;
-    });
-    this.referenceAlleleSubscription = this.parameterService.getReferenceAllele().subscribe(referenceAllele => {
-      this.referenceAllele = referenceAllele;
-    });
-    this.numberOfPermutationsSubscription = this.parameterService.getNumberOfPermutations().subscribe(numberOfPermutations => {
-      this.numberOfPermutations = numberOfPermutations;
-    });
-    this.useKinshipSubscription = this.parameterService.getUseKinship().subscribe(useKinship => {
-      this.useKinship = useKinship;
-    });
-    this.kinshipTypeSubscription = this.parameterService.getKinshipType().subscribe(kinshipType => {
-      this.kinshipType = kinshipType;
-    });
-    this.msNumberToTestSubscription = this.parameterService.getMsNumberToTest().subscribe(msNumberToTest => {
-      this.msNumberToTest = msNumberToTest;
-    });
-    this.msMethodSubscription = this.parameterService.getMsMethod().subscribe(msMethod => {
-      this.msMethod = msMethod;
-    });
-    this.msPeakDensitySubscription = this.parameterService.getMsPeakDensity().subscribe(msPeakDensity => {
-      this.msPeakDensity = msPeakDensity;
-    });
-    this.msToleranceSubscription = this.parameterService.getMsTolerance().subscribe(msTolerance => {
-      this.msTolerance = msTolerance;
-    });
-    this.msOrganismSubscription = this.parameterService.getMsOrganism().subscribe(msOrganism => {
-      this.msOrganism = msOrganism;
-    });
-    this.msSnpFileNameSubscription = this.parameterService.getMsSnpFileName().subscribe(msSnpFileName => {
-      this.msSnpFileName = msSnpFileName;
-    });
-    this.psNullSizeSubscription = this.parameterService.getPsNullSize().subscribe(psNullSize => {
-      this.psNullSize = psNullSize;
-    });
-    this.psMarkerPairConstraintsSubscription = this.parameterService.getPsMarkerPairConstraints().subscribe(psMarkerPairConstraints => {
-      this.psMarkerPairConstraints = psMarkerPairConstraints;
-    });
-    this.psMaxMarkerCorrelationSubscription = this.parameterService.getPsMaxMarkerCorrelation()
-      .subscribe(psMaxMarkerCorrelation => {
-        this.psMaxMarkerCorrelation = psMaxMarkerCorrelation;
-      });
-    this.psMinIndPerGenotypeSubscription = this.parameterService.getPsMinIndPerGenotype()
-      .subscribe(psMinIndPerGenotype => {
-        this.psMinIndPerGenotype = psMinIndPerGenotype;
-      });
 
   }
 
   ngOnInit() {
+    this.parameters = new Parameters();
+    this.parametersService.setParameters(this.parameters);
+  }
+
+  ngAfterViewInit(): void {
+    this.singleLocusScanDocumentation = this.singleScanChildDoc ? this.singleScanChildDoc.documentation : '';
+    this.markerSelectionDocumentation = this.markerSelectionChildDoc ? this.markerSelectionChildDoc.documentation : '';
+    this.pairScanDocumentation = this.pairScanChildDoc ? this.pairScanChildDoc.documentation : '';
   }
 
   ngOnDestroy(): void {
-    this.fileNameSubscription.unsubscribe();
-    this.selectPlotSubscription.unsubscribe();
-    this.colorBySubscription.unsubscribe();
-    this.covariateSelectionSubscription.unsubscribe();
-    this.traitSelectionSubscription.unsubscribe();
-    this.normalizeSubscription.unsubscribe();
-    this.meanCenterSubscription.unsubscribe();
-    this.traitsToScanSubscription.unsubscribe();
-    this.numberOfEigentraitsSubscription.unsubscribe();
-    this.pValueCorrectionSubscription.unsubscribe();
-    this.referenceAlleleSubscription.unsubscribe();
-    this.numberOfPermutationsSubscription.unsubscribe();
-    this.useKinshipSubscription.unsubscribe();
-    this.kinshipTypeSubscription.unsubscribe();
-    this.msNumberToTestSubscription.unsubscribe();
-    this.msMethodSubscription.unsubscribe();
-    this.msPeakDensitySubscription.unsubscribe();
-    this.msToleranceSubscription.unsubscribe();
-    this.msOrganismSubscription.unsubscribe();
-    this.msSnpFileNameSubscription.unsubscribe();
-    this.psNullSizeSubscription.unsubscribe();
-    this.psMarkerPairConstraintsSubscription.unsubscribe();
-    this.psMaxMarkerCorrelationSubscription.unsubscribe();
-    this.psMinIndPerGenotypeSubscription.unsubscribe();
+    this.parametersSubscription.unsubscribe();
+  }
 
+  canActivate() {
+    return this.authService.isAuthenticated();
+  }
+
+  private openDetailsDialog(documentation: string) {
+    this.closeDialogIfOpen();
+    this.dialogRef = this.dialog.open(DescriptionComponent, {
+      data: { description: documentation }
+    });
+  }
+
+  private closeDialogIfOpen() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.dialogRef = null;
+    }
+  }
+
+  /**
+   * Open documentation for Single Locus Scan component
+   */
+  openSingleLocusDialog() {
+    this.openDetailsDialog(this.singleLocusScanDocumentation);
+  }
+  /**
+   * Open documentation for Marker Selection component
+   */
+  openMarkerSelectionDialog() {
+    this.openDetailsDialog(this.markerSelectionDocumentation);
+  }
+  /**
+   * Open documentation for Pair Scan component
+   */
+  openPairScanDialog() {
+    this.openDetailsDialog(this.pairScanDocumentation);
   }
 
   /*
    * Creates a Yaml file with all the parameters
    */
-  saveYaml(): string {
-    const filename = 'cape.parameters.yml';
+  private createYaml(): string {
     const first_comment = '# CAPE parameters YAML file\n' +
       '#================================================\n' +
       '# General Parameters \n' +
       '#================================================\n';
-    let traits = this.traitTreeSelection.size > 0 ? 'traits:\n' : '';
-    this.traitTreeSelection.forEach(trait => {
+    let traits = this.parameters.traitSelection.length > 0 ? 'traits:\n' : '';
+    this.parameters.traitSelection.forEach(trait => {
       traits = traits + (' - ' + trait + '\n');
     });
-    let covariates = this.covariateTreeSelection.size > 0 ? 'covariates:\n' : '';
-    this.covariateTreeSelection.forEach(covariate => {
+    let covariates = this.parameters.covariateSelection.length > 0 ? 'covariates:\n' : '';
+    this.parameters.covariateSelection.forEach(covariate => {
       covariates = covariates + (' - ' + covariate + '\n');
     });
-    const scanWhat = this.traitsToScan !== undefined ? 'scan_what:\n - ' + this.traitsToScan + '\n' : '';
-    const traitsNormalized = this.normalize !== undefined ? 'traits_normalized:\n - ' + this.normalize + '\n' : '';
-    const traitsScaled = this.meanCenter !== undefined ? 'traits_scaled:\n - ' + this.meanCenter + '\n' : '';
-    const pvalCorrection = this.pValueCorrection !== undefined ? 'pval_correction:\n - ' + this.pValueCorrection + '\n' : '';
-    let eigWhich = this.numberOfEigentraits !== undefined ? 'eig_which:\n' : '';
-    for (let i = 1; i <= this.numberOfEigentraits; i++) {
+    const scanWhat = this.parameters.traitsToScan !== undefined ? 'scan_what:\n - ' + this.parameters.traitsToScan + '\n' : '';
+    const traitsNormalized = this.parameters.normalize !== undefined ? 'traits_normalized:\n - ' + this.parameters.normalize + '\n' : '';
+    const traitsScaled = this.parameters.meanCenter !== undefined ? 'traits_scaled:\n - ' + this.parameters.meanCenter + '\n' : '';
+    const pvalCorrection = this.parameters.pValueCorrection !== undefined ? 'pval_correction:\n - ' +
+      this.parameters.pValueCorrection + '\n' : '';
+    let eigWhich = this.parameters.numOfEigentraits !== undefined ? 'eig_which:\n' : '';
+    for (let i = 1; i <= this.parameters.numOfEigentraits; i++) {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
 
     const singleScanComment = '\n#================================================\n' +
       '# Single Scan Parameters \n' +
       '#================================================\n';
-    const refAllele = this.referenceAllele !== undefined ? 'ref_allele:\n - ' + this.referenceAllele + '\n' : '';
-    const singleScanPerm = this.numberOfPermutations !== undefined ? 'singlescan_perm:\n - ' + this.numberOfPermutations + '\n' : '';
-    const useKinship = this.useKinship !== undefined ? 'use_kinship:\n - ' + this.useKinship + '\n' : '';
-    const kintshipType = this.kinshipType !== undefined ? 'kingship_type:\n - ' + this.kinshipType + '\n' : '';
+    const refAllele = this.parameters.slsReferenceAllele !== undefined ? 'ref_allele:\n - ' +
+      this.parameters.slsReferenceAllele + '\n' : '';
+    const singleScanPerm = this.parameters.slsNumberOfPermutations !== undefined ? 'singlescan_perm:\n - ' +
+      this.parameters.slsNumberOfPermutations + '\n' : '';
+    const useKinship = this.parameters.slsUseKinship !== undefined ? 'use_kinship:\n - ' + this.parameters.slsUseKinship + '\n' : '';
+    const kintshipType = this.parameters.slsKinshipType !== undefined ? 'kingship_type:\n - ' + this.parameters.slsKinshipType + '\n' : '';
 
     const markerSelectionComment = '\n#================================================\n' +
       '# Marker Selection Parameters\n' +
       '#================================================\n';
-    const markerSelectionMethod = this.msMethod !== undefined ? 'marker_selection_method:\n - ' + this.msMethod + '\n' : '';
-    const windowSize = this.msNumberToTest !== undefined ? 'num_alleles_in_pairscan:\n - ' + this.msNumberToTest + '\n' : '';
-    const peakDensity = this.msPeakDensity !== undefined ? 'peak_density:\n - ' + this.msPeakDensity + '\n' : '';
-    const tolerance = this.msTolerance !== undefined ? 'tolerance:\n - ' + this.msTolerance + '\n' : '';
-    const snpFile = this.msSnpFileName !== undefined ? 'SNPfile:\n - ' + this.msSnpFileName + '\n' : '';
-    const organism = this.msOrganism !== undefined ? 'organism:\n - ' + this.msOrganism + '\n' : '';
+    const markerSelectionMethod = this.parameters.msMethod !== undefined ? 'marker_selection_method:\n - ' +
+      this.parameters.msMethod + '\n' : '';
+    const windowSize = this.parameters.msNumberToTest !== undefined ? 'num_alleles_in_pairscan:\n - ' +
+      this.parameters.msNumberToTest + '\n' : '';
+    const peakDensity = this.parameters.msPeakDensity !== undefined ? 'peak_density:\n - ' + this.parameters.msPeakDensity + '\n' : '';
+    const tolerance = this.parameters.msTolerance !== undefined ? 'tolerance:\n - ' + this.parameters.msTolerance + '\n' : '';
+    const snpFile = this.parameters.msSnpFileName !== undefined ? 'SNPfile:\n - ' + this.parameters.msSnpFileName + '\n' : '';
+    const organism = this.parameters.msOrganism !== undefined ? 'organism:\n - ' + this.parameters.msOrganism + '\n' : '';
 
     const pairScanComment = '\n#================================================\n' +
       '# Pairscan Parameters\n' +
       '#================================================\n';
-    const pairScanNullSize = this.psNullSize !== undefined ? 'pairscan_null_size:\n - ' + this.psNullSize + '\n' : '';
-    const maxPairCor = this.psMaxMarkerCorrelation !== undefined ? 'max_pair_cor:\n - ' + this.psMaxMarkerCorrelation + '\n' : '';
-    const minPerGeno = this.psMinIndPerGenotype !== undefined ? 'min_per_geno:\n -  ' + this.psMinIndPerGenotype + '\n' : '';
+    const pairScanNullSize = this.parameters.psNullSize !== undefined ? 'pairscan_null_size:\n - ' + this.parameters.psNullSize + '\n' : '';
+    const maxPairCor = this.parameters.psMaxMarkerCorrelation !== undefined ? 'max_pair_cor:\n - ' +
+      this.parameters.psMaxMarkerCorrelation + '\n' : '';
+    const minPerGeno = this.parameters.psMinIndPerGenotype !== undefined ? 'min_per_geno:\n -  ' +
+      this.parameters.psMinIndPerGenotype + '\n' : '';
 
     // build the yaml string from the strings above
     const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection + eigWhich
       + singleScanComment + refAllele + singleScanPerm + useKinship + kintshipType
       + markerSelectionComment + markerSelectionMethod + windowSize + peakDensity + tolerance + snpFile + organism
       + pairScanComment + pairScanNullSize + maxPairCor + minPerGeno;
+
+    return data;
+  }
+
+  private saveFile(data: string) {
+    const filename = 'cape.parameters.yml';
     const blob = new Blob([data], { type: 'text/yaml' });
     if (window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(blob, filename);
@@ -241,6 +178,31 @@ export class ParametersComponent implements OnInit, OnDestroy {
       elem.click();
       document.body.removeChild(elem);
     }
-    return data;
   }
+
+  /**
+   * Saves the YAML file to disk
+   */
+  saveYaml() {
+    const yamlString = this.createYaml();
+    this.saveFile(yamlString);
+  }
+
+  /**
+   * Creates a new parameters file by calling the corresponding back end API endpoint
+   */
+  createParametersFile() {
+    this.loading = true;
+    // Add the full yaml file to the list of parameters
+    this.parameters.yamlFile = this.createYaml();
+    this.parametersService.createParametersFile(this.parameters).subscribe(data => {
+      this.router.navigate([this.returnUrl]);
+    },
+      error => {
+        this.error = error;
+        this.alertService.error(error);
+        this.loading = false;
+      });
+  }
+
 }

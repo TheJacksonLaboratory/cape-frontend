@@ -13,6 +13,8 @@ import { MatTreeModule,
          MatMenuModule} from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { MainSelectionComponent } from './ct-selection/main-selection/main-selection.component';
 import { TreeComponent } from './ct-selection/tree/tree.component';
 import { ParametersComponent } from './parameters.component';
@@ -20,7 +22,6 @@ import { MarkerSelectionComponent } from './marker-selection/marker-selection.co
 import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
 import { PairScanComponent } from './pair-scan/pair-scan.component';
 import { CtSelectionComponent } from './ct-selection/ct-selection.component';
-import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { FormsModule } from '@angular/forms';
     MatCheckboxModule,
     FlexLayoutModule.withConfig({addFlexToParent: false}),
     FormsModule,
+    ReactiveFormsModule,
     MatRadioModule,
     MatTabsModule,
     MatButtonModule,
