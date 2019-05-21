@@ -120,8 +120,8 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
     const traitsScaled = this.parameters.meanCenter !== undefined ? 'traits_scaled:\n - ' + this.parameters.meanCenter + '\n' : '';
     const pvalCorrection = this.parameters.pValueCorrection !== undefined ? 'pval_correction:\n - ' +
       this.parameters.pValueCorrection + '\n' : '';
-    let eigWhich = this.parameters.numOfEigentraits !== undefined ? 'eig_which:\n' : '';
-    for (let i = 1; i <= this.parameters.numOfEigentraits; i++) {
+    let eigWhich = this.parameters.numberOfEigentraits !== undefined ? 'eig_which:\n' : '';
+    for (let i = 1; i <= this.parameters.numberOfEigentraits; i++) {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
 
@@ -153,8 +153,8 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
     const pairScanNullSize = this.parameters.psNullSize !== undefined ? 'pairscan_null_size:\n - ' + this.parameters.psNullSize + '\n' : '';
     const maxPairCor = this.parameters.psMaxMarkerCorrelation !== undefined ? 'max_pair_cor:\n - ' +
       this.parameters.psMaxMarkerCorrelation + '\n' : '';
-    const minPerGeno = this.parameters.psMinIndPerGenotype !== undefined ? 'min_per_geno:\n -  ' +
-      this.parameters.psMinIndPerGenotype + '\n' : '';
+    const minPerGeno = this.parameters.psMinIndividualPerGenotype !== undefined ? 'min_per_geno:\n -  ' +
+      this.parameters.psMinIndividualPerGenotype + '\n' : '';
 
     // build the yaml string from the strings above
     const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection + eigWhich

@@ -81,13 +81,13 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   setTraitsToScan() {
     this.parameters.traitsToScan = this.traitSelected;
     if (this.traitSelected === 'Eigentraits') {
-      this.parameters.numOfEigentraits = this.numberOfEigentraits;
+      this.parameters.numberOfEigentraits = this.numberOfEigentraits;
     } else if (this.traitSelected === 'Raw Traits') {
-      this.parameters.numOfEigentraits = undefined;
+      this.parameters.numberOfEigentraits = undefined;
     }
   }
   setNumberofET() {
-    this.parameters.numOfEigentraits = this.numberOfEigentraits;
+    this.parameters.numberOfEigentraits = this.numberOfEigentraits;
   }
   setPValueCorrection() {
     this.parameters.pValueCorrection = this.pValueCorrection;

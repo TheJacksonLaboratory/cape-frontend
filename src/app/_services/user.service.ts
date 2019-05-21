@@ -9,8 +9,7 @@ import { throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    constructor(private http: HttpClient) {
-    }
+    constructor(private http: HttpClient) { }
 
     private static _handleError(err: HttpErrorResponse | any) {
         return throwError(err.message || 'Error: Unable to complete request.');
