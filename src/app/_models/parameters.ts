@@ -24,7 +24,7 @@ export class Parameters {
     private _psNullSize: number;
     private _psMarkerPairConstraints: string;
     private _psMaxMarkerCorrelation: number;
-    private _psMinIndPerGenotype: number;
+    private _psMinIndividualPerGenotype: number;
     private _dateCreated: Date;
     private _yamlFile: string;
 
@@ -178,11 +178,11 @@ export class Parameters {
     public set psMaxMarkerCorrelation(value: number) {
         this._psMaxMarkerCorrelation = value;
     }
-    public get psMinIndPerGenotype(): number {
-        return this._psMinIndPerGenotype;
+    public get psMinIndividualPerGenotype(): number {
+        return this._psMinIndividualPerGenotype;
     }
     public set psMinIndividualPerGenotype(value: number) {
-        this._psMinIndPerGenotype = value;
+        this._psMinIndividualPerGenotype = value;
     }
     public get dateCreated(): Date {
         return this._dateCreated;
