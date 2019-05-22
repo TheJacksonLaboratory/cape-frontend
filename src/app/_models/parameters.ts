@@ -9,7 +9,7 @@ export class Parameters {
     private _normalize: boolean;
     private _meanCenter: boolean;
     private _traitsToScan: string;
-    private _numOfEigentraits: number;
+    private _numberOfEigentraits: number;
     private _pValueCorrection: string;
     private _slsReferenceAllele: string;
     private _slsNumberOfPermutations: number;
@@ -88,11 +88,11 @@ export class Parameters {
     public set traitsToScan(value: string) {
         this._traitsToScan = value;
     }
-    public get numOfEigentraits(): number {
-        return this._numOfEigentraits;
+    public get numberOfEigentraits(): number {
+        return this._numberOfEigentraits;
     }
-    public set numOfEigentraits(value: number) {
-        this._numOfEigentraits = value;
+    public set numberOfEigentraits(value: number) {
+        this._numberOfEigentraits = value;
     }
     public get pValueCorrection(): string {
         return this._pValueCorrection;
