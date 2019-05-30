@@ -76,9 +76,9 @@ export class TreeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
-            this.parameters.covariateSelection = Array.from(this.checkedNode);
+            this.parameters.covariate_selection = Array.from(this.checkedNode);
         } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
-            this.parameters.traitSelection = Array.from(this.checkedNode);
+            this.parameters.trait_selection = Array.from(this.checkedNode);
         }
     }
     ngOnDestroy(): void {
@@ -180,9 +180,9 @@ export class TreeComponent implements OnInit, OnDestroy {
 
         this.checkedNode = this.findChecked(node, this.checkedNode, selected);
         if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
-            this.parameters.covariateSelection = Array.from(this.checkedNode);
+            this.parameters.covariate_selection = Array.from(this.checkedNode);
         } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
-            this.parameters.traitSelection = Array.from(this.checkedNode);
+            this.parameters.trait_selection = Array.from(this.checkedNode);
         }
         this.changeDetectorRef.markForCheck();
     }

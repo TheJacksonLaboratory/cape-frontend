@@ -32,26 +32,26 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.parameters.slsReferenceAllele = this.referenceAllele;
-    this.parameters.slsNumberOfPermutations = this.numberOfPermutations;
-    this.parameters.slsUseKinship = this.useKinship;
+    this.parameters.sls_reference_allele = this.referenceAllele;
+    this.parameters.sls_number_of_permutations = this.numberOfPermutations;
+    this.parameters.sls_use_kinship = this.useKinship;
   }
   ngOnDestroy(): void {
     this.parametersSubscription.unsubscribe();
   }
   setReferenceAllele() {
-    this.parameters.slsReferenceAllele = this.referenceAllele;
+    this.parameters.sls_reference_allele = this.referenceAllele;
   }
   setNumberOfPermutations() {
-    this.parameters.slsNumberOfPermutations = this.numberOfPermutations;
+    this.parameters.sls_number_of_permutations = this.numberOfPermutations;
   }
   setUseKinship() {
-    this.parameters.slsUseKinship = !this.useKinship;
+    this.parameters.sls_use_kinship = !this.useKinship;
     if (this.useKinship) {  // if the useKinship checkbox is unchecked we reset the kinshipType
-      this.parameters.slsKinshipType = undefined;
+      this.parameters.sls_kinship_type = undefined;
     }
   }
   setKinshipType() {
-    this.parameters.slsKinshipType = this.kinshipType;
+    this.parameters.sls_kinship_type = this.kinshipType;
   }
 }

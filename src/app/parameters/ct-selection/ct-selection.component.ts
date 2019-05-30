@@ -42,9 +42,9 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // set default values
     this.parameters.normalize = this.normalize;
-    this.parameters.meanCenter = this.meanCenter;
-    this.parameters.traitsToScan = this.traitSelected;
-    this.parameters.pValueCorrection = this.pValueCorrection;
+    this.parameters.mean_center = this.meanCenter;
+    this.parameters.traits_to_scan = this.traitSelected;
+    this.parameters.p_value_correction = this.pValueCorrection;
   }
   ngOnDestroy(): void {
     this.parametersSubscription.unsubscribe();
@@ -73,24 +73,24 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
     this.parameters.normalize = !this.normalize;
   }
   setMeanCenter() {
-    this.parameters.meanCenter = !this.meanCenter;
+    this.parameters.mean_center = !this.meanCenter;
   }
   /**
    * Set the type of trait to scan and reset the number of Eigentraits if raw traits is chosen
    */
   setTraitsToScan() {
-    this.parameters.traitsToScan = this.traitSelected;
+    this.parameters.traits_to_scan = this.traitSelected;
     if (this.traitSelected === 'Eigentraits') {
-      this.parameters.numberOfEigentraits = this.numberOfEigentraits;
+      this.parameters.number_of_eigentraits = this.numberOfEigentraits;
     } else if (this.traitSelected === 'Raw Traits') {
-      this.parameters.numberOfEigentraits = undefined;
+      this.parameters.number_of_eigentraits = undefined;
     }
   }
   setNumberofET() {
-    this.parameters.numberOfEigentraits = this.numberOfEigentraits;
+    this.parameters.number_of_eigentraits = this.numberOfEigentraits;
   }
   setPValueCorrection() {
-    this.parameters.pValueCorrection = this.pValueCorrection;
+    this.parameters.p_value_correction = this.pValueCorrection;
   }
 
   /**
