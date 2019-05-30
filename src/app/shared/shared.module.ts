@@ -19,6 +19,7 @@ import {
 } from '@angular/material';
 import { NgxMdModule } from 'ngx-md';
 import { DescriptionComponent } from './description/description.component';
+import { MessageDialogComponent } from './message-dialog/message-dialog.component';
 
 @NgModule({
   imports: [
@@ -37,20 +38,21 @@ import { DescriptionComponent } from './description/description.component';
     MatProgressSpinnerModule,
     NgxMdModule.forRoot(),
     MatTableModule,
-    MatSelectModule,
-    MatProgressBarModule
+    MatSelectModule
     ],
   declarations: [
     DescriptionComponent,
+    MessageDialogComponent
   ],
   providers: [],
   entryComponents: [
-    DescriptionComponent
+    DescriptionComponent,
+    MessageDialogComponent
   ],
   exports: [
     DescriptionComponent,
     CommonModule,
-    MatProgressBarModule
+    MessageDialogComponent
   ]
 })
 export class SharedModule { }
