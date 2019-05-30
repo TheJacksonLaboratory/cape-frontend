@@ -17,8 +17,11 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
   'DO.pheno.genlitcov.RDATA', 'DO850.RDATA', 'obesity.cross.RDATA', 'SSc.RDATA'];
   fileIdx: number;
   plotTypes = ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
-  fileSelected: string;
   selections: string[];
+
+  fileSelected: string;
+  plotType: string;
+  colorBy: string;
 
   titleFormControl = new FormControl('', [
     Validators.required
@@ -33,20 +36,30 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
     });
   }
 
-  setFileIdxSelected(selected) {
-    this.fileIdx = this.files.findIndex(item => item === selected);
-    this.parametersService.setParameterFileIdxSelected(this.fileIdx);
-    this.selections = ParametersData.fileSelections[this.fileIdx];
-  }
-
   ngOnInit() {}
 
   ngOnDestroy() {
     this.parametersSubscription.unsubscribe();
   }
 
+  setFileIdxSelected(selected) {
+    this.fileIdx = this.files.findIndex(item => item === selected);
+    this.parametersService.setParameterFileIdxSelected(this.fileIdx);
+    this.fileSelected = selected;
+    this.parameters.filename = this.fileSelected;
+    this.selections = ParametersData.fileSelections[this.fileIdx];
+  }
+
   setTitle() {
     this.parameters.title = this.titleFormControl.value;
+  }
+
+  setSelectPlot() {
+    this.parameters.select_plot = this.plotType;
+  }
+
+  setColorBy() {
+    this.parameters.color_by = this.colorBy;
   }
 
 }

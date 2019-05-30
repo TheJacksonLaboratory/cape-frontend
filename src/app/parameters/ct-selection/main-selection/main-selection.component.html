@@ -15,7 +15,7 @@
 </mat-form-field>
 <mat-form-field appearance="outline">
   <mat-label>Select plot</mat-label>
-  <mat-select placeholder="Select plot">
+  <mat-select placeholder="Select plot" (selectionChange)="setSelectPlot()" [(value)]="plotType">
     <mat-option *ngFor="let plotType of plotTypes" [value]="plotType">
       {{ plotType }}
     </mat-option>
@@ -23,7 +23,7 @@
 </mat-form-field>
 <mat-form-field appearance="outline">
   <mat-label>Color by</mat-label>
-  <mat-select placeholder="Color by">
+  <mat-select placeholder="Color by" (selectionChange)="setColorBy()" [(value)]="colorBy">
     <mat-option *ngFor="let selection of selections" [value]="selection">{{ selection }}</mat-option>
   </mat-select>
 </mat-form-field>
