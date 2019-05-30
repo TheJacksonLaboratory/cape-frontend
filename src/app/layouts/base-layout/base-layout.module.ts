@@ -18,7 +18,12 @@ import {
   MatRippleModule,
   MatTooltipModule
 } from '@angular/material';
+
 import { ParametersModule } from 'src/app/parameters';
+import { DataFilesComponent } from 'src/app/data-files';
+import { DataFilesService } from 'src/app/_services';
+import { ParametersService } from '../../_services/parameters.service';
+
 
 @NgModule({
   imports: [
@@ -37,10 +42,13 @@ import { ParametersModule } from 'src/app/parameters';
     ReportListComponent,
     ReportSummaryComponent,
     UserProfileComponent,
-    GroupListComponent
+    GroupListComponent,
+    DataFilesComponent
   ],
   providers: [
-    ReportsService
+    ReportsService,
+    DataFilesService,
+    ParametersService
   ]
 })
 
