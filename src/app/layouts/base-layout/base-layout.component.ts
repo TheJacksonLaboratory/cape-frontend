@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -9,7 +9,8 @@ import PerfectScrollbar from 'perfect-scrollbar';
 @Component({
   selector: 'app-base-layout',
   templateUrl: './base-layout.component.html',
-  styleUrls: ['./base-layout.component.scss']
+  styleUrls: ['./base-layout.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BaseLayoutComponent implements OnInit {
   private _router: Subscription;
