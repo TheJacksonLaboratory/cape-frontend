@@ -29,4 +29,55 @@ export class Parameters {
     date_created: Date;
     user_id: number;
     full_name: string;
+
+    private static toParameters(obj: any): Parameters {
+        const parameter = new Parameters();
+        parameter.id = obj['id'];
+        parameter.title = obj['title'];
+        parameter.filename = obj['filename'];
+        parameter.select_plot = obj['select_plot'];
+        parameter.color_by = obj['color_by'];
+        parameter.covariate_selection = obj['covariate_selection'].split(',');
+        parameter.trait_selection = obj['trait_selection'].split(',');
+        parameter.normalize = obj['normalize'];
+        parameter.mean_center = obj['mean_center'];
+        parameter.traits_to_scan = obj['traits_to_scan'];
+        parameter.number_of_eigentraits = obj['number_of_eigentraits'];
+        parameter.p_value_correction = obj['p_value_correction'];
+        parameter.sls_reference_allele = obj['sls_reference_allele'];
+        parameter.sls_number_of_permutations = obj['sls_number_of_permutations'];
+        parameter.sls_use_kinship = obj['sls_use_kinship'];
+        parameter.sls_kinship_type = obj['sls_kinship_type'];
+        parameter.ms_number_to_test = obj['ms_number_to_test'];
+        parameter.ms_method = obj['ms_method'];
+        parameter.ms_peak_density = obj['ms_peak_density'];
+        parameter.ms_tolerance = obj['ms_tolerance'];
+        parameter.ms_organism = obj['ms_organism'];
+        parameter.ms_snp_filename = obj['ms_snp_filename'];
+        parameter.ps_null_size = obj['ps_null_size'];
+        parameter.ps_marker_pair_constraints = obj['ps_marker_pair_constraints'];
+        parameter.ps_max_marker_correlation = obj['ps_max_marker_correlation'];
+        parameter.ps_min_individual_per_genotype = obj['ps_min_individual_per_genotype'];
+        parameter.yaml_file = obj['yaml_file'];
+        parameter.user_id = obj['user_id'];
+        parameter.full_name = obj['full_name'];
+        return parameter;
+    }
+
+    /**
+     * Parse an object and returns a Parameters object
+     * @param obj a json object for instance
+     */
+    public static parse(params: any): Parameters {
+        const param_string = params['parameters'];
+        let paramsObj: Parameters;
+        if (param_string === undefined) {
+          paramsObj = new Parameters();
+        } else {
+          // parse into obj
+          paramsObj = Parameters.toParameters(JSON.parse(param_string));
+        }
+        return paramsObj;
+    }
+
 }

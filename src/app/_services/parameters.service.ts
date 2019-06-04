@@ -39,11 +39,11 @@ export class ParametersService {
   }
 
   /**
-   * Create a parameter file with the given parameter object
+   * Save (create or update) a parameter file with the given parameter object
    * @param parameters parameter file
    */
-  createParameterFile(parameters: Parameters) {
-    return this.http.post<any>(environment.API_URL + '/user/create_parameter_file', { parameters }, this.httpOptions)
+  saveParameterFile(parameters: Parameters) {
+    return this.http.post<any>(environment.API_URL + '/user/save_parameter_file', { parameters }, this.httpOptions)
       .pipe(map(file => {
         // login successful if there's a jwt token in the response
         // store user details and jwt token in local storage to keep user logged in between page refreshes

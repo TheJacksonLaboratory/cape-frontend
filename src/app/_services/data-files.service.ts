@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { throwError, Observable, BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { throwError, Observable, BehaviorSubject, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Parameters } from '../_models/parameters';
-import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+
 
 @Injectable({ providedIn: 'root' })
 export class DataFilesService {
+
+    // Used to send data from data file table to parameter ui
+    parametersDataSubject = new Subject<Parameters>();
+
     // http options used for making API calls
     private httpOptions: any;
 
-    constructor(private http: HttpClient, private router: Router) {
+    constructor(private http: HttpClient) {
         this.httpOptions = {
             headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'currentUser' })
         };
@@ -22,6 +27,12 @@ export class DataFilesService {
         return throwError(err.message || 'Error: Unable to complete request.');
     }
 
+    setParametersData(parameters: Parameters) {
+        this.parametersDataSubject.next(parameters);
+    }
+    getParametersData() {
+        return this.parametersDataSubject.asObservable();
+    }
     /**
      * Create a parameter file from the data file listing
      */
@@ -67,4 +78,4 @@ export class DataFilesService {
             })).catch(DataFilesService._handleError);
     }
 
- }
+}

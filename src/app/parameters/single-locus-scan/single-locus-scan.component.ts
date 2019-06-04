@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ParametersService } from 'src/app/_services';
 import { Documentation } from '../documentation';
 import { Parameters } from '../../_models/parameters';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-single-locus-scan',
@@ -22,22 +23,32 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
 
   documentation = Documentation.SINGLE_LOCUS_SCAN_DOC;
 
+  routeSubscription: Subscription;
   parametersSubscription: Subscription;
   parameters: Parameters;
 
-  constructor(private parametersService: ParametersService) {
-    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
-      this.parameters = parameters;
-    });
-  }
+  constructor(private parametersService: ParametersService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.parameters.sls_reference_allele = this.referenceAllele;
-    this.parameters.sls_number_of_permutations = this.numberOfPermutations;
-    this.parameters.sls_use_kinship = this.useKinship;
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+      this.parameters = parameters;
+      // populate parameter ui if there is a parameter obj sent to the service
+      if (this.parameters !== undefined) {
+        this.referenceAllele = this.parameters.sls_reference_allele !== undefined ? this.parameters.sls_reference_allele
+                      : this.referenceAllele;
+        this.numberOfPermutations = this.parameters.sls_number_of_permutations !== undefined ? this.parameters.sls_number_of_permutations
+                      : this.numberOfPermutations;
+        this.useKinship = this.parameters.sls_use_kinship !== undefined ? this.parameters.sls_use_kinship : this.useKinship;
+        this.kinshipType = this.parameters.sls_kinship_type !== undefined ? this.parameters.sls_kinship_type : this.kinshipType;
+      }
+    });
+    this.routeSubscription = this.route.queryParams.subscribe(params => {
+      this.parametersService.setParameters(Parameters.parse(params));
+    });
   }
   ngOnDestroy(): void {
     this.parametersSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
   setReferenceAllele() {
     this.parameters.sls_reference_allele = this.referenceAllele;

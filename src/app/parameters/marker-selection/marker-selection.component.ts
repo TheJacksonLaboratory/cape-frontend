@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ParametersService } from 'src/app/_services';
 import { Documentation } from '../documentation';
 import { Parameters } from '../../_models/parameters';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-marker-selection',
@@ -15,7 +16,7 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
   // parameters
   numberOfMarkersToTest = 1500;
   snpsFileName = 'filteredSNPs.txt';
-  markerSelectionMethod: string;
+
   peakDensity = 0.5;
   tolerance = 10;
   organism: string;
@@ -28,20 +29,32 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
 
   documentation = Documentation.MARKER_SELECTION_DOC;
 
+  routeSubscription: Subscription;
   parametersSubscription: Subscription;
   parameters: Parameters;
 
-  constructor(private parametersService: ParametersService) {
-    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
-      this.parameters = parameters;
-    });
-  }
+  constructor(private parametersService: ParametersService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.parameters.ms_number_to_test = this.numberOfMarkersToTest;
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+      this.parameters = parameters;
+      if (this.parameters !== undefined) {
+        this.numberOfMarkersToTest = this.parameters.ms_number_to_test !== undefined
+                  ? this.parameters.ms_number_to_test : this.numberOfMarkersToTest;
+        this.markerSelected = this.parameters.ms_method !== undefined ? this.parameters.ms_method : this.markerSelected;
+        this.peakDensity = this.parameters.ms_peak_density !== undefined ? this.parameters.ms_peak_density : this.peakDensity;
+        this.tolerance = this.parameters.ms_tolerance !== undefined ? this.parameters.ms_tolerance : this.tolerance;
+        this.snpsFileName = this.parameters.ms_snp_filename !== undefined ? this.parameters.ms_snp_filename : this.snpsFileName;
+        this.organism = this.parameters.ms_organism !== undefined ? this.parameters.ms_organism : this.organism;
+      }
+    });
+    this.routeSubscription = this.route.queryParams.subscribe(params => {
+      this.parametersService.setParameters(Parameters.parse(params));
+    });
   }
   ngOnDestroy(): void {
     this.parametersSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   /**

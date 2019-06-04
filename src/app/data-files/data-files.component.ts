@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { saveAs } from 'file-saver';
 
 import { DataFilesService, AlertService } from '../_services';
 import { Parameters } from '../_models/parameters';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
+import { ParametersService } from '../_services/parameters.service';
 
 
 @Component({
@@ -35,7 +38,8 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private http: HttpClient, private dataFilesService: DataFilesService,
-    private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef) {
+    private alertService: AlertService, private parametersService: ParametersService,
+    private router: Router, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef) {
     this.paramsSub = this.dataFilesService.getDataFiles().subscribe(resp => {
       // transform 
       // JSON.parse(resp);
@@ -89,8 +93,12 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     saveAs(blob, filename);
   }
 
+  /**
+   * Edit selected parameter file
+   * @param element row elemet
+   */
   editParameterFile(element: any) {
-
+    this.router.navigate(['parameters'], { queryParams: {'parameters': JSON.stringify(element)}});
   }
 
   /**
@@ -99,14 +107,22 @@ export class DataFilesComponent implements OnInit, OnDestroy {
    */
   deleteParameterFile(element: any) {
     // open intermediary dialog
-    this.openWarningDialog(element);
+    this.openDeleteWarningDialog(element);
+  }
+
+  /**
+   * Run a job with this file as input
+   * @param element row element
+   */
+  runParameterFile(element: any) {
+    // TODO
   }
 
   /**
    * Dialog used to display a confirmation to the user before applying the wanted action
    * @param data message to pass to dialog
    */
-  private openWarningDialog(element: any) {
+  private openDeleteWarningDialog(element: any) {
     const msgData = { 'title': 'Delete Parameter File' };
     msgData['description'] = 'Delete the Parameter File named "' + element.title + '" ?';
     const dialogRef = this.dialog.open(MessageDialogComponent, {

@@ -28,6 +28,10 @@
         <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let row" (click)="$event.stopPropagation()" class="right mat-header-cell" :last-child>
+            <button mat-icon-button color="primary" matTooltip="Run a job on the cluster with this file as parameters input"
+              (click)="runParameterFile(row)">
+              <mat-icon matSuffix>schedule</mat-icon>
+            </button>
             <button mat-icon-button color="primary" matTooltip="Download this parameter file"
               (click)="downloadParameterFile(row)">
               <mat-icon matSuffix>save_alt</mat-icon>

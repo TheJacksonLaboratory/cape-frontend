@@ -7,13 +7,13 @@
   <mat-label>Marker Selection Method</mat-label>
   <mat-select [(value)]="markerSelectionMethod" [(ngModel)]="markerSelected"
     matTooltip="{{ getMarkerSelectionDescription(markerSelected) }}" (selectionChange)="setMarkerSelectionMethod()">
-    <mat-option *ngFor="let markerSelectionMethod of getMarkerSelections()" [value]="markerSelectionMethod">
-      {{ markerSelectionMethod }}
+    <mat-option *ngFor="let markerSelected of getMarkerSelections()" [value]="markerSelected">
+      {{ markerSelected }}
     </mat-option>
   </mat-select>
 </mat-form-field>
 
-<div *ngIf="markerSelectionMethod==getMarkerSelections()[0]">
+<div *ngIf="markerSelected==getMarkerSelections()[0]">
   <mat-form-field appearance="outline" matTooltip="{{ peakDensityDescription }}">
     <mat-label>Peak Density</mat-label>
     <input matInput [(ngModel)]="peakDensity" (change)="setPeakDensity()" type="number" placeholder="0.5" min="0.1"
@@ -25,7 +25,7 @@
   </mat-form-field>
 </div>
 
-<div *ngIf="markerSelectionMethod==getMarkerSelections()[2]">
+<div *ngIf="markerSelected==getMarkerSelections()[2]">
   <mat-form-field appearance="outline">
     <mat-label>Organism</mat-label>
     <mat-select [(ngModel)]="organism" (selectionChange)="setOrganism()" placeholder="Organism">
@@ -36,7 +36,7 @@
   </mat-form-field>
 </div>
 
-<div *ngIf="markerSelectionMethod==getMarkerSelections()[3]">
+<div *ngIf="markerSelected==getMarkerSelections()[3]">
   <mat-form-field appearance="outline">
     <mat-label>SNP File Name</mat-label>
     <input matInput type="text" placeholder="SNP File Name" [(ngModel)]="snpsFileName" (change)="setSNPFileName()">

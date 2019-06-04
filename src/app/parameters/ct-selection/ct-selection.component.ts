@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { Subscription } from 'rxjs/Subscription';
 
-import { ParametersService } from 'src/app/_services';
+import { ParametersService, DataFilesService } from 'src/app/_services';
 import { DescriptionComponent } from 'src/app/shared/description/description.component';
 import { Documentation } from '../documentation';
 import { Parameters } from '../../_models/parameters';
@@ -28,26 +29,31 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   pValueCorrection: string;
 
   parametersSubscription: Subscription;
+  routeSubscription: Subscription;
   parameters: Parameters;
 
   dialogRef: MatDialogRef<DescriptionComponent> = null;
 
-  constructor(private parametersService: ParametersService, public dialog: MatDialog) {
-    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
-      this.parameters = parameters;
-    });
-
-  }
+  constructor(private parametersService: ParametersService, private route: ActivatedRoute, public dialog: MatDialog) {}
 
   ngOnInit() {
-    // set default values
-    this.parameters.normalize = this.normalize;
-    this.parameters.mean_center = this.meanCenter;
-    this.parameters.traits_to_scan = this.traitSelected;
-    this.parameters.p_value_correction = this.pValueCorrection;
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+      this.parameters = parameters;
+      if (this.parameters !== undefined) {
+        this.normalize = this.parameters.normalize !== undefined ? this.parameters.normalize : this.normalize;
+        this.meanCenter = this.parameters.mean_center !== undefined ? this.parameters.mean_center : this.meanCenter;
+        this.traitSelected = this.parameters.traits_to_scan !== undefined ? this.parameters.traits_to_scan : this.traitSelected;
+        this.pValueCorrection = this.parameters.p_value_correction !== undefined ? this.parameters.p_value_correction
+                        : this.pValueCorrection;
+      }
+    });
+    this.routeSubscription = this.route.queryParams.subscribe(params => {
+      this.parametersService.setParameters(Parameters.parse(params));
+    });
   }
   ngOnDestroy(): void {
     this.parametersSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   getCovariateTitle() {

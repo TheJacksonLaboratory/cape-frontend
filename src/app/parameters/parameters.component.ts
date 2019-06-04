@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { MatAccordion, MatDialog, MatDialogRef } from '@angular/material';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { ParametersService, AuthenticationService, AlertService } from '../_services';
+import { ParametersService, AuthenticationService, AlertService, DataFilesService } from '../_services';
 import { DescriptionComponent } from '../shared/description/description.component';
 import { MarkerSelectionComponent } from './marker-selection/marker-selection.component';
 import { PairScanComponent } from './pair-scan/pair-scan.component';
@@ -28,6 +28,7 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
   error = '';
   // parameters file
   parametersSubscription: Subscription;
+  routeSubscription: Subscription;
   parameters: Parameters;
 
   // documentation
@@ -40,16 +41,17 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
   dialogRef: MatDialogRef<DescriptionComponent> = null;
 
   constructor(private parametersService: ParametersService, private authService: AuthenticationService,
-    private alertService: AlertService, private router: Router, private dialog: MatDialog) {
+    private alertService: AlertService, private route: ActivatedRoute, private router: Router,
+    private dialog: MatDialog) { }
+
+  ngOnInit() {
     this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
       this.parameters = parameters;
     });
 
-  }
-
-  ngOnInit() {
-    this.parameters = new Parameters();
-    this.parametersService.setParameters(this.parameters);
+    this.routeSubscription = this.route.queryParams.subscribe(params => {
+      this.parametersService.setParameters(Parameters.parse(params));
+    });
   }
 
   ngAfterViewInit(): void {
@@ -60,6 +62,7 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
 
   ngOnDestroy(): void {
     this.parametersSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   canActivate() {
@@ -119,12 +122,16 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
     this.parameters.covariate_selection.forEach(covariate => {
       covariates = covariates + (' - ' + covariate + '\n');
     });
-    const scanWhat = this.parameters.traits_to_scan !== undefined ? 'scan_what:\n - ' + this.parameters.traits_to_scan + '\n' : '';
-    const traitsNormalized = this.parameters.normalize !== undefined ? 'traits_normalized:\n - ' + this.parameters.normalize + '\n' : '';
-    const traitsScaled = this.parameters.mean_center !== undefined ? 'traits_scaled:\n - ' + this.parameters.mean_center + '\n' : '';
-    const pvalCorrection = this.parameters.p_value_correction !== undefined ? 'pval_correction:\n - ' +
-      this.parameters.p_value_correction + '\n' : '';
-    let eigWhich = this.parameters.number_of_eigentraits !== undefined ? 'eig_which:\n' : '';
+    const scanWhat = this.parameters.traits_to_scan !== undefined && this.parameters.traits_to_scan !== null
+                      ? 'scan_what:\n - ' + this.parameters.traits_to_scan + '\n' : '';
+    const traitsNormalized = this.parameters.normalize !== undefined && this.parameters.normalize !== null
+                      ? 'traits_normalized:\n - ' + this.parameters.normalize + '\n' : '';
+    const traitsScaled = this.parameters.mean_center !== undefined && this.parameters.mean_center !== null
+                      ? 'traits_scaled:\n - ' + this.parameters.mean_center + '\n' : '';
+    const pvalCorrection = this.parameters.p_value_correction !== undefined && this.parameters.p_value_correction !== null
+                      ? 'pval_correction:\n - ' + this.parameters.p_value_correction + '\n' : '';
+    let eigWhich = this.parameters.number_of_eigentraits !== undefined && this.parameters.number_of_eigentraits !== null
+                      ? 'eig_which:\n' : '';
     for (let i = 1; i <= this.parameters.number_of_eigentraits; i++) {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
@@ -132,33 +139,40 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
     const singleScanComment = '\n#================================================\n' +
       '# Single Scan Parameters \n' +
       '#================================================\n';
-    const refAllele = this.parameters.sls_reference_allele !== undefined ? 'ref_allele:\n - ' +
-      this.parameters.sls_reference_allele + '\n' : '';
-    const singleScanPerm = this.parameters.sls_number_of_permutations !== undefined ? 'singlescan_perm:\n - ' +
-      this.parameters.sls_number_of_permutations + '\n' : '';
-    const useKinship = this.parameters.sls_use_kinship !== undefined ? 'use_kinship:\n - ' + this.parameters.sls_use_kinship + '\n' : '';
-    const kintshipType = this.parameters.sls_kinship_type !== undefined ? 'kingship_type:\n - ' + this.parameters.sls_kinship_type + '\n' : '';
+    const refAllele = this.parameters.sls_reference_allele !== undefined && this.parameters.sls_reference_allele !== null
+                      ? 'ref_allele:\n - ' + this.parameters.sls_reference_allele + '\n' : '';
+    const singleScanPerm = this.parameters.sls_number_of_permutations !== undefined && this.parameters.sls_number_of_permutations
+                      ? 'singlescan_perm:\n - ' + this.parameters.sls_number_of_permutations + '\n' : '';
+    const useKinship = this.parameters.sls_use_kinship !== undefined && this.parameters.sls_use_kinship !== null
+                      ? 'use_kinship:\n - ' + this.parameters.sls_use_kinship + '\n' : '';
+    const kintshipType = this.parameters.sls_kinship_type !== undefined && this.parameters.sls_kinship_type !== null
+                      ? 'kingship_type:\n - ' + this.parameters.sls_kinship_type + '\n' : '';
 
     const markerSelectionComment = '\n#================================================\n' +
       '# Marker Selection Parameters\n' +
       '#================================================\n';
-    const markerSelectionMethod = this.parameters.ms_method !== undefined ? 'marker_selection_method:\n - ' +
-      this.parameters.ms_method + '\n' : '';
-    const windowSize = this.parameters.ms_number_to_test !== undefined ? 'num_alleles_in_pairscan:\n - ' +
-      this.parameters.ms_number_to_test + '\n' : '';
-    const peakDensity = this.parameters.ms_peak_density !== undefined ? 'peak_density:\n - ' + this.parameters.ms_peak_density + '\n' : '';
-    const tolerance = this.parameters.ms_tolerance !== undefined ? 'tolerance:\n - ' + this.parameters.ms_tolerance + '\n' : '';
-    const snpFile = this.parameters.ms_snp_filename !== undefined ? 'SNPfile:\n - ' + this.parameters.ms_snp_filename + '\n' : '';
-    const organism = this.parameters.ms_organism !== undefined ? 'organism:\n - ' + this.parameters.ms_organism + '\n' : '';
+    const markerSelectionMethod = this.parameters.ms_method !== undefined && this.parameters.ms_method !== null
+                      ? 'marker_selection_method:\n - ' + this.parameters.ms_method + '\n' : '';
+    const windowSize = this.parameters.ms_number_to_test !== undefined && this.parameters.ms_number_to_test !== null
+                      ? 'num_alleles_in_pairscan:\n - ' + this.parameters.ms_number_to_test + '\n' : '';
+    const peakDensity = this.parameters.ms_peak_density !== undefined && this.parameters.ms_peak_density !== null
+                      ? 'peak_density:\n - ' + this.parameters.ms_peak_density + '\n' : '';
+    const tolerance = this.parameters.ms_tolerance !== undefined && this.parameters.ms_tolerance !== null
+                      ? 'tolerance:\n - ' + this.parameters.ms_tolerance + '\n' : '';
+    const snpFile = this.parameters.ms_snp_filename !== undefined && this.parameters.ms_snp_filename !== null
+                      ? 'SNPfile:\n - ' + this.parameters.ms_snp_filename + '\n' : '';
+    const organism = this.parameters.ms_organism !== undefined && this.parameters.ms_organism !== null
+                      ? 'organism:\n - ' + this.parameters.ms_organism + '\n' : '';
 
     const pairScanComment = '\n#================================================\n' +
       '# Pairscan Parameters\n' +
       '#================================================\n';
-    const pairScanNullSize = this.parameters.ps_null_size !== undefined ? 'pairscan_null_size:\n - ' + this.parameters.ps_null_size + '\n' : '';
-    const maxPairCor = this.parameters.ps_max_marker_correlation !== undefined ? 'max_pair_cor:\n - ' +
-      this.parameters.ps_max_marker_correlation + '\n' : '';
-    const minPerGeno = this.parameters.ps_min_individual_per_genotype !== undefined ? 'min_per_geno:\n -  ' +
-      this.parameters.ps_min_individual_per_genotype + '\n' : '';
+    const pairScanNullSize = this.parameters.ps_null_size !== undefined && this.parameters.ps_null_size !== null
+                      ? 'pairscan_null_size:\n - ' + this.parameters.ps_null_size + '\n' : '';
+    const maxPairCor = this.parameters.ps_max_marker_correlation !== undefined && this.parameters.ps_max_marker_correlation !== null
+                      ? 'max_pair_cor:\n - ' + this.parameters.ps_max_marker_correlation + '\n' : '';
+    const minPerGeno = this.parameters.ps_min_individual_per_genotype !== undefined && this.parameters.ps_min_individual_per_genotype !== null
+                      ? 'min_per_geno:\n -  ' + this.parameters.ps_min_individual_per_genotype + '\n' : '';
 
     // build the yaml string from the strings above
     const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection + eigWhich
@@ -170,9 +184,9 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
   }
 
   /**
-   * Creates a new parameters file by calling the corresponding back end API endpoint
+   * Creates/save a new parameters file by calling the corresponding back end API endpoint
    */
-  createParametersFile() {
+  saveParametersFile() {
     this.loading = true;
     // Add the full yaml file to the list of parameters
     this.parameters.yaml_file = this.createYaml();
@@ -186,14 +200,14 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
    */
   private openWarningDialog() {
     const msgData = { 'title': 'Parameter Initialization' };
-    msgData['description'] = 'Create a new Parameter file named "' + this.parameters.title + '" ?';
+    msgData['description'] = 'Save the parameter file named "' + this.parameters.title + '" ?';
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       width: '400px',
       data: msgData
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'ok') {
-        const resp = this.parametersService.createParameterFile(this.parameters).subscribe(data => {
+        const resp = this.parametersService.saveParameterFile(this.parameters).subscribe(data => {
           msgData['description'] = data['message'];
           this.openResultDialog(msgData);
         }, error => {
