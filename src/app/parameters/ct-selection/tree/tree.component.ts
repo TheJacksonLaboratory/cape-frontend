@@ -2,15 +2,16 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, Input } fro
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { Subscription } from 'rxjs';
 
 import { ParametersService } from 'src/app/_services';
 import { DescriptionComponent } from 'src/app/shared/description/description.component';
 import { PhenotypeNode, ParametersData } from '../../parameters-data';
 import { CtSelectionComponent } from '../ct-selection.component';
 import { Parameters } from '../../../_models/parameters';
-import { ActivatedRoute } from '@angular/router';
+import { TreeSelectionService } from 'src/app/_services/tree-selection.service';
 
 /**
  * @title Tree with checklist
@@ -22,6 +23,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TreeComponent implements OnInit, OnDestroy {
     @ViewChild('tree') tree: any;
+
+    viewAsTree = true;
 
     @Input() title: string;
     @Input() description: string;
@@ -50,7 +53,7 @@ export class TreeComponent implements OnInit, OnDestroy {
     checklistSelection = new SelectionModel<PhenotypeNode>(true /* multiple */);
 
     constructor(private changeDetectorRef: ChangeDetectorRef, private parametersService: ParametersService,
-        private route: ActivatedRoute, public dialog: MatDialog) {
+        private treeSelectionService: TreeSelectionService, private route: ActivatedRoute, public dialog: MatDialog) {
 
         this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
             this.isExpandable, this.getChildren);
@@ -59,7 +62,7 @@ export class TreeComponent implements OnInit, OnDestroy {
         this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
         this.fileIdxSelected = 0;
         const sorted = ParametersData.fileSelections[this.fileIdxSelected].sort((a, b) => a < b ? -1 : 1);
-        this.dataSource.data = ParametersData.getPhenotypeTree(sorted, this.nodeIds);
+        this.dataSource.data = ParametersData.getPhenotypeTree(sorted, this.nodeIds, this.viewAsTree);
     }
 
     refreshTreeDatasource(idx: number) {
@@ -67,7 +70,7 @@ export class TreeComponent implements OnInit, OnDestroy {
             const sorted = ParametersData.fileSelections[idx].sort((a, b) => a < b ? -1 : 1);
             // we repopulate the tree so we need to clear the list of node keys
             this.nodeIds.clear();
-            this.dataSource.data = ParametersData.getPhenotypeTree(sorted, this.nodeIds);
+            this.dataSource.data = ParametersData.getPhenotypeTree(sorted, this.nodeIds, this.viewAsTree);
         }
     }
 
@@ -85,7 +88,7 @@ export class TreeComponent implements OnInit, OnDestroy {
                     this.checkNodes(this.checkedNodes);
                 } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
                     this.checkedNodes = new Set(this.parameters.trait_selection);
-                   this.checkNodes(this.checkedNodes);
+                    this.checkNodes(this.checkedNodes);
                 }
             }
         });
@@ -110,7 +113,10 @@ export class TreeComponent implements OnInit, OnDestroy {
         const filtered = this.filterTreeDatasource(filterValue);
         // we repopulate the tree so we need to clear the list of node keys
         this.nodeIds.clear();
-        this.dataSource.data = ParametersData.getPhenotypeTree(filtered, this.nodeIds);
+        // Update data source
+        this.dataSource.data = ParametersData.getPhenotypeTree(filtered, this.nodeIds, this.viewAsTree);
+        // Select the nodes that were selected
+        this.checkNodes(this.checkedNodes);
     }
 
     /**
@@ -196,12 +202,16 @@ export class TreeComponent implements OnInit, OnDestroy {
         this.checklistSelection.isSelected(node)
             ? this.checklistSelection.select(...descendants, node)
             : this.checklistSelection.deselect(...descendants, node);
+        // update selectedNode array
+        this.checklistSelection.isSelected(node) ? this.checkedNodes.add(node.name) : this.checkedNodes.delete(node.name);
 
         this.checkedNodes = this.findChecked(node, this.checkedNodes, selected);
         if (this.parameters !== undefined && this.title === CtSelectionComponent.COVARIATE_TITLE) {
             this.parameters.covariate_selection = Array.from(this.checkedNodes);
+            this.treeSelectionService.setCovariateSelected(this.checkedNodes);
         } else if (this.parameters !== undefined && this.title === CtSelectionComponent.TRAIT_TITLE) {
             this.parameters.trait_selection = Array.from(this.checkedNodes);
+            this.treeSelectionService.setTraitSelected(this.checkedNodes);
         }
         this.changeDetectorRef.markForCheck();
     }
@@ -239,6 +249,18 @@ export class TreeComponent implements OnInit, OnDestroy {
                 }
             }
         });
+    }
+
+    /**
+     * Toggle the viewAs option. If toggled is true the phenotype selection will be viewed as a tree, a list otherwise.
+     * @param toggled 
+     */
+    toggleViewAs(toggled: boolean) {
+        this.viewAsTree = toggled;
+        // Refresh data source
+        this.refreshTreeDatasource(this.fileIdxSelected);
+        // Select the nodes that were selected previously
+        this.checkNodes(this.checkedNodes);
     }
 
     openDetailsDialog() {

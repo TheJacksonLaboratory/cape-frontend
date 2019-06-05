@@ -1,16 +1,13 @@
 import { BehaviorSubject, throwError } from 'rxjs';
+import { disableDebugTools } from '@angular/platform-browser';
 
 /**
  * Node for phenotypes
  */
 export class PhenotypeNode {
 
-        // children: PhenotypeNode[];
-        // parent: PhenotypeNode;
-        // constructor(public name: string) {
-        //         this.name = name;
-        // }
         private nodeid: number;
+        private disabled: boolean;
         private parent: PhenotypeNode;
         private children: BehaviorSubject<PhenotypeNode[]> = new BehaviorSubject<PhenotypeNode[]>([]);
         /**
@@ -57,6 +54,13 @@ export class PhenotypeNode {
 
         getChildren(): PhenotypeNode[] {
                 return this.children.getValue();
+        }
+
+        setDisabled(disabled: boolean) {
+                this.disabled = disabled;
+        }
+        isDisabled(): boolean {
+                return this.disabled;
         }
 
 }
@@ -244,10 +248,18 @@ export class ParametersData {
          * Creates a tree of PhenotypeNode given an array of phenotype strings and a mutable Set
          * @param phenotypes array of phenotype strings
          * @param nodeIds Set used to store unique nodes ID
+         * @param viewAsTree if true, returns a tree like structure, otherwise returns a list
          */
-        public static getPhenotypeTree(phenotypes: string[], nodeIds: Set<number>): PhenotypeNode[] {
+        public static getPhenotypeTree(phenotypes: string[], nodeIds: Set<number>, viewAsTree: boolean): PhenotypeNode[] {
                 const result = [];
                 let nodeid = 0;
+                if (!viewAsTree) {
+                        for (let i = 0; i < phenotypes.length; i++) {
+                                const node = new PhenotypeNode(phenotypes[i], nodeIds);
+                                result.push(node);
+                        }
+                        return result;
+                }
                 const root = new PhenotypeNode('Phenotypes', nodeIds, nodeid);
                 for (let i = 0; i < phenotypes.length; i++) {
                         const cleaned = this.getCleanString(phenotypes[i]);

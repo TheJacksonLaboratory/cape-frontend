@@ -7,11 +7,14 @@ import { ParametersService, DataFilesService } from 'src/app/_services';
 import { DescriptionComponent } from 'src/app/shared/description/description.component';
 import { Documentation } from '../documentation';
 import { Parameters } from '../../_models/parameters';
+import { TreeSelectionService } from '../../_services/tree-selection.service';
+import { PhenotypeNode } from '../parameters-data';
 
 @Component({
   selector: 'app-ct-selection',
   templateUrl: './ct-selection.component.html',
-  styleUrls: ['./ct-selection.component.scss']
+  styleUrls: ['./ct-selection.component.scss'],
+  providers: [TreeSelectionService]
 })
 export class CtSelectionComponent implements OnInit, OnDestroy {
   public static COVARIATE_TITLE = 'Covariate selection';
@@ -32,9 +35,16 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   routeSubscription: Subscription;
   parameters: Parameters;
 
+  traitSelectionSubscription: Subscription;
+  covariateSelectionSubscription: Subscription;
+  traitSelection: Set<string>;
+  covariateSelection: Set<string>;
+
+
   dialogRef: MatDialogRef<DescriptionComponent> = null;
 
-  constructor(private parametersService: ParametersService, private route: ActivatedRoute, public dialog: MatDialog) {}
+  constructor(private parametersService: ParametersService, private treeSelectionService: TreeSelectionService,
+    private route: ActivatedRoute, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
@@ -50,10 +60,18 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.queryParams.subscribe(params => {
       this.parametersService.setParameters(Parameters.parse(params));
     });
+    this.covariateSelectionSubscription = this.treeSelectionService.getCovariateSelected().subscribe(covariates => {
+      this.covariateSelection = covariates;
+    });
+    this.traitSelectionSubscription = this.treeSelectionService.getTraitSelected().subscribe(traits => {
+      this.traitSelection = traits;
+    });
   }
   ngOnDestroy(): void {
     this.parametersSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+    this.covariateSelectionSubscription.unsubscribe();
+    this.traitSelectionSubscription.unsubscribe();
   }
 
   getCovariateTitle() {

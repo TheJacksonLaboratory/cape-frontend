@@ -1,8 +1,15 @@
-  .mat-tree-node {
-    padding: 0;
-  }
+.mat-tree-node {
+  padding: 0;
+}
 
-  .mat-tree {
-    overflow: auto;
-    max-height: 600px;
-  }
+.mat-tree {
+  overflow: auto;
+  max-height: 500px;
+  min-width: 270px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-top: 16px;
+  margin-left: 16px;
+  margin-right: 16px;
+}
