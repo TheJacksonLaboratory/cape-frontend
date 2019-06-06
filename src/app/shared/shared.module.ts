@@ -14,8 +14,7 @@ import {
   MatInputModule,
   MatProgressSpinnerModule,
   MatTableModule,
-  MatSelectModule,
-  MatProgressBarModule
+  MatSelectModule
 } from '@angular/material';
 import { NgxMdModule } from 'ngx-md';
 import { DescriptionComponent } from './description/description.component';

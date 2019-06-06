@@ -41,8 +41,6 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     private alertService: AlertService, private parametersService: ParametersService,
     private router: Router, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef) {
     this.paramsSub = this.dataFilesService.getDataFiles().subscribe(resp => {
-      // transform 
-      // JSON.parse(resp);
       this.dataSource = new MatTableDataSource(resp);
     }, err => {
       // TODO: display our server error dialog?

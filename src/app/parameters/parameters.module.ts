@@ -10,7 +10,8 @@ import { MatTreeModule,
          MatButtonModule,
          MatTooltipModule,
          MatExpansionModule,
-         MatMenuModule} from '@angular/material';
+         MatMenuModule,
+         MatButtonToggleModule} from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -41,7 +42,8 @@ import { CtSelectionComponent } from './ct-selection/ct-selection.component';
     MatButtonModule,
     MatTooltipModule,
     MatExpansionModule,
-    MatMenuModule
+    MatMenuModule,
+    MatButtonToggleModule
   ],
   declarations: [
     ParametersComponent,

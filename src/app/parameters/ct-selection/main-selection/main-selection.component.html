@@ -1,29 +1,41 @@
-<mat-form-field appearance="outline">
-  <mat-label>Title input</mat-label>
-  <input matInput placeholder="Title" (change)="setTitle()" [formControl]="titleFormControl">
-  <mat-error *ngIf="titleFormControl.hasError('required')">
-    Title is <strong>required</strong>
-  </mat-error>
-</mat-form-field>
-<mat-form-field appearance="outline">
-  <mat-label>Select file</mat-label>
-  <mat-select placeholder="Select file" (selectionChange)="setFileIdxSelected(fileSelected)" [(value)]="fileSelected">
-    <mat-option *ngFor="let file of files" [value]="file">
-      {{ file }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<mat-form-field appearance="outline">
-  <mat-label>Select plot</mat-label>
-  <mat-select placeholder="Select plot" (selectionChange)="setSelectPlot()" [(value)]="plotType">
-    <mat-option *ngFor="let plotType of plotTypes" [value]="plotType">
-      {{ plotType }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<mat-form-field appearance="outline">
-  <mat-label>Color by</mat-label>
-  <mat-select placeholder="Color by" (selectionChange)="setColorBy()" [(value)]="colorBy">
-    <mat-option *ngFor="let selection of selections" [value]="selection">{{ selection }}</mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="row" layout-align="space-around none">
+
+  <div class="column margin" layout-align="space-around none">
+    <mat-form-field appearance="outline">
+      <mat-label>Title input</mat-label>
+      <input matInput placeholder="Title" (change)="setTitle()" [formControl]="titleFormControl">
+      <mat-error *ngIf="titleFormControl.hasError('required')">
+        Title is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Select plot</mat-label>
+      <mat-select placeholder="Select plot" (selectionChange)="setSelectPlot()" [(value)]="plotType">
+        <mat-option *ngFor="let plotType of plotTypes" [value]="plotType">
+          {{ plotType }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+
+  <div class="column margin" layout-align="space-around none">
+    <mat-form-field appearance="outline">
+      <mat-label>Select file</mat-label>
+      <mat-select placeholder="Select file" (selectionChange)="setFileIdxSelected(fileSelected)"
+        [(value)]="fileSelected">
+        <mat-option *ngFor="let file of files" [value]="file">
+          {{ file }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Color by</mat-label>
+      <mat-select placeholder="Color by" (selectionChange)="setColorBy()" [(value)]="colorBy">
+        <mat-option *ngFor="let selection of selections" [value]="selection">{{ selection }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

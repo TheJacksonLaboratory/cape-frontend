@@ -18,10 +18,7 @@ import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.
 })
 
 export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, CanActivate {
-  // expansion panels
-  @ViewChild(MatAccordion) accordion: MatAccordion;
   displayMode = 'default';
-  multi = true;
 
   loading = false;
   returnUrl: string;
