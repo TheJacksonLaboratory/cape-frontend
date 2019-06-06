@@ -10,6 +10,7 @@ import { DescriptionComponent } from 'src/app/shared/description/description.com
 import { PhenotypeNode, ParametersData } from '../../parameters-data';
 import { CtSelectionComponent } from '../ct-selection.component';
 import { Parameters } from '../../../_models/parameters';
+import { ActivatedRoute } from '@angular/router';
 
 /**
  * @title Tree with checklist
@@ -26,7 +27,7 @@ export class TreeComponent implements OnInit, OnDestroy {
     @Input() description: string;
     nodeIds = new Set();
 
-    checkedNode = new Set<string>();
+    checkedNodes = new Set<string>();
 
     levels = new Map<PhenotypeNode, number>();
     treeControl: FlatTreeControl<PhenotypeNode>;
@@ -41,21 +42,15 @@ export class TreeComponent implements OnInit, OnDestroy {
 
     parameters: Parameters;
     parametersSubscription: Subscription;
+    routeSubscription: Subscription;
 
     private dialogRef: MatDialogRef<DescriptionComponent> = null;
 
-     /** The selection for checklist */
-     checklistSelection = new SelectionModel<PhenotypeNode>(true /* multiple */);
+    /** The selection for checklist */
+    checklistSelection = new SelectionModel<PhenotypeNode>(true /* multiple */);
 
-    constructor(private changeDetectorRef: ChangeDetectorRef, private parametersService: ParametersService, public dialog: MatDialog) {
-        // subscribe to main selection component selections
-        this.mainSelectionSubscription = this.parametersService.getParameterFileIdxSelected().subscribe(fileIdx => {
-            this.fileIdxSelected = fileIdx;
-            this.refreshTreeDatasource(fileIdx);
-        });
-        this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
-            this.parameters = parameters;
-        });
+    constructor(private changeDetectorRef: ChangeDetectorRef, private parametersService: ParametersService,
+        private route: ActivatedRoute, public dialog: MatDialog) {
 
         this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
             this.isExpandable, this.getChildren);
@@ -68,23 +63,47 @@ export class TreeComponent implements OnInit, OnDestroy {
     }
 
     refreshTreeDatasource(idx: number) {
-        const sorted = ParametersData.fileSelections[idx].sort((a, b) => a < b ? -1 : 1);
-        // we repopulate the tree so we need to clear the list of node keys
-        this.nodeIds.clear();
-        this.dataSource.data = ParametersData.getPhenotypeTree(sorted, this.nodeIds);
+        if (idx !== undefined && ParametersData.fileSelections[idx] !== undefined) {
+            const sorted = ParametersData.fileSelections[idx].sort((a, b) => a < b ? -1 : 1);
+            // we repopulate the tree so we need to clear the list of node keys
+            this.nodeIds.clear();
+            this.dataSource.data = ParametersData.getPhenotypeTree(sorted, this.nodeIds);
+        }
     }
 
     ngOnInit() {
-        if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
-            this.parameters.covariateSelection = Array.from(this.checkedNode);
-        } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
-            this.parameters.traitSelection = Array.from(this.checkedNode);
+        // subscribe to main selection component selections
+        this.mainSelectionSubscription = this.parametersService.getParameterFileIdxSelected().subscribe(fileIdx => {
+            this.fileIdxSelected = fileIdx;
+            this.refreshTreeDatasource(fileIdx);
+        });
+        this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+            this.parameters = parameters;
+            if (this.parameters !== undefined) {
+                if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
+                    this.checkedNodes = new Set(this.parameters.covariate_selection);
+                    this.checkNodes(this.checkedNodes);
+                } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
+                    this.checkedNodes = new Set(this.parameters.trait_selection);
+                   this.checkNodes(this.checkedNodes);
+                }
+            }
+        });
+        this.routeSubscription = this.route.queryParams.subscribe(params => {
+            this.parametersService.setParameters(Parameters.parse(params));
+        });
+
+        if (this.title === CtSelectionComponent.COVARIATE_TITLE && this.parameters !== undefined) {
+            this.parameters.covariate_selection = Array.from(this.checkedNodes);
+        } else if (this.title === CtSelectionComponent.TRAIT_TITLE && this.parameters !== undefined) {
+            this.parameters.trait_selection = Array.from(this.checkedNodes);
         }
     }
     ngOnDestroy(): void {
         // prevent memory leak when component destroyed
         this.mainSelectionSubscription.unsubscribe();
         this.parametersSubscription.unsubscribe();
+        this.routeSubscription.unsubscribe();
     }
 
     applyFilter(filterValue: string) {
@@ -178,11 +197,11 @@ export class TreeComponent implements OnInit, OnDestroy {
             ? this.checklistSelection.select(...descendants, node)
             : this.checklistSelection.deselect(...descendants, node);
 
-        this.checkedNode = this.findChecked(node, this.checkedNode, selected);
-        if (this.title === CtSelectionComponent.COVARIATE_TITLE) {
-            this.parameters.covariateSelection = Array.from(this.checkedNode);
-        } else if (this.title === CtSelectionComponent.TRAIT_TITLE) {
-            this.parameters.traitSelection = Array.from(this.checkedNode);
+        this.checkedNodes = this.findChecked(node, this.checkedNodes, selected);
+        if (this.parameters !== undefined && this.title === CtSelectionComponent.COVARIATE_TITLE) {
+            this.parameters.covariate_selection = Array.from(this.checkedNodes);
+        } else if (this.parameters !== undefined && this.title === CtSelectionComponent.TRAIT_TITLE) {
+            this.parameters.trait_selection = Array.from(this.checkedNodes);
         }
         this.changeDetectorRef.markForCheck();
     }
@@ -203,6 +222,23 @@ export class TreeComponent implements OnInit, OnDestroy {
             selected ? checked.add(node.name) : checked.delete(node.name);
         }
         return checked;
+    }
+
+    /**
+     * Check the nodes on the mat tree
+     * @param checkedNodes checked nodes
+     */
+    private checkNodes(checkedNodes: Set<string>) {
+        checkedNodes.forEach(element => {
+            for (const node of this.dataSource.data) {
+                if (node !== null) {
+                    const foundNode = ParametersData.findNodeByLeaf(node, element);
+                    if (foundNode !== null) {
+                        this.nodeSelectionToggle(foundNode);
+                    }
+                }
+            }
+        });
     }
 
     openDetailsDialog() {

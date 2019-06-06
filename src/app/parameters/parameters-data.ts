@@ -337,4 +337,24 @@ export class ParametersData {
                 }
                 return null;
         }
+
+        /**
+         * Given a Phenotype tree, returns the branch with the given leaf name
+         * @param node root or branch node
+         * @param leafName leaf name to look for
+         */
+        public static findNodeByLeaf(node: PhenotypeNode, leafName: string) {
+                if (!node.hasChildren() && node.name === leafName) {
+                        return node;
+                } else {
+                        for (const child of node.getChildren()) {
+                                const result = this.findNodeByLeaf(child, leafName);
+                                if (result != null) {
+                                        return result;
+                                }
+                        }
+
+                }
+                return null;
+        }
 }

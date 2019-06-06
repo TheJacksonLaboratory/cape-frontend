@@ -1,0 +1,73 @@
+<mat-card>
+  <mat-card-title>Parameter files</mat-card-title>
+  <mat-card-content>
+
+
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element" class="right.mat-cell">{{ element.id }}</td>
+        </ng-container>
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let element" class="right.mat-cell"> {{ element.title }} </td>
+        </ng-container>
+        <ng-container matColumnDef="date_created" class="right.mat-cell">
+          <th mat-header-cell *matHeaderCellDef>Date created</th>
+          <td mat-cell *matCellDef="let element"> {{ element.date_created }} </td>
+        </ng-container>
+        <ng-container matColumnDef="full_name" class="right.mat-cell">
+          <th mat-header-cell *matHeaderCellDef>Created by</th>
+          <td mat-cell *matCellDef="let element"> {{ element.full_name }} </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let row" (click)="$event.stopPropagation()" class="right mat-header-cell" :last-child>
+            <button mat-icon-button color="primary" matTooltip="Run a job on the cluster with this file as parameters input"
+              (click)="runParameterFile(row)">
+              <mat-icon matSuffix>schedule</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" matTooltip="Download this parameter file"
+              (click)="downloadParameterFile(row)">
+              <mat-icon matSuffix>save_alt</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" matTooltip="Edit this parameter file"
+              (click)="editParameterFile(row)">
+              <mat-icon matSuffix>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" matTooltip="Delete this parameter file"
+              (click)="deleteParameterFile(row)">
+              <mat-icon matSuffix>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+              <div class="angular-with-newlines">
+                <!-- <pre><code [highlight]="yamlFile" [language]="YAML"></code></pre> -->
+                {{ element.yaml_file }}
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element;">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+
+  </mat-card-content>
+</mat-card>

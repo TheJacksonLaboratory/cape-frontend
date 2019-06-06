@@ -22,7 +22,7 @@
         <div class="row">
           <mat-form-field appearance="outline">
             <mat-label>Traits to scan</mat-label>
-            <mat-select placeholder="Trait selected" [(value)]="traitSelected" (selectionChange)="setTraitsToScan()">
+            <mat-select placeholder="Trait selected" [(ngModel)]="traitSelected" (selectionChange)="setTraitsToScan()">
               <mat-option *ngFor="let traitSelected of traitsToScan" [value]="traitSelected">
                 {{ traitSelected }}
               </mat-option>
@@ -37,7 +37,7 @@
           </div>
           <mat-form-field appearance="outline">
             <mat-label>P value correction</mat-label>
-            <mat-select placeholder="P value correction" [(value)]="pValueCorrection"
+            <mat-select placeholder="P value correction" [(ngModel)]="pValueCorrection"
               (selectionChange)="setPValueCorrection()">
               <mat-option *ngFor="let pValueCorrection of pValueCorrectionList" [value]="pValueCorrection">
                 {{ pValueCorrection }}

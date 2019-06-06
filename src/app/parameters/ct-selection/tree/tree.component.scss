@@ -1,3 +1,8 @@
   .mat-tree-node {
     padding: 0;
   }
+
+  .mat-tree {
+    overflow: auto;
+    max-height: 600px;
+  }

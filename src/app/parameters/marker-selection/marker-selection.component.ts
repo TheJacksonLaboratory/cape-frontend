@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ParametersService } from 'src/app/_services';
 import { Documentation } from '../documentation';
 import { Parameters } from '../../_models/parameters';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-marker-selection',
@@ -15,7 +16,7 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
   // parameters
   numberOfMarkersToTest = 1500;
   snpsFileName = 'filteredSNPs.txt';
-  markerSelectionMethod: string;
+
   peakDensity = 0.5;
   tolerance = 10;
   organism: string;
@@ -28,20 +29,32 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
 
   documentation = Documentation.MARKER_SELECTION_DOC;
 
+  routeSubscription: Subscription;
   parametersSubscription: Subscription;
   parameters: Parameters;
 
-  constructor(private parametersService: ParametersService) {
-    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
-      this.parameters = parameters;
-    });
-  }
+  constructor(private parametersService: ParametersService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.parameters.msNumberToTest = this.numberOfMarkersToTest;
+    this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
+      this.parameters = parameters;
+      if (this.parameters !== undefined) {
+        this.numberOfMarkersToTest = this.parameters.ms_number_to_test !== undefined
+                  ? this.parameters.ms_number_to_test : this.numberOfMarkersToTest;
+        this.markerSelected = this.parameters.ms_method !== undefined ? this.parameters.ms_method : this.markerSelected;
+        this.peakDensity = this.parameters.ms_peak_density !== undefined ? this.parameters.ms_peak_density : this.peakDensity;
+        this.tolerance = this.parameters.ms_tolerance !== undefined ? this.parameters.ms_tolerance : this.tolerance;
+        this.snpsFileName = this.parameters.ms_snp_filename !== undefined ? this.parameters.ms_snp_filename : this.snpsFileName;
+        this.organism = this.parameters.ms_organism !== undefined ? this.parameters.ms_organism : this.organism;
+      }
+    });
+    this.routeSubscription = this.route.queryParams.subscribe(params => {
+      this.parametersService.setParameters(Parameters.parse(params));
+    });
   }
   ngOnDestroy(): void {
     this.parametersSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   /**
@@ -66,47 +79,47 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
   }
 
   setNumberOfMarkersToTest() {
-    this.parameters.msNumberToTest = this.numberOfMarkersToTest;
+    this.parameters.ms_number_to_test = this.numberOfMarkersToTest;
   }
   /**
    * Set the marker selection method. Setting it qlso requires to set up the other parameters
    * in order to reset them given what marker selection method has been chosen.
    */
   setMarkerSelectionMethod() {
-    this.parameters.msMethod = this.markerSelected;
+    this.parameters.ms_method = this.markerSelected;
     // We initialize if Top effect or From list is chosen as the UI input fields already have some default data
     if (this.markerSelected === 'Top Effects') {
-      this.parameters.msPeakDensity = this.peakDensity;
-      this.parameters.msTolerance = this.tolerance;
-      this.parameters.msSnpFileName = undefined;
-      this.parameters.msOrganism = undefined;
+      this.parameters.ms_peak_density = this.peakDensity;
+      this.parameters.ms_tolerance = this.tolerance;
+      this.parameters.ms_snp_filename = undefined;
+      this.parameters.ms_organism = undefined;
     } else if (this.markerSelected === 'From List') {
-      this.parameters.msSnpFileName = this.snpsFileName;
-      this.parameters.msPeakDensity = undefined;
-      this.parameters.msTolerance = undefined;
-      this.parameters.msOrganism = undefined;
+      this.parameters.ms_snp_filename = this.snpsFileName;
+      this.parameters.ms_peak_density = undefined;
+      this.parameters.ms_tolerance = undefined;
+      this.parameters.ms_organism = undefined;
     } else if (this.markerSelected === 'By Gene') {
-      this.parameters.msOrganism = this.organism;
-      this.parameters.msPeakDensity = undefined;
-      this.parameters.msTolerance = undefined;
-      this.parameters.msSnpFileName = undefined;
+      this.parameters.ms_organism = this.organism;
+      this.parameters.ms_peak_density = undefined;
+      this.parameters.ms_tolerance = undefined;
+      this.parameters.ms_snp_filename = undefined;
     } else if (this.markerSelected === 'Uniform') {
-      this.parameters.msOrganism = undefined;
-      this.parameters.msPeakDensity = undefined;
-      this.parameters.msTolerance = undefined;
-      this.parameters.msSnpFileName = undefined;
+      this.parameters.ms_organism = undefined;
+      this.parameters.ms_peak_density = undefined;
+      this.parameters.ms_tolerance = undefined;
+      this.parameters.ms_snp_filename = undefined;
     }
   }
   setPeakDensity() {
-    this.parameters.msPeakDensity = this.peakDensity;
+    this.parameters.ms_peak_density = this.peakDensity;
   }
   setTolerance() {
-    this.parameters.msTolerance = this.tolerance;
+    this.parameters.ms_tolerance = this.tolerance;
   }
   setOrganism() {
-    this.parameters.msOrganism = this.organism;
+    this.parameters.ms_organism = this.organism;
   }
   setSNPFileName() {
-    this.parameters.msSnpFileName = this.snpsFileName;
+    this.parameters.ms_snp_filename = this.snpsFileName;
   }
 }

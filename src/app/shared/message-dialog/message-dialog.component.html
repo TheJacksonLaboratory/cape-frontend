@@ -1,0 +1,8 @@
+<h1 mat-dialog-title name="dialogTitle" ngDefaultControl [(ngModel)]="messageTitle">{{ messageTitle }}</h1>
+<div mat-dialog-content name="dialogMessage" ngDefaultControl [(ngModel)]="messageDescription">
+  <p>{{ messageDescription }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()" cdkFocusInitial>Cancel</button>
+  <button mat-button cdkFocusInitial (click)="onOkClick()">Ok</button>
+</div>
