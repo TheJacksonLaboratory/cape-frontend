@@ -1,7 +1,10 @@
-<mat-card>
-  <mat-card-title>Groups</mat-card-title>
-  <mat-card-content>
+<div class="card">
+  <div class="card-header card-header-primary">
+    <h3 class="card-title">User Groups</h3>
+    <p class="card-category">List of groups the user belongs to</p>
+  </div>
 
+  <div class="card-body">
 
     <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
@@ -35,6 +38,5 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </div>
 
-
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>

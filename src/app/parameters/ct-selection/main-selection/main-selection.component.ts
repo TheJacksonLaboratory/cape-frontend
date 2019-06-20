@@ -4,8 +4,9 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 import { ParametersService, DataFilesService } from 'src/app/_services';
-import { ParametersData } from '../../parameters-data';
 import { Parameters } from '../../../_models/parameters';
+import { DataFile } from 'src/app/_models/datafile';
+import { Phenotype } from 'src/app/_models/phenotype';
 
 
 @Component({
@@ -14,13 +15,12 @@ import { Parameters } from '../../../_models/parameters';
   styleUrls: ['./main-selection.component.scss']
 })
 export class MainSelectionComponent implements OnInit, OnDestroy {
-  files = ['AD_5xFAD.RDATA', 'AD_All.RDATA', 'AD_NTG.RDATA', 'AlportDO_CAPE.RDATA', 'CheslerDO.pheno.RDATA',
-  'DO.pheno.genlitcov.RDATA', 'DO850.RDATA', 'obesity.cross.RDATA', 'SSc.RDATA'];
+  files: DataFile[];
+  fileSelected: DataFile;
+
   fileIdx: number;
   plotTypes = ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
-  selections: string[];
 
-  fileSelected: string;
   plotType: string;
   colorBy: string;
 
@@ -30,36 +30,76 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
 
   parametersSubscription: Subscription;
   routeSubscription: Subscription;
+  dataFileSub: Subscription;
   parameters: Parameters;
+  phenotypesSub: Subscription;
+  phenotypes: Phenotype[];
 
-  constructor(private parametersService: ParametersService, private route: ActivatedRoute) {}
+  constructor(private parametersService: ParametersService, private dataFileService: DataFilesService,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.dataFileSub = this.dataFileService.getDataFiles().subscribe(datafiles => {
+      this.files = datafiles;
+      if (this.parameters !== undefined) {
+        this.fileSelected = this.findSelectedDataFile(this.parameters.datafile_id);
+        this.setDataFileSelected(this.fileSelected);
+        this.colorBy = this.parameters.color_by;
+      }
+    });
     this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
       this.parameters = parameters;
       if (this.parameters !== undefined) {
         this.plotType = parameters.select_plot;
         this.titleFormControl.setValue(parameters.title);
         this.colorBy = parameters.color_by;
-        this.setFileIdxSelected(parameters.filename);
+        this.fileSelected = this.findSelectedDataFile(parameters.datafile_id);
+        if (this.fileSelected !== undefined) {
+          this.setDataFileSelected(this.fileSelected);
+        }
       }
     });
     this.routeSubscription = this.route.queryParams.subscribe(params => {
       this.parametersService.setParameters(Parameters.parse(params));
     });
+    if (this.fileSelected !== undefined) {
+      this.phenotypesSub = this.dataFileService.getPhenotypesPerDataFile(this.fileSelected.id).subscribe(phenos => {
+        this.phenotypes = phenos;
+      });
+    }
   }
 
   ngOnDestroy() {
     this.parametersSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
+    this.dataFileSub.unsubscribe();
+    if (this.phenotypesSub !== undefined) {
+      this.phenotypesSub.unsubscribe();
+    }
   }
 
-  setFileIdxSelected(selected) {
-    this.fileIdx = this.files.findIndex(item => item === selected);
-    this.parametersService.setParameterFileIdxSelected(this.fileIdx);
-    this.fileSelected = selected;
-    this.parameters.filename = this.fileSelected;
-    this.selections = ParametersData.fileSelections[this.fileIdx];
+  setDataFileSelected(selected: DataFile) {
+    if (selected !== undefined) {
+      this.parametersService.setDataFileSelected(selected);
+      this.parameters.datafile_id = selected.id;
+      this.dataFileService.getPhenotypesPerDataFile(selected.id).subscribe(pheno => {
+        this.phenotypes = pheno;
+      });
+      this.colorBy = '';
+      this.fileSelected = selected;
+    }
+  }
+
+  private findSelectedDataFile(datafileId: number): DataFile {
+    if (this.files === undefined) {
+      return undefined;
+    }
+    for (const file of this.files) {
+      if (file.id === datafileId) {
+        return file;
+      }
+    }
+    return undefined;
   }
 
   setTitle() {

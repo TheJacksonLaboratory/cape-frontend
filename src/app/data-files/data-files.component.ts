@@ -1,15 +1,14 @@
-import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
-import { Router, ActivatedRoute } from '@angular/router';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef, Inject } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { saveAs } from 'file-saver';
 
 import { DataFilesService, AlertService } from '../_services';
-import { Parameters } from '../_models/parameters';
+import { DataFile } from '../_models/datafile';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
-import { ParametersService } from '../_services/parameters.service';
 
 
 @Component({
@@ -25,22 +24,26 @@ import { ParametersService } from '../_services/parameters.service';
   ],
 })
 export class DataFilesComponent implements OnInit, OnDestroy {
-  columnsToDisplay = ['id', 'title', 'date_created', 'full_name', 'actions'];
-  expandedElement: Parameters | null;
+  columnsToDisplay = ['id', 'filename'];
 
-  dataSource: MatTableDataSource<Parameters>;
+  dataSource: MatTableDataSource<DataFile>;
+  expandedElement: DataFile | null;
 
   error = '';
   loading = false;
-  private paramsSub: Subscription;
+  private dataFileSub: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private http: HttpClient, private dataFilesService: DataFilesService,
-    private alertService: AlertService, private parametersService: ParametersService,
-    private router: Router, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef) {
-    this.paramsSub = this.dataFilesService.getDataFiles().subscribe(resp => {
+    private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef,
+    private router: Router) { }
+    // public dialogRef: MatDialogRef<MessageDialogComponent>
+    // @Inject(MAT_DIALOG_DATA) public data: any
+
+  ngOnInit() {
+    this.dataFileSub = this.dataFilesService.getDataFilesAndParameters().subscribe(resp => {
       this.dataSource = new MatTableDataSource(resp);
     }, err => {
       // TODO: display our server error dialog?
@@ -48,29 +51,43 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    this.refresh();
-  }
-
   ngOnDestroy() {
-    this.paramsSub.unsubscribe();
+    this.dataFileSub.unsubscribe();
   }
 
   /**
    * Refresh the datasource
    */
   refresh() {
-    this.dataFilesService.getDataFiles().subscribe(resp => {
+    this.dataFilesService.getDataFilesAndParameters().subscribe(resp => {
       // let jsonObj = JSON.parse(resp)
       this.dataSource = new MatTableDataSource(resp);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.changeDetectorRefs.detectChanges();
     }, err => {
       // TODO: display our server error dialog?
       console.log(err);
     });
+    this.changeDetectorRefs.detectChanges();
   }
+
+//  isExpansionDetailRow = (i: number, row: Object) =>
+//    row.hasOwnProperty('detailRow');
+
+  /**
+   * expand collapse a row
+   * @param row
+   */
+  toggleRow(row) {
+    if (this.expandedElement === row) {
+      this.expandedElement = null;
+    } else {
+      this.expandedElement = row;
+    }
+    console.log(row);
+    console.log(row.parameter_files);
+  }
+
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -80,7 +97,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
+   /**
    * Download corresponding YAML file
    * @param element row element
    */
@@ -96,7 +113,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
    * @param element row elemet
    */
   editParameterFile(element: any) {
-    this.router.navigate(['parameters'], { queryParams: {'parameters': JSON.stringify(element)}});
+    this.router.navigate(['parameters'], { queryParams: { 'parameters': JSON.stringify(element) } });
   }
 
   /**
@@ -154,4 +171,9 @@ export class DataFilesComponent implements OnInit, OnDestroy {
       this.refresh();
     });
   }
+
+  // onOkClick(): void {
+  //   this.dialogRef.close('ok');
+  // }
+
 }

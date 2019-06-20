@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { Parameters } from 'src/app/_models';
+import { DataFile } from '../_models/datafile';
 
 
 @Injectable({ providedIn: 'root' })
@@ -16,7 +17,7 @@ export class ParametersService {
 
   private parametersSubject = new Subject<Parameters>();
 
-  private paramFileIdxSubject = new Subject<number>();
+  private dataFileSubject = new Subject<DataFile>();
 
   constructor(private http: HttpClient, private router: Router) {
     this.httpOptions = {
@@ -27,15 +28,15 @@ export class ParametersService {
   setParameters(parameters: Parameters) {
     this.parametersSubject.next(parameters);
   }
-  getParameters() {
+  getParameters(): Observable<Parameters> {
     return this.parametersSubject.asObservable();
   }
 
-  setParameterFileIdxSelected(fileIdxSelected: number) {
-    this.paramFileIdxSubject.next(fileIdxSelected);
+  setDataFileSelected(dataFileSelected: DataFile) {
+    this.dataFileSubject.next(dataFileSelected);
   }
-  getParameterFileIdxSelected(): Observable<any> {
-    return this.paramFileIdxSubject.asObservable();
+  getDataFileSelected(): Observable<DataFile> {
+    return this.dataFileSubject.asObservable();
   }
 
   /**

@@ -8,7 +8,6 @@ import { DescriptionComponent } from 'src/app/shared/description/description.com
 import { Documentation } from '../documentation';
 import { Parameters } from '../../_models/parameters';
 import { TreeSelectionService } from '../../_services/tree-selection.service';
-import { PhenotypeNode } from '../parameters-data';
 
 @Component({
   selector: 'app-ct-selection',
@@ -44,7 +43,7 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   dialogRef: MatDialogRef<DescriptionComponent> = null;
 
   constructor(private parametersService: ParametersService, private treeSelectionService: TreeSelectionService,
-    private route: ActivatedRoute, public dialog: MatDialog) {}
+    private route: ActivatedRoute, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
@@ -53,8 +52,11 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
         this.normalize = this.parameters.normalize !== undefined ? this.parameters.normalize : this.normalize;
         this.meanCenter = this.parameters.mean_center !== undefined ? this.parameters.mean_center : this.meanCenter;
         this.traitSelected = this.parameters.traits_to_scan !== undefined ? this.parameters.traits_to_scan : this.traitSelected;
-        this.pValueCorrection = this.parameters.p_value_correction !== undefined ? this.parameters.p_value_correction
-                        : this.pValueCorrection;
+        this.pValueCorrection = this.parameters.p_value_correction !== undefined ? this.parameters.p_value_correction : this.pValueCorrection;
+
+        // set default
+        this.parameters.normalize = this.parameters.normalize === undefined ? this.normalize : this.parameters.normalize;
+        this.parameters.mean_center = this.parameters.mean_center === undefined ? this.meanCenter : this.parameters.mean_center;
       }
     });
     this.routeSubscription = this.route.queryParams.subscribe(params => {

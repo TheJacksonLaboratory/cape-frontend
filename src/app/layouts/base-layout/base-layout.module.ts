@@ -1,7 +1,15 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import {
+  MatButtonModule,
+  MatInputModule,
+  MatRippleModule,
+  MatTooltipModule,
+  MatDialogRef
+} from '@angular/material';
+
 import { BaseLayoutRoutes } from './base-layout.routing';
 import { ReportsService} from '../../_services/reports.service';
 import { ReportGridComponent } from '../../reports/report-grid/report-grid.component';
@@ -10,15 +18,6 @@ import { ReportSummaryComponent } from '../../reports/report-summary/report-summ
 import { CustomMaterialModule } from '../../material.module';
 import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { GroupListComponent} from '../../groups/group-list/group-list.component';
-
-
-import {
-  MatButtonModule,
-  MatInputModule,
-  MatRippleModule,
-  MatTooltipModule
-} from '@angular/material';
-
 import { ParametersModule } from 'src/app/parameters';
 import { DataFilesComponent } from 'src/app/data-files';
 import { DataFilesService } from 'src/app/_services';
@@ -49,7 +48,9 @@ import { ParametersService } from '../../_services/parameters.service';
     ReportsService,
     DataFilesService,
     ParametersService
-  ]
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+
 })
 
 export class BaseLayoutModule {}

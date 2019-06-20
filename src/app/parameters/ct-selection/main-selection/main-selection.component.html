@@ -23,10 +23,10 @@
   <div class="column margin" layout-align="space-around none">
     <mat-form-field appearance="outline">
       <mat-label>Select file</mat-label>
-      <mat-select placeholder="Select file" (selectionChange)="setFileIdxSelected(fileSelected)"
+      <mat-select placeholder="Select file" (selectionChange)="setDataFileSelected(fileSelected)"
         [(value)]="fileSelected">
         <mat-option *ngFor="let file of files" [value]="file">
-          {{ file }}
+          {{ file.filename }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -34,7 +34,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Color by</mat-label>
       <mat-select placeholder="Color by" (selectionChange)="setColorBy()" [(value)]="colorBy">
-        <mat-option *ngFor="let selection of selections" [value]="selection">{{ selection }}</mat-option>
+        <mat-option *ngFor="let selection of phenotypes" [value]="selection.name">{{ selection.name }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

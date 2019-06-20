@@ -46,6 +46,9 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
         this.tolerance = this.parameters.ms_tolerance !== undefined ? this.parameters.ms_tolerance : this.tolerance;
         this.snpsFileName = this.parameters.ms_snp_filename !== undefined ? this.parameters.ms_snp_filename : this.snpsFileName;
         this.organism = this.parameters.ms_organism !== undefined ? this.parameters.ms_organism : this.organism;
+        // set default
+        this.parameters.ms_number_to_test = this.parameters.ms_number_to_test === undefined ? this.numberOfMarkersToTest
+                                            : this.parameters.ms_number_to_test;
       }
     });
     this.routeSubscription = this.route.queryParams.subscribe(params => {
