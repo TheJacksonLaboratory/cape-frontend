@@ -40,6 +40,12 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
                       : this.numberOfPermutations;
         this.useKinship = this.parameters.sls_use_kinship !== undefined ? this.parameters.sls_use_kinship : this.useKinship;
         this.kinshipType = this.parameters.sls_kinship_type !== undefined ? this.parameters.sls_kinship_type : this.kinshipType;
+        // set default
+        this.parameters.sls_reference_allele = this.parameters.sls_reference_allele === undefined ? this.referenceAllele
+                                                : this.parameters.sls_reference_allele;
+        this.parameters.sls_number_of_permutations = this.parameters.sls_number_of_permutations === undefined ? this.numberOfPermutations
+                                                : this.parameters.sls_number_of_permutations;
+        this.parameters.sls_use_kinship = this.parameters.sls_use_kinship === undefined ? this.useKinship : this.parameters.sls_use_kinship;
       }
     });
     this.routeSubscription = this.route.queryParams.subscribe(params => {

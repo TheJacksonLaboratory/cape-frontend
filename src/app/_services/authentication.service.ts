@@ -1,11 +1,18 @@
-﻿import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {map} from 'rxjs/operators';
-import {environment} from '../../environments/environment';
-import {Router} from '@angular/router';
+﻿import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
-@Injectable({providedIn: 'root'})
+import { environment } from '../../environments/environment';
+import { User } from '../_models';
+
+@Injectable({ providedIn: 'root' })
 export class AuthenticationService {
+
+  private currentUserSubject: BehaviorSubject<User>;
+  public currentUser: Observable<User>;
 
   // http options used for making API calls
   private httpOptions: any;
@@ -16,20 +23,33 @@ export class AuthenticationService {
   // error messages received from the login attempt
   public errors: any = [];
 
-  constructor(private http: HttpClient,
-              private router: Router) {
+  constructor(private http: HttpClient, private router: Router, public jwtHelper: JwtHelperService) {
     this.httpOptions = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'currentUser' })
     };
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
+
+  public get currentUserValue(): User {
+    return this.currentUserSubject.value;
   }
 
   login(username: string, password: string) {
-    return this.http.post<any>(environment.API_URL + '/auth/login', {username, password}, this.httpOptions)
+    return this.http.post<any>(environment.API_URL + '/auth/login', { username, password }, this.httpOptions)
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('currentUser', JSON.stringify(user));
-
+        const access_token = user['access_token'];
+        const refresh_token = user['refresh_token'];
+        if (user && access_token) {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          const jsonString = JSON.stringify(user);
+          localStorage.setItem('currentUser', jsonString);
+          const new_user = new User();
+          new_user.access_token = access_token;
+          new_user.refresh_token = refresh_token;
+          this.currentUserSubject.next(new_user);
+        }
         return user;
       }));
   }
@@ -38,7 +58,7 @@ export class AuthenticationService {
    * Refreshes the JWT token, to extend the time the user is logged in
    */
   public refreshToken() {
-    this.http.post(environment.API_URL + '/auth/token/refresh', JSON.stringify({token: this.token}), this.httpOptions).subscribe(
+    this.http.post(environment.API_URL + '/auth/token/refresh', JSON.stringify({ token: this.token }), this.httpOptions).subscribe(
       data => {
         localStorage.setItem('currentUser', data['token']);
       },
@@ -52,6 +72,16 @@ export class AuthenticationService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
     this.router.navigate(['login']);
+  }
+
+  public isAuthenticated(): boolean {
+    const item = localStorage.getItem('currentUser');
+    if (item == null) { return false; }
+    const refreshTok = JSON.parse(item)['refresh_token'];
+    // Check whether the token is expired and return
+    // true or false
+    return !this.jwtHelper.isTokenExpired(refreshTok);
   }
 }

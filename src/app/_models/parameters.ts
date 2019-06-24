@@ -1,7 +1,6 @@
 export class Parameters {
     id: number;
     title: string;
-    filename: string;
     select_plot: string;
     color_by: string;
     covariate_selection: string[];
@@ -28,13 +27,12 @@ export class Parameters {
     yaml_file: string;
     date_created: Date;
     user_id: number;
-    full_name: string;
+    datafile_id: number;
 
     private static toParameters(obj: any): Parameters {
         const parameter = new Parameters();
         parameter.id = obj['id'];
         parameter.title = obj['title'];
-        parameter.filename = obj['filename'];
         parameter.select_plot = obj['select_plot'];
         parameter.color_by = obj['color_by'];
         parameter.covariate_selection = obj['covariate_selection'].split(',');
@@ -60,7 +58,7 @@ export class Parameters {
         parameter.ps_min_individual_per_genotype = obj['ps_min_individual_per_genotype'];
         parameter.yaml_file = obj['yaml_file'];
         parameter.user_id = obj['user_id'];
-        parameter.full_name = obj['full_name'];
+        parameter.datafile_id = obj['datafile_id'];
         return parameter;
     }
 

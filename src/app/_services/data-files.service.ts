@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { throwError, Observable, BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Parameters } from '../_models/parameters';
+import { DataFile } from '../_models/datafile';
+import { Phenotype } from '../_models/phenotype';
 
 
 @Injectable({ providedIn: 'root' })
@@ -13,6 +15,9 @@ export class DataFilesService {
 
     // Used to send data from data file table to parameter ui
     parametersDataSubject = new Subject<Parameters>();
+
+    // used to hold the updated phenotype list
+    phenotypesSubject = new Subject<Phenotype[]>();
 
     // http options used for making API calls
     private httpOptions: any;
@@ -33,13 +38,14 @@ export class DataFilesService {
     getParametersData() {
         return this.parametersDataSubject.asObservable();
     }
-    /**
-     * Create a parameter file from the data file listing
-     */
-    createDataFile() {
 
+    setPhenotypes(phenotypes: Phenotype[]) {
+        this.phenotypesSubject.next(phenotypes);
     }
 
+    getPhenotypes(): Observable<Phenotype[]> {
+        return this.phenotypesSubject.asObservable();
+    }
     /**
      * Delete a parameter file given its parameter id and user id
      * @param paramId parameter id
@@ -56,26 +62,61 @@ export class DataFilesService {
     }
 
     /**
+     * Get the list of data files
+     */
+    getDataFiles(): Observable<DataFile[]> {
+        return this.http.get<DataFile[]>(environment.API_URL + '/datafiles/get_datafiles')
+            .catch(DataFilesService._handleError);
+    }
+
+    /**
+     * Get the list of data files
+     */
+    getDataFilesAndParameters(): Observable<DataFile[]> {
+        return this.http.get<DataFile[]>(environment.API_URL + '/datafiles/get_datafiles_parameters')
+            .catch(DataFilesService._handleError);
+    }
+  
+    /**
      * Get the list of parameter files
      */
-    getDataFiles(): Observable<Parameters[]> {
+    getParameterFiles(): Observable<Parameters[]> {
         return this.http.get<Parameters[]>(environment.API_URL + '/user/get_parameter_files')
             .catch(DataFilesService._handleError);
     }
 
     /**
-     * Get a parameter file given its parameter id and the user id
-     * @param paramId parameter id
-     * @param userId user id
+     * 
+     * @param dataFileId Returns the list of phenotypes per datafile
      */
-    getParameterFile(paramId: number, userId: number): Observable<Parameters> {
-        return this.http.post<any>(environment.API_URL + '/user/get_parameter_file',
-            { 'param_id': paramId, 'user_id': userId }, this.httpOptions)
-            .pipe(map(file => {
-                const jsonString = JSON.stringify(file);
-                const jsonObj = JSON.parse(jsonString);
-                return jsonObj;
-            })).catch(DataFilesService._handleError);
+    getPhenotypesPerDataFile(dataFileId: number) {
+        const params = new HttpParams().set('datafile_id', String(dataFileId));
+        return this.http.get<Phenotype[]>(environment.API_URL + '/datafiles/get_phenotypes', { params: params})
+                        .catch(DataFilesService._handleError);
+    }
+
+    /**
+     * Returns the list of parameter files for a data file id
+     * @param datafileId
+     */
+    getParameterFilesPerDataFile(datafileId: number): any {
+        let params = new HttpParams();
+        params = params.append('datafile_id', String(datafileId));
+        return this.http.get<Parameters[]>(environment.API_URL + '/datafiles/get_parameter_files', { params: params})
+                        .catch(DataFilesService._handleError);
+    }
+
+    /**
+     * Get a parameter file given its parameter id
+     * @param paramId parameter id
+     */
+    getParameterFile(paramId: number, dataFileId: number): Observable<Parameters> {
+        let params = new HttpParams();
+        params = params.append('param_id', String(paramId));
+        params = params.append('datafile_id', String(dataFileId));
+
+        return this.http.get<Parameters>(environment.API_URL + '/user/get_parameter_file', { params: params })
+                        .catch(DataFilesService._handleError);
     }
 
 }

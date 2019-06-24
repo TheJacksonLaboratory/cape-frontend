@@ -1,54 +1,45 @@
-<div class="main-content">
-  <div class="container-fluid">
+<div class="card">
+  <div class="card-header card-header-primary">
+    <h3 class="card-title">Parameters Initialization</h3>
+    <p class="card-category">Select a file and parameters</p>
+  </div>
+
+  <div class="card-body">
     <div class="row">
-      <div class="col-*-*">
-        <div class="card">
-          <div class="card-header card-header-primary">
-            <h3 class="card-title">Parameters Initialization</h3>
-            <p class="card-category">Select a file and parameters</p>
-          </div>
+      <app-ct-selection>loading</app-ct-selection>
 
-          <div class="card-body">
-            <div class="row">
-              <app-ct-selection>loading</app-ct-selection>
+      <mat-card>
+        <mat-tab-group>
+          <mat-tab label="Single Locus Scan">
+            <button mat-icon-button color="primary" matTooltip="More info..." (click)="openSingleLocusDialog()">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <app-single-locus-scan>loading</app-single-locus-scan>
+          </mat-tab>
+          <mat-tab label="Marker Selection">
+            <button mat-icon-button color="primary" matTooltip="More info..." (click)="openMarkerSelectionDialog()">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <app-marker-selection>loading</app-marker-selection>
+          </mat-tab>
+          <mat-tab label="Pair Scan">
+            <button mat-icon-button color="primary" matTooltip="More info..." (click)="openPairScanDialog()">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <app-pair-scan>loading</app-pair-scan>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
 
-              <mat-card>
-                <mat-tab-group>
-                  <mat-tab label="Single Locus Scan">
-                    <button mat-icon-button color="primary" matTooltip="More info..." (click)="openSingleLocusDialog()">
-                      <mat-icon>more_horiz</mat-icon>
-                    </button>
-                    <app-single-locus-scan>loading</app-single-locus-scan>
-                  </mat-tab>
-                  <mat-tab label="Marker Selection">
-                    <button mat-icon-button color="primary" matTooltip="More info..."
-                      (click)="openMarkerSelectionDialog()">
-                      <mat-icon>more_horiz</mat-icon>
-                    </button>
-                    <app-marker-selection>loading</app-marker-selection>
-                  </mat-tab>
-                  <mat-tab label="Pair Scan">
-                    <button mat-icon-button color="primary" matTooltip="More info..." (click)="openPairScanDialog()">
-                      <mat-icon>more_horiz</mat-icon>
-                    </button>
-                    <app-pair-scan>loading</app-pair-scan>
-                  </mat-tab>
-                </mat-tab-group>
-              </mat-card>
-
-            </div>
-            <div fxLayout="row" fxLayoutAlign="space-between end">
-              <button mat-raised-button color="primary"
-                matTooltip="Saves the parameters file associated with the parameters set up on this page"
-                (click)='saveParametersFile()'>
-                <mat-icon matSuffix>create</mat-icon>
-                Save Parameter File
-              </button>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-        </div>
-      </div>
     </div>
+    <div fxLayout="row" fxLayoutAlign="space-between end">
+      <button mat-raised-button type="submit" class="btn btn-info pull-right"
+        matTooltip="Saves the parameters file associated with the parameters set up on this page"
+        (click)='saveParametersFile()'>
+        <mat-icon matSuffix>create</mat-icon>
+        Save Parameter File
+      </button>
+    </div>
+    <div class="clearfix"></div>
   </div>
 </div>

@@ -41,6 +41,8 @@ export class PairScanComponent implements OnInit, OnDestroy {
                         ? this.parameters.ps_max_marker_correlation : this.maxMarkerCorrelation;
         this.minIndPerGenotype = this.parameters.ps_min_individual_per_genotype !== undefined
                         ? this.parameters.ps_min_individual_per_genotype : this.minIndPerGenotype;
+        // set default
+        this.parameters.ps_null_size = this.parameters.ps_null_size === undefined ? this.nullSize : this.parameters.ps_null_size;
       }
     });
     this.routeSubscription = this.route.queryParams.subscribe(params => {
