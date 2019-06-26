@@ -32,14 +32,14 @@ module.exports = function (config) {
 
     reporters: config.angularCli && config.angularCli.codeCoverage
       ? ['progress', 'coverage-istanbul']
-      : ['progress', 'kjhtml'],
+      : ['progress', 'kjhtml', 'junit'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_DEBUG,
     autoWatch: true,
     // captureTimeout: 60000,
     // browserNoActivityTimeout: 360000,
-    // browser: ['PhantomJS'],
+    // browser: ['Chrome'],
     customLaunchers: {
       ChromeHeadless: {
         base: 'Chrome',
