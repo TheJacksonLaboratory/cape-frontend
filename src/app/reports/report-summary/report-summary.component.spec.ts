@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReportSummaryComponent } from './report-summary.component';
 import { MatCardModule } from '@angular/material';
 
-fdescribe('ReportSummaryComponent', () => {
+describe('ReportSummaryComponent', () => {
   let component: ReportSummaryComponent;
   let fixture: ComponentFixture<ReportSummaryComponent>;
 
