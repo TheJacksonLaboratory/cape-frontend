@@ -1,14 +1,23 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DescriptionComponent } from './description.component';
+import { NgxMdModule } from 'ngx-md';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-describe('DescriptionComponent', () => {
+fdescribe('DescriptionComponent', () => {
   let component: DescriptionComponent;
   let fixture: ComponentFixture<DescriptionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DescriptionComponent ]
+      imports: [
+        NgxMdModule
+      ],
+      declarations: [ DescriptionComponent ],
+      providers: [
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
+    ]
     })
     .compileComponents();
   }));

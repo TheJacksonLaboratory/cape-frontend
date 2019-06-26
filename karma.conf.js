@@ -39,7 +39,7 @@ module.exports = function (config) {
     autoWatch: false,
     captureTimeout: 60000,
     browserNoActivityTimeout: 360000,
-    browser: ["Firefox"],
+    browser: ["Chrome"],
     singleRun: true,
     junitReporter: {
       outputDir: 'test-reports', // results will be saved as $outputDir/$browserName.xml
