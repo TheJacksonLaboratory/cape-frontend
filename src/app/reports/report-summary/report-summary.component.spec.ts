@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportSummaryComponent } from './report-summary.component';
+import { MatCardModule } from '@angular/material';
 
 describe('ReportSummaryComponent', () => {
   let component: ReportSummaryComponent;
@@ -8,6 +9,9 @@ describe('ReportSummaryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        MatCardModule
+      ],
       declarations: [ ReportSummaryComponent ]
     })
     .compileComponents();

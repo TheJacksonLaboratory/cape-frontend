@@ -1,6 +1,6 @@
 import { ParametersModule } from './parameters.module';
 
-describe('ParametersModule', () => {
+fdescribe('ParametersModule', () => {
   let parametersModule: ParametersModule;
 
   beforeEach(() => {

@@ -1,13 +1,30 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SingleLocusScanComponent } from './single-locus-scan.component';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
-describe('SingleLocusScanComponent', () => {
+fdescribe('SingleLocusScanComponent', () => {
   let component: SingleLocusScanComponent;
   let fixture: ComponentFixture<SingleLocusScanComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatSelectModule,
+        MatOptionModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+        BrowserAnimationsModule,
+        MatCheckboxModule
+      ],
       declarations: [ SingleLocusScanComponent ]
     })
     .compileComponents();

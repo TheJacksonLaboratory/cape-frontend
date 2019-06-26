@@ -1,16 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportGridComponent } from './report-grid.component';
+import { ReportSummaryComponent } from '../report-summary/report-summary.component';
+import { MatCardModule } from '@angular/material';
 
-describe('ReportGridComponent', () => {
+fdescribe('ReportGridComponent', () => {
   let component: ReportGridComponent;
   let fixture: ComponentFixture<ReportGridComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReportGridComponent ]
+      imports: [
+        MatCardModule
+      ],
+      declarations: [
+        ReportGridComponent,
+        ReportSummaryComponent
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
