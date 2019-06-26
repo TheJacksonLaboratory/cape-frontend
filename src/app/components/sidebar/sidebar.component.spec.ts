@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidebarComponent } from './sidebar.component';
-import { Component } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
 fdescribe('SidebarComponent', () => {

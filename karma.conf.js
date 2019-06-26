@@ -7,7 +7,8 @@ module.exports = function (config) {
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
-      require('karma-firefox-launcher'),
+      require('karma-chrome-launcher'),
+      require('karma-phantomjs-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('karma-junit-reporter'),
@@ -35,11 +36,23 @@ module.exports = function (config) {
       : ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: false,
-    captureTimeout: 60000,
-    browserNoActivityTimeout: 360000,
-    browser: ["Chrome"],
+    logLevel: config.LOG_DEBUG,
+    autoWatch: true,
+    // captureTimeout: 60000,
+    // browserNoActivityTimeout: 360000,
+    // browser: ['PhantomJS'],
+    customLaunchers: {
+      ChromeHeadless: {
+        base: 'Chrome',
+        flags: [
+          '--headless',
+          '--disable-gpu',
+          '--no-sandbox',
+          '--remote-debugging-port=9222',
+        ]
+      }
+    },
+    browsers: ['ChromeHeadless'],
     singleRun: true,
     junitReporter: {
       outputDir: 'test-reports', // results will be saved as $outputDir/$browserName.xml
