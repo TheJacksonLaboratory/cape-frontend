@@ -1,6 +1,8 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
 
 import { AuthenticationService, AlertService } from '../_services';
 
@@ -15,6 +17,7 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   loading = false;
+  submitted = false;
   returnUrl: string;
   error = '';
 
@@ -36,9 +39,15 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.username === undefined || this.password === undefined) {
+      return;
+    }
     this.error = '';
     this.loading = true;
     this.authenticationService.login(this.username, this.password)
+      .pipe(first())
       .subscribe(
         data => {
           this.router.navigate([this.returnUrl]);

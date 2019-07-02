@@ -7,7 +7,7 @@ module.exports = function (config) {
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
-      require('karma-firefox-launcher'),
+      require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('karma-junit-reporter'),
@@ -29,23 +29,35 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, 'coverage'), reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
-
-    reporters: config.angularCli && config.angularCli.codeCoverage
-      ? ['progress', 'coverage-istanbul']
-      : ['progress', 'kjhtml'],
+	reporters: ['progress', 'kjhtml', 'junit'],
+    // reporters: config.angularCli && config.angularCli.codeCoverage
+    //   ? ['progress', 'coverage-istanbul']
+    //   : ['progress', 'kjhtml', 'junit'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: false,
-    captureTimeout: 60000,
-    browserNoActivityTimeout: 360000,
-    browser: ["Chrome"],
+    logLevel: config.LOG_DEBUG,
+    autoWatch: true,
+    // captureTimeout: 60000,
+    // browserNoActivityTimeout: 360000,
+    // browser: ['Chrome'],
+    customLaunchers: {
+      ChromeHeadless: {
+        base: 'Chrome',
+        flags: [
+          '--headless',
+          '--disable-gpu',
+          '--no-sandbox',
+          '--remote-debugging-port=9222',
+        ]
+      }
+    },
+    browsers: ['ChromeHeadless'],
     singleRun: true,
     junitReporter: {
       outputDir: 'test-reports', // results will be saved as $outputDir/$browserName.xml
       outputFile: 'junit-report.xml', // if included, results will be saved as $outputDir/$browserName/$outputFile
       suite: '', // suite will become the package name attribute in xml testsuite element
-      useBrowserName: true, // add browser name to report and classes names
+      useBrowserName: false, // add browser name to report and classes names
       nameFormatter: undefined, // function (browser, result) to customize the name attribute in xml testcase element
       classNameFormatter: undefined, // function (browser, result) to customize the classname attribute in xml testcase element
       properties: {} // key value pair of properties to add to the section of the report

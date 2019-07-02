@@ -5,6 +5,7 @@
     password: string;
     firstName: string;
     lastName: string;
+    role: string;
     access_token?: string;
     refresh_token?: string;
 }

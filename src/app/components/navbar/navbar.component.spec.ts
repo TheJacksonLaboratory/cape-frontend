@@ -4,7 +4,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { NavbarComponent } from './navbar.component';
 import { AuthenticationService } from '../../_services/authentication.service';
-import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
 fdescribe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -14,12 +13,11 @@ fdescribe('NavbarComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        HttpClientTestingModule,
-        JwtModule.forRoot({})
+        HttpClientTestingModule
       ],
       declarations: [NavbarComponent],
       providers: [AuthenticationService,
-        JwtHelperService]
+      ]
     })
       .compileComponents();
   }));

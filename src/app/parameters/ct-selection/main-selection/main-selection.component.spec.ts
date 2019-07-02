@@ -4,12 +4,11 @@ import { MainSelectionComponent } from './main-selection.component';
 import { MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from 'src/app/_services';
-import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('MainSelectionComponent', () => {
+fdescribe('MainSelectionComponent', () => {
   let component: MainSelectionComponent;
   let fixture: ComponentFixture<MainSelectionComponent>;
 
@@ -23,14 +22,9 @@ describe('MainSelectionComponent', () => {
         MatSelectModule,
         RouterTestingModule,
         HttpClientTestingModule,
-        BrowserAnimationsModule,
-        JwtModule.forRoot({})
+        BrowserAnimationsModule
       ],
-      declarations: [ MainSelectionComponent ],
-      providers: [
-        AuthenticationService,
-        JwtHelperService
-      ]
+      declarations: [ MainSelectionComponent ]
     })
     .compileComponents();
   }));
@@ -41,7 +35,10 @@ describe('MainSelectionComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', async(inject([AuthenticationService], (authService: AuthenticationService) => {
+  // it('should create', async(inject([AuthenticationService], (authService: AuthenticationService) => {
+  //   expect(component).toBeTruthy();
+  // })));
+  it('should create', () => {
     expect(component).toBeTruthy();
-  })));
+  });
 });

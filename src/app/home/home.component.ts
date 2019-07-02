@@ -5,12 +5,6 @@ import { ReportsService } from '../_services/reports.service';
 import { User } from '../_models';
 import { UserService } from '../_services';
 
-export interface Report {
-  id: string;
-  title: string;
-  description: string;
-  image: any;
-}
 
 @Component({templateUrl: 'home.component.html'})
 export class HomeComponent {

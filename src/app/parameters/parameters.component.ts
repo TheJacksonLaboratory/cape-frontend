@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { MatAccordion, MatDialog, MatDialogRef } from '@angular/material';
-import { CanActivate, Router, ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { ParametersService, AuthenticationService, AlertService, DataFilesService } from '../_services';
@@ -17,7 +17,7 @@ import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.
   styleUrls: ['./parameters.component.scss']
 })
 
-export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, CanActivate {
+export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
   displayMode = 'default';
 
   loading = false;
@@ -60,10 +60,6 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit, Ca
   ngOnDestroy(): void {
     this.parametersSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
-  }
-
-  canActivate() {
-    return this.authService.isAuthenticated();
   }
 
   /**
