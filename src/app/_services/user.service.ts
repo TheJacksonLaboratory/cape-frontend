@@ -1,11 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { throwError } from 'rxjs';
 import 'rxjs/add/operator/catch';
 
 import { User } from '../_models';
 import { environment } from '../../environments/environment';
-import { throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

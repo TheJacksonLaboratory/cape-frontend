@@ -2,15 +2,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MatProgressBarModule } from '@angular/material';
+import { MatProgressBarModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { JwtModuleOptions, JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
-import { AlertService, AuthenticationService, UserService, GroupService, ReportsService, ParametersService } from './_services';
+import {
+    AlertService, AuthenticationService, UserService, GroupService,
+    ReportsService, ParametersService
+} from './_services';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { CustomMaterialModule } from './material.module';
@@ -22,22 +24,15 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ParametersModule } from './parameters';
 import { SharedModule } from './shared/shared.module';
 import { AuthGuard } from './_guards';
-
-export function tokenGetter() {
-    return localStorage.getItem('currentUser');
-}
-const JWT_Module_Options: JwtModuleOptions = {
-    config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: ['*']
-    }
-};
+import { fakeBackendProvider } from './_helpers/fake-backend';
 
 
 @NgModule({
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
         ReactiveFormsModule,
         CustomMaterialModule,
         FormsModule,
@@ -45,7 +40,6 @@ const JWT_Module_Options: JwtModuleOptions = {
         routing,
         ParametersModule,
         SharedModule,
-        JwtModule.forRoot(JWT_Module_Options),
         MatProgressBarModule,
         BrowserAnimationsModule
     ],
@@ -68,7 +62,10 @@ const JWT_Module_Options: JwtModuleOptions = {
         GroupService,
         ReportsService,
         UserService,
-        ParametersService
+        ParametersService,
+
+        // provider used to create fake backend
+        // fakeBackendProvider
     ],
     bootstrap: [AppComponent]
 })

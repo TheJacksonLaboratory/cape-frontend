@@ -16,7 +16,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatExpansionModule, MatRadioModule, MatButtonModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { AlertService } from '../_services/alert.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -45,7 +44,6 @@ fdescribe('ParametersComponent', () => {
         MatTreeModule,
         RouterTestingModule,
         HttpClientModule,
-        JwtModule.forRoot({}),
         BrowserAnimationsModule
       ],
       declarations: [
@@ -58,7 +56,6 @@ fdescribe('ParametersComponent', () => {
         TreeComponent
       ],
       providers: [
-        JwtHelperService,
         AlertService,
         { provide: MatDialog, useValue: {} }
       ]

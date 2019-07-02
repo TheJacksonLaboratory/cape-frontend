@@ -1,6 +1,6 @@
-import {Component, OnInit } from '@angular/core';
-import {Report} from "../../home";
-import {ReportsService} from "../../_services/reports.service";
+import { Component, OnInit } from '@angular/core';
+import { ReportsService } from '../../_services/reports.service';
+import { Report } from 'src/app/_models';
 
 @Component({
   selector: 'app-report-grid',
@@ -9,13 +9,13 @@ import {ReportsService} from "../../_services/reports.service";
 })
 export class ReportGridComponent implements OnInit {
 
-    reports: Report[] = [];
+  reports: Report[] = [];
 
-    constructor(private reportService: ReportsService) {}
+  constructor(private reportService: ReportsService) { }
 
-    ngOnInit() {
-        this.reports = this.reportService.getAll();
-        console.log('grid loaded');
-    }
+  ngOnInit() {
+    this.reports = this.reportService.getAll();
+    console.log('grid loaded');
+  }
 
 }

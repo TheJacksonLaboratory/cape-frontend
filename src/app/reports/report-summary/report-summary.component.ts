@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {Report} from "../../home";
+import { Report } from 'src/app/_models';
 
 @Component({
   selector: 'app-report-summary',

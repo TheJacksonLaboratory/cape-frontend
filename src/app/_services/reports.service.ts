@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { REPORTS } from "./reports.mock";
+import { REPORTS } from './reports.mock';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class ReportsService {
   constructor() {}
 
   getAll() {
-    return this.reports
+    return this.reports;
   }
 
 }
