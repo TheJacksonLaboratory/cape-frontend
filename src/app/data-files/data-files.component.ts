@@ -55,6 +55,14 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     this.dataFileSub.unsubscribe();
   }
 
+  getDataFiles(): DataFile[] {
+    return this.dataSource.data;
+  }
+
+  getFilteredDataFiles(): DataFile[] {
+    return this.dataSource.filteredData;
+  }
+
   /**
    * Refresh the datasource
    */
@@ -91,7 +99,6 @@ export class DataFilesComponent implements OnInit, OnDestroy {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

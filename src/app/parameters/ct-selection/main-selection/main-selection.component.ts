@@ -46,6 +46,9 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
         this.setDataFileSelected(this.fileSelected);
         this.colorBy = this.parameters.color_by;
       }
+    }, err => {
+      // TODO: display our server error dialog?
+      console.log(err);
     });
     this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
       this.parameters = parameters;

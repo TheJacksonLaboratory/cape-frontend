@@ -5,6 +5,8 @@ import { GroupListComponent } from '../../groups/group-list/group-list.component
 import { AuthGuard } from '../../_guards';
 import { ParametersComponent } from 'src/app/parameters/parameters.component';
 import { DataFilesComponent } from '../../data-files/data-files.component';
+import { Role } from 'src/app/_models';
+import { AdminComponent } from 'src/app/admin/admin.component';
 
 export const BaseLayoutRoutes: Routes = [
 
@@ -12,5 +14,6 @@ export const BaseLayoutRoutes: Routes = [
     { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
     { path: 'groups', component: GroupListComponent, canActivate: [AuthGuard] },
     { path: 'parameters', component: ParametersComponent, canActivate: [AuthGuard] },
-    { path: 'datafiles', component: DataFilesComponent, canActivate: [AuthGuard] }
+    { path: 'datafiles', component: DataFilesComponent, canActivate: [AuthGuard] },
+    { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }}
 ];
