@@ -53,6 +53,12 @@ module.exports = function (config) {
     },
     browsers: ['ChromeHeadless'],
     singleRun: true,
+    // customLaunchers: {
+    //   ChromeDebug: {
+    //     base: 'Chrome',
+    //     flags: [ '--remote-debugging-port=9333' ]
+    //   }
+    // },
     junitReporter: {
       outputDir: 'test-reports', // results will be saved as $outputDir/$browserName.xml
       outputFile: 'junit-report.xml', // if included, results will be saved as $outputDir/$browserName/$outputFile

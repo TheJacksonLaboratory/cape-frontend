@@ -6,8 +6,7 @@ import {
   MatButtonModule,
   MatInputModule,
   MatRippleModule,
-  MatTooltipModule,
-  MatDialogRef
+  MatTooltipModule
 } from '@angular/material';
 
 import { BaseLayoutRoutes } from './base-layout.routing';
@@ -22,6 +21,7 @@ import { ParametersModule } from 'src/app/parameters';
 import { DataFilesComponent } from 'src/app/data-files';
 import { DataFilesService } from 'src/app/_services';
 import { ParametersService } from '../../_services/parameters.service';
+import { AdminComponent } from '../../admin/admin.component';
 
 
 @NgModule({
@@ -42,7 +42,8 @@ import { ParametersService } from '../../_services/parameters.service';
     ReportSummaryComponent,
     UserProfileComponent,
     GroupListComponent,
-    DataFilesComponent
+    DataFilesComponent,
+    AdminComponent
   ],
   providers: [
     ReportsService,

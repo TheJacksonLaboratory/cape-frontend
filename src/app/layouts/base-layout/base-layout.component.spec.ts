@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService } from 'src/app/_services';
-import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
 fdescribe('BaseLayoutComponent', () => {
   let component: BaseLayoutComponent;
@@ -19,8 +18,7 @@ fdescribe('BaseLayoutComponent', () => {
       imports: [
         RouterModule,
         RouterTestingModule,
-        HttpClientModule,
-        JwtModule.forRoot({})
+        HttpClientModule
       ],
       declarations: [
         BaseLayoutComponent,
@@ -29,8 +27,7 @@ fdescribe('BaseLayoutComponent', () => {
         FooterComponent
       ],
       providers: [
-        AuthenticationService,
-        JwtHelperService
+        AuthenticationService
       ]
     })
       .compileComponents();
