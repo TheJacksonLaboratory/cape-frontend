@@ -3,12 +3,13 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { ParametersService, AuthenticationService, AlertService, DataFilesService } from '../_services';
+import { ParametersService, AuthenticationService, AlertService } from '../_services';
 import { DescriptionComponent } from '../shared/description/description.component';
 import { MarkerSelectionComponent } from './marker-selection/marker-selection.component';
 import { PairScanComponent } from './pair-scan/pair-scan.component';
 import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
 import { Parameters } from '../_models/parameters';
+import { DataFile } from '../_models/datafile';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 
 @Component({
@@ -116,15 +117,15 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
       covariates = covariates + (' - ' + covariate + '\n');
     });
     const scanWhat = this.parameters.traits_to_scan !== undefined && this.parameters.traits_to_scan !== null
-                      ? 'scan_what:\n - ' + this.parameters.traits_to_scan + '\n' : '';
+      ? 'scan_what:\n - ' + this.parameters.traits_to_scan + '\n' : '';
     const traitsNormalized = this.parameters.normalize !== undefined && this.parameters.normalize !== null
-                      ? 'traits_normalized:\n - ' + this.parameters.normalize + '\n' : '';
+      ? 'traits_normalized:\n - ' + this.parameters.normalize + '\n' : '';
     const traitsScaled = this.parameters.mean_center !== undefined && this.parameters.mean_center !== null
-                      ? 'traits_scaled:\n - ' + this.parameters.mean_center + '\n' : '';
+      ? 'traits_scaled:\n - ' + this.parameters.mean_center + '\n' : '';
     const pvalCorrection = this.parameters.p_value_correction !== undefined && this.parameters.p_value_correction !== null
-                      ? 'pval_correction:\n - ' + this.parameters.p_value_correction + '\n' : '';
+      ? 'pval_correction:\n - ' + this.parameters.p_value_correction + '\n' : '';
     let eigWhich = this.parameters.number_of_eigentraits !== undefined && this.parameters.number_of_eigentraits !== null
-                      ? 'eig_which:\n' : '';
+      ? 'eig_which:\n' : '';
     for (let i = 1; i <= this.parameters.number_of_eigentraits; i++) {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
@@ -133,39 +134,39 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
       '# Single Scan Parameters \n' +
       '#================================================\n';
     const refAllele = this.parameters.sls_reference_allele !== undefined && this.parameters.sls_reference_allele !== null
-                      ? 'ref_allele:\n - ' + this.parameters.sls_reference_allele + '\n' : '';
+      ? 'ref_allele:\n - ' + this.parameters.sls_reference_allele + '\n' : '';
     const singleScanPerm = this.parameters.sls_number_of_permutations !== undefined && this.parameters.sls_number_of_permutations
-                      ? 'singlescan_perm:\n - ' + this.parameters.sls_number_of_permutations + '\n' : '';
+      ? 'singlescan_perm:\n - ' + this.parameters.sls_number_of_permutations + '\n' : '';
     const useKinship = this.parameters.sls_use_kinship !== undefined && this.parameters.sls_use_kinship !== null
-                      ? 'use_kinship:\n - ' + this.parameters.sls_use_kinship + '\n' : '';
+      ? 'use_kinship:\n - ' + this.parameters.sls_use_kinship + '\n' : '';
     const kintshipType = this.parameters.sls_kinship_type !== undefined && this.parameters.sls_kinship_type !== null
-                      ? 'kingship_type:\n - ' + this.parameters.sls_kinship_type + '\n' : '';
+      ? 'kingship_type:\n - ' + this.parameters.sls_kinship_type + '\n' : '';
 
     const markerSelectionComment = '\n#================================================\n' +
       '# Marker Selection Parameters\n' +
       '#================================================\n';
     const markerSelectionMethod = this.parameters.ms_method !== undefined && this.parameters.ms_method !== null
-                      ? 'marker_selection_method:\n - ' + this.parameters.ms_method + '\n' : '';
+      ? 'marker_selection_method:\n - ' + this.parameters.ms_method + '\n' : '';
     const windowSize = this.parameters.ms_number_to_test !== undefined && this.parameters.ms_number_to_test !== null
-                      ? 'num_alleles_in_pairscan:\n - ' + this.parameters.ms_number_to_test + '\n' : '';
+      ? 'num_alleles_in_pairscan:\n - ' + this.parameters.ms_number_to_test + '\n' : '';
     const peakDensity = this.parameters.ms_peak_density !== undefined && this.parameters.ms_peak_density !== null
-                      ? 'peak_density:\n - ' + this.parameters.ms_peak_density + '\n' : '';
+      ? 'peak_density:\n - ' + this.parameters.ms_peak_density + '\n' : '';
     const tolerance = this.parameters.ms_tolerance !== undefined && this.parameters.ms_tolerance !== null
-                      ? 'tolerance:\n - ' + this.parameters.ms_tolerance + '\n' : '';
+      ? 'tolerance:\n - ' + this.parameters.ms_tolerance + '\n' : '';
     const snpFile = this.parameters.ms_snp_filename !== undefined && this.parameters.ms_snp_filename !== null
-                      ? 'SNPfile:\n - ' + this.parameters.ms_snp_filename + '\n' : '';
+      ? 'SNPfile:\n - ' + this.parameters.ms_snp_filename + '\n' : '';
     const organism = this.parameters.ms_organism !== undefined && this.parameters.ms_organism !== null
-                      ? 'organism:\n - ' + this.parameters.ms_organism + '\n' : '';
+      ? 'organism:\n - ' + this.parameters.ms_organism + '\n' : '';
 
     const pairScanComment = '\n#================================================\n' +
       '# Pairscan Parameters\n' +
       '#================================================\n';
     const pairScanNullSize = this.parameters.ps_null_size !== undefined && this.parameters.ps_null_size !== null
-                      ? 'pairscan_null_size:\n - ' + this.parameters.ps_null_size + '\n' : '';
+      ? 'pairscan_null_size:\n - ' + this.parameters.ps_null_size + '\n' : '';
     const maxPairCor = this.parameters.ps_max_marker_correlation !== undefined && this.parameters.ps_max_marker_correlation !== null
-                      ? 'max_pair_cor:\n - ' + this.parameters.ps_max_marker_correlation + '\n' : '';
+      ? 'max_pair_cor:\n - ' + this.parameters.ps_max_marker_correlation + '\n' : '';
     const minPerGeno = this.parameters.ps_min_individual_per_genotype !== undefined && this.parameters.ps_min_individual_per_genotype !== null
-                      ? 'min_per_geno:\n -  ' + this.parameters.ps_min_individual_per_genotype + '\n' : '';
+      ? 'min_per_geno:\n -  ' + this.parameters.ps_min_individual_per_genotype + '\n' : '';
 
     // build the yaml string from the strings above
     const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection + eigWhich

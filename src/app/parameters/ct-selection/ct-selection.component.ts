@@ -52,6 +52,7 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
         this.normalize = this.parameters.normalize !== undefined ? this.parameters.normalize : this.normalize;
         this.meanCenter = this.parameters.mean_center !== undefined ? this.parameters.mean_center : this.meanCenter;
         this.traitSelected = this.parameters.traits_to_scan !== undefined ? this.parameters.traits_to_scan : this.traitSelected;
+        this.numberOfEigentraits = this.parameters.number_of_eigentraits !== undefined ? this.parameters.number_of_eigentraits : this.numberOfEigentraits;
         this.pValueCorrection = this.parameters.p_value_correction !== undefined ? this.parameters.p_value_correction : this.pValueCorrection;
 
         // set default

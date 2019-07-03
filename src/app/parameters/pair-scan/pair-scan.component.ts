@@ -57,23 +57,31 @@ export class PairScanComponent implements OnInit, OnDestroy {
   }
 
   setNullSize() {
-    this.parameters.ps_null_size = this.nullSize;
+    if (this.parameters !== undefined) {
+      this.parameters.ps_null_size = this.nullSize;
+    }
   }
   setMarkerPairConstraints() {
-    this.parameters.ps_marker_pair_constraints = this.markerPairConstraint;
-    // We initialize the max marker correlation and min individual per Genotype as the input fields have already a default value
-    if (this.markerPairConstraint === this.markerPairConstraints[0]) {
-      this.parameters.ps_max_marker_correlation = this.maxMarkerCorrelation;
-      this.parameters.ps_min_individual_per_genotype = undefined;
-    } else if (this.markerPairConstraint === this.markerPairConstraints[1]) {
-      this.parameters.ps_max_marker_correlation = undefined;
-      this.parameters.ps_min_individual_per_genotype = this.minIndPerGenotype;
+    if (this.parameters !== undefined) {
+      this.parameters.ps_marker_pair_constraints = this.markerPairConstraint;
+      // We initialize the max marker correlation and min individual per Genotype as the input fields have already a default value
+      if (this.markerPairConstraint === this.markerPairConstraints[0]) {
+        this.parameters.ps_max_marker_correlation = this.maxMarkerCorrelation;
+        this.parameters.ps_min_individual_per_genotype = undefined;
+      } else if (this.markerPairConstraint === this.markerPairConstraints[1]) {
+        this.parameters.ps_max_marker_correlation = undefined;
+        this.parameters.ps_min_individual_per_genotype = this.minIndPerGenotype;
+      }
     }
   }
   setMaxMarkerCorrelation() {
-    this.parameters.ps_max_marker_correlation = this.maxMarkerCorrelation;
+    if (this.parameters !== undefined) {
+      this.parameters.ps_max_marker_correlation = this.maxMarkerCorrelation;
+    }
   }
   setMinIndPerGenotype() {
-    this.parameters.ps_min_individual_per_genotype = this.minIndPerGenotype;
+    if (this.parameters !== undefined) {
+      this.parameters.ps_min_individual_per_genotype = this.minIndPerGenotype;
+    }
   }
 }

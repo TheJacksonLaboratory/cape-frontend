@@ -73,8 +73,8 @@ export class Parameters {
     parameter.title = obj['title'];
     parameter.select_plot = obj['select_plot'];
     parameter.color_by = obj['color_by'];
-    parameter.covariate_selection = obj['covariate_selection'].split(',');
-    parameter.trait_selection = obj['trait_selection'].split(',');
+    parameter.covariate_selection = obj['covariate_selection'] !== undefined ? obj['covariate_selection'].split(',') : undefined;
+    parameter.trait_selection = obj['trait_selection'] !== undefined ? obj['trait_selection'].split(',') : undefined;
     parameter.normalize = obj['normalize'];
     parameter.mean_center = obj['mean_center'];
     parameter.traits_to_scan = obj['traits_to_scan'];
