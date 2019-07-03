@@ -9,6 +9,7 @@ import { saveAs } from 'file-saver';
 import { DataFilesService, AlertService } from '../_services';
 import { DataFile } from '../_models/datafile';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
+import { Parameters } from '../_models/parameters';
 
 
 @Component({
@@ -24,7 +25,7 @@ import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.
   ],
 })
 export class DataFilesComponent implements OnInit, OnDestroy {
-  columnsToDisplay = ['id', 'filename'];
+  columnsToDisplay = ['id', 'filename', 'add'];
 
   dataSource: MatTableDataSource<DataFile>;
   expandedElement: DataFile | null;
@@ -113,6 +114,17 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     const filename = element.title + '.yml';
     const blob = new Blob([data], { type: 'text/yaml' });
     saveAs(blob, filename);
+  }
+
+  /**
+   * Adds a parameter set up to the selected datafile:
+   * Opens the Parameter UI with the selected data file
+   * @param element data file
+   */
+  addParameterFile(element: any) {
+    const blankParameterFile = new Parameters();
+    blankParameterFile.datafile_id = element.id;
+    this.router.navigate(['parameters'], { queryParams: { 'parameters': JSON.stringify(blankParameterFile) } });
   }
 
   /**

@@ -18,7 +18,6 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
   files: DataFile[];
   fileSelected: DataFile;
 
-  fileIdx: number;
   plotTypes = ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
 
   plotType: string;
@@ -42,8 +41,10 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
     this.dataFileSub = this.dataFileService.getDataFiles().subscribe(datafiles => {
       this.files = datafiles;
       if (this.parameters !== undefined) {
-        this.fileSelected = this.findSelectedDataFile(this.parameters.datafile_id);
-        this.setDataFileSelected(this.fileSelected);
+        const fileselected = this.findSelectedDataFile(this.parameters.datafile_id);
+        if (fileselected !== undefined) {
+          this.setDataFileSelected(fileselected);
+        }
         this.colorBy = this.parameters.color_by;
       }
     }, err => {
@@ -56,9 +57,9 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
         this.plotType = parameters.select_plot;
         this.titleFormControl.setValue(parameters.title);
         this.colorBy = parameters.color_by;
-        this.fileSelected = this.findSelectedDataFile(parameters.datafile_id);
-        if (this.fileSelected !== undefined) {
-          this.setDataFileSelected(this.fileSelected);
+        const fileselected = this.findSelectedDataFile(parameters.datafile_id);
+        if (fileselected !== undefined) {
+          this.setDataFileSelected(fileselected);
         }
       }
     });
@@ -84,7 +85,9 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
   setDataFileSelected(selected: DataFile) {
     if (selected !== undefined) {
       this.parametersService.setDataFileSelected(selected);
-      this.parameters.datafile_id = selected.id;
+      if (this.parameters !== undefined) {
+        this.parameters.datafile_id = selected.id;
+      }
       this.dataFileService.getPhenotypesPerDataFile(selected.id).subscribe(pheno => {
         this.phenotypes = pheno;
       });

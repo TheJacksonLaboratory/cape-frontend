@@ -5,11 +5,7 @@ table {
   tr.detail-row {
     height: 0;
   }
-
-//  td.mat-cell:hover {
-//    color: white;
-//  }
-  
+ 
   tr.element-row:not(.expanded-row):hover {
     color: white;
   }
@@ -35,3 +31,10 @@ table {
   .parameter-table-tr:hover {
     background-color: #efefef;
   }
+  th {
+    text-align: left;
+    color: gray;
+    font-weight: inherit;
+    font-size: small;
+  }
+
