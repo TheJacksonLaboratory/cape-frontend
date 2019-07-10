@@ -7,7 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./description.component.scss']
 })
 export class DescriptionComponent implements OnInit {
-
+  public title = '';
   public description = '';
 
   constructor(public dialogRef: MatDialogRef<DescriptionComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }

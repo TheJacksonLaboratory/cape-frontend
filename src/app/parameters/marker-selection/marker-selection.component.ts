@@ -22,7 +22,7 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
   organism: string;
 
   markerSelected: any;
-  markerSelectionMethods = this.createMarkerSelections();
+  markerSelectionMethod = this.createMarkerSelections();
   peakDensityDescription = 'Peak density is the fraction of markers under a large effect peak you would like to select.';
   toleranceDescription = 'Tolerance is the number of markers away from the target number you will tolerate selecting.';
   organisms = ['human', 'mouse'];
@@ -74,11 +74,11 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
   }
 
   getMarkerSelections() {
-    return Array.from(this.markerSelectionMethods.keys());
+    return Array.from(this.markerSelectionMethod.keys());
   }
 
   getMarkerSelectionDescription(selected: any) {
-    return this.markerSelectionMethods.get(selected);
+    return this.markerSelectionMethod.get(selected);
   }
 
   setNumberOfMarkersToTest() {
