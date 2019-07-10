@@ -36,16 +36,18 @@ export class AuthenticationService {
 
   login(username: string, password: string) {
     return this.http.post<any>(environment.API_URL + '/auth/login', { username, password }) // , this.httpOptions)
-      .pipe(map(user => {
+      .pipe(map(res => {
         // login successful if there's a jwt token in the response
-        const access_token = user['access_token'];
-        const refresh_token = user['refresh_token'];
-        if (user && access_token) {
+        if (res && res.access_token) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
+          localStorage.setItem('currentUser', JSON.stringify(res));
+          // store the time at which the token should expire
+          const timeToLogin = Date.now() + 86400000; // 1 day
+          localStorage.setItem('timer', JSON.stringify(timeToLogin));
+
+          this.currentUserSubject.next(res);
         }
-        return user;
+        return res;
       }));
   }
 
