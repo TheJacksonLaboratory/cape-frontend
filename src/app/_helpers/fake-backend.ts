@@ -22,7 +22,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         return of(null).pipe(mergeMap(() => {
 
             // authenticate - public
-            if (request.url.endsWith('/users/authenticate') && request.method === 'POST') {
+            if (request.url.endsWith('/auth/login') && request.method === 'POST') {
                 const user = users.find(x => x.username === request.body.username && x.password === request.body.password);
                 if (!user) return error('Username or password is incorrect');
                 return ok({
@@ -31,7 +31,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     firstName: user.firstName,
                     lastName: user.lastName,
                     role: user.role,
-                    token: `fake-jwt-token.${user.role}`
+                    access_token: `fake-jwt-token.${user.role}`
                 });
             }
 
