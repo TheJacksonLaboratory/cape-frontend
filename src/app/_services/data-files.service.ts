@@ -52,7 +52,7 @@ export class DataFilesService {
      * @param userId user id
      */
     deleteDataFile(paramId: number, userId: number) {
-        return this.http.post<any>(environment.API_URL + '/user/delete_parameter_file',
+        return this.http.post<any>(environment.API_URL + '/parameters/delete_parameter_file',
             { 'param_id': paramId, 'user_id': userId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
@@ -81,7 +81,7 @@ export class DataFilesService {
      * Get the list of parameter files
      */
     getParameterFiles(): Observable<Parameters[]> {
-        return this.http.get<Parameters[]>(environment.API_URL + '/user/get_parameter_files')
+        return this.http.get<Parameters[]>(environment.API_URL + '/parameters/get_parameter_files')
             .catch(DataFilesService._handleError);
     }
 
@@ -115,7 +115,7 @@ export class DataFilesService {
         params = params.append('param_id', String(paramId));
         params = params.append('datafile_id', String(dataFileId));
 
-        return this.http.get<Parameters>(environment.API_URL + '/user/get_parameter_file', { params: params })
+        return this.http.get<Parameters>(environment.API_URL + '/parameters/get_parameter_file', { params: params })
                         .catch(DataFilesService._handleError);
     }
 
