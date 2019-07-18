@@ -5,7 +5,7 @@
 </mat-form-field>
 <mat-form-field appearance="outline">
   <mat-label>Marker Selection Method</mat-label>
-  <mat-select [(value)]="markerSelectionMethod" [(ngModel)]="markerSelected"
+  <mat-select [(value)]=markerSelected
     matTooltip="{{ getMarkerSelectionDescription(markerSelected) }}" (selectionChange)="setMarkerSelectionMethod()">
     <mat-option *ngFor="let markerSelected of getMarkerSelections()" [value]="markerSelected">
       {{ markerSelected }}
