@@ -12,7 +12,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('CtSelectionComponent', () => {
+describe('CtSelectionComponent', () => {
   let component: CtSelectionComponent;
   let fixture: ComponentFixture<CtSelectionComponent>;
 
@@ -57,5 +57,13 @@ fdescribe('CtSelectionComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

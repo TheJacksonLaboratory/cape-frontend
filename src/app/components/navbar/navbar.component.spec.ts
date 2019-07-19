@@ -5,7 +5,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { NavbarComponent } from './navbar.component';
 import { AuthenticationService } from '../../_services/authentication.service';
 
-fdescribe('NavbarComponent', () => {
+describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
 
@@ -31,4 +31,12 @@ fdescribe('NavbarComponent', () => {
   it('should create', async(inject([AuthenticationService], (authService: AuthenticationService) => {
     expect(component).toBeTruthy();
   })));
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  });
 });

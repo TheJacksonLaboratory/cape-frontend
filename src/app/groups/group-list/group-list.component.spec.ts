@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('GroupListComponent', () => {
+describe('GroupListComponent', () => {
   let component: GroupListComponent;
   let fixture: ComponentFixture<GroupListComponent>;
 
@@ -34,5 +34,13 @@ fdescribe('GroupListComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

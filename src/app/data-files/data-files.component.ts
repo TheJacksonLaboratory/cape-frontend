@@ -34,8 +34,8 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   loading = false;
   private dataFileSub: Subscription;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
 
   constructor(private http: HttpClient, private dataFilesService: DataFilesService,
     private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef,

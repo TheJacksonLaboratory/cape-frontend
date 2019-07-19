@@ -17,8 +17,8 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
   private rolesSub: Subscription;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
 
   constructor(private groupService: GroupService) {
     this.rolesSub = this.groupService.getGroups().subscribe(resp => {

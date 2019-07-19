@@ -7,7 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('PairScanComponent', () => {
+describe('PairScanComponent', () => {
   let component: PairScanComponent;
   let fixture: ComponentFixture<PairScanComponent>;
 
@@ -36,5 +36,13 @@ fdescribe('PairScanComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

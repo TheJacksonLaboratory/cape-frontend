@@ -7,7 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('MarkerSelectionComponent', () => {
+describe('MarkerSelectionComponent', () => {
   let component: MarkerSelectionComponent;
   let fixture: ComponentFixture<MarkerSelectionComponent>;
 
@@ -38,5 +38,13 @@ fdescribe('MarkerSelectionComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

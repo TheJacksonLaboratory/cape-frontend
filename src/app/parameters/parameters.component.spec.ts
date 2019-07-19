@@ -19,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AlertService } from '../_services/alert.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('ParametersComponent', () => {
+describe('ParametersComponent', () => {
   let component: ParametersComponent;
   let fixture: ComponentFixture<ParametersComponent>;
 
@@ -72,5 +72,13 @@ fdescribe('ParametersComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

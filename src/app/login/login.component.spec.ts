@@ -1,15 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
-import { MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule,
-    MatProgressBarModule, MatDialog } from '@angular/material';
+import {
+    MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule,
+    MatProgressBarModule, MatDialog
+} from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AlertService } from '../_services/alert.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-fdescribe('LoginComponent', () => {
+describe('LoginComponent', () => {
     let component: LoginComponent;
     let fixture: ComponentFixture<LoginComponent>;
 
@@ -44,5 +46,13 @@ fdescribe('LoginComponent', () => {
 
     it('should create', () => {
         expect(component).toBeTruthy();
+    });
+
+    afterAll(() => {
+        TestBed.resetTestingModule();
+    });
+
+    afterEach(() => {
+        TestBed.resetTestingModule();
     });
 });

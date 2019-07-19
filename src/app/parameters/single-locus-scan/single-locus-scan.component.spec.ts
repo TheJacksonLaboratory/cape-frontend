@@ -8,7 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-fdescribe('SingleLocusScanComponent', () => {
+describe('SingleLocusScanComponent', () => {
   let component: SingleLocusScanComponent;
   let fixture: ComponentFixture<SingleLocusScanComponent>;
 
@@ -38,5 +38,13 @@ fdescribe('SingleLocusScanComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });
