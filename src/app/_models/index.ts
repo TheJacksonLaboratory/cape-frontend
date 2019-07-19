@@ -5,3 +5,4 @@ export * from './role';
 export * from './phenotype';
 export * from './datafile';
 export * from './report';
+export * from './job';

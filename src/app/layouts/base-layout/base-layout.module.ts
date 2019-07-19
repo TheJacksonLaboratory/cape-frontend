@@ -22,6 +22,7 @@ import { DataFilesComponent } from 'src/app/data-files';
 import { DataFilesService } from 'src/app/_services';
 import { ParametersService } from '../../_services/parameters.service';
 import { AdminComponent } from '../../admin/admin.component';
+import { JobComponent } from 'src/app/job/job.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { AdminComponent } from '../../admin/admin.component';
     UserProfileComponent,
     GroupListComponent,
     DataFilesComponent,
-    AdminComponent
+    AdminComponent,
+    JobComponent
   ],
   providers: [
     ReportsService,

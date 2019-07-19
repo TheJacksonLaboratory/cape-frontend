@@ -7,6 +7,7 @@ import { ParametersComponent } from 'src/app/parameters/parameters.component';
 import { DataFilesComponent } from '../../data-files/data-files.component';
 import { Role } from 'src/app/_models';
 import { AdminComponent } from 'src/app/admin/admin.component';
+import { JobComponent } from '../../job/job.component';
 
 export const BaseLayoutRoutes: Routes = [
 
@@ -15,5 +16,6 @@ export const BaseLayoutRoutes: Routes = [
     { path: 'groups', component: GroupListComponent, canActivate: [AuthGuard] },
     { path: 'parameters', component: ParametersComponent, canActivate: [AuthGuard] },
     { path: 'datafiles', component: DataFilesComponent, canActivate: [AuthGuard] },
+    { path: 'jobs', component: JobComponent, canActivate: [AuthGuard] },
     { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }}
 ];
