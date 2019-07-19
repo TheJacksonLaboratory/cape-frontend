@@ -190,7 +190,7 @@ export class PhenotypeDatabase {
     providers: [PhenotypeDatabase]
 })
 export class TreeComponent implements OnInit, OnDestroy {
-    @ViewChild('tree') tree: any;
+    @ViewChild('tree', {static: false}) tree: any;
 
     viewAsTree = true;
 

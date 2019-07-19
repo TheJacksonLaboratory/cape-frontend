@@ -30,9 +30,9 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
   parameters: Parameters;
 
   // documentation
-  @ViewChild(SingleLocusScanComponent) singleScanChildDoc: SingleLocusScanComponent;
-  @ViewChild(MarkerSelectionComponent) markerSelectionChildDoc: MarkerSelectionComponent;
-  @ViewChild(PairScanComponent) pairScanChildDoc: PairScanComponent;
+  @ViewChild(SingleLocusScanComponent, {static: false}) singleScanChildDoc: SingleLocusScanComponent;
+  @ViewChild(MarkerSelectionComponent, {static: false}) markerSelectionChildDoc: MarkerSelectionComponent;
+  @ViewChild(PairScanComponent, {static: false}) pairScanChildDoc: PairScanComponent;
   singleLocusScanDocumentation: string;
   markerSelectionDocumentation: string;
   pairScanDocumentation: string;
