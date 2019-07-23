@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@ang
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { JobService, AlertService } from '../_services';
 import { Job } from '../_models/job';
@@ -14,7 +14,7 @@ import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.
   styleUrls: ['./job.component.scss']
 })
 export class JobComponent implements OnInit, OnDestroy {
-  columnsToDisplay = ['id', 'name', 'date_created', 'user_id', 'parameter_id', 'status', 'actions'];
+  columnsToDisplay = ['id', 'name', 'date_created', 'user_id', 'parameter_file_id', 'status', 'actions'];
 
   dataSource: MatTableDataSource<Job>;
   expandedElement: Job | null;
@@ -35,6 +35,8 @@ export class JobComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.jobSub = this.jobService.getJobs().subscribe(resp => {
       this.dataSource = new MatTableDataSource(resp);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     }, err => {
       // TODO: display our server error dialog?
       console.log(err);
@@ -95,36 +97,77 @@ export class JobComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Delete a parameter file in the table and the DB
+   * Run the job
+   * @param element row element
+   */
+  runJob(element: any) {
+    this.openRunJobDialog(element);
+  }
+
+  /**
+   * Delete the job
    * @param element row parameter
    */
   deleteJob(element: any) {
     // open intermediary dialog
-    this.openDeleteWarningDialog(element);
+    this.openDeleteJobDialog(element);
   }
 
   /**
-   * Run a job with this file as input
-   * @param element row element
+   * Cancel the job
+   * @param element row parameter
    */
-  runJob(element: any) {
-    // TODO
+  cancelJob(element: any) {
+    // open intermediary dialog
+    this.openCancelJobDialog(element);
   }
 
   /**
    * Dialog used to display a confirmation to the user before applying the wanted action
    * @param data message to pass to dialog
    */
-  private openDeleteWarningDialog(element: any) {
+  private openRunJobDialog(element: any) {
+    const msgData = { 'title': 'Run Job with parameter setup' };
+    msgData['description'] = 'Run Job "' + element.name +  '" with the parameter setup id "' + element.parameter_file_id + '" ?';
+    const jobService = this.jobService.runJob(element.id);
+    this.openDialog(msgData, jobService);
+    this.router.navigate(['jobs']);
+  }
+
+  /**
+   * Dialog used to display a confirmation to the user before applying the wanted action
+   * @param data message to pass to dialog
+   */
+  private openDeleteJobDialog(element: any) {
     const msgData = { 'title': 'Delete Job' };
     msgData['description'] = 'Delete the Job named "' + element.name + '" ?';
+    const jobService = this.jobService.deleteJob(element.id);
+    this.openDialog(msgData, jobService);
+  }
+
+  /**
+   * Dialog used to display a confirmation to the user before applying the wanted action
+   * @param data message to pass to dialog
+   */
+  private openCancelJobDialog(element: any) {
+    const msgData = { 'title': 'Cancel Job' };
+    msgData['description'] = 'Cancel the Job named "' + element.name + '" ?';
+    const jobService = this.jobService.cancelJob(element.id);
+    this.openDialog(msgData, jobService);
+  }
+
+  /**
+   * Dialog used to display a confirmation to the user before applying the wanted action
+   * @param data message to pass to dialog
+   */
+  private openDialog(msgData: any, service: Observable<any>) {
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       width: '400px',
       data: msgData
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'ok') {
-        const resp = this.jobService.deleteJob(element.id, element.user_id).subscribe(data => {
+        service.subscribe(data => {
           msgData['description'] = data['message'];
           this.openResultDialog(msgData);
         }, error => {

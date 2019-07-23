@@ -25,13 +25,12 @@ export class JobService {
     }
 
     /**
-     * Delete a parameter file given its parameter id and user id
-     * @param jobId job id
-     * @param userId user id
+     * Create and run a job given its parameter id
+     * @param paramFileId parameter id
      */
-    runJob(jobId: number, userId: number) {
-        return this.http.post<any>(environment.API_URL + '/jobs/run_job',
-            { 'job_id': jobId, 'user_id': userId }, this.httpOptions)
+    createRunJob(paramFileId: number) {
+        return this.http.post<any>(environment.API_URL + '/jobs/create_run',
+            { 'parameter_file_id': paramFileId}, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
                 const jsonObj = JSON.parse(jsonString);
@@ -40,13 +39,40 @@ export class JobService {
     }
 
     /**
-     * Delete a parameter file given its parameter id and user id
+     * Delete a job given its id
      * @param jobId job id
-     * @param userId user id
      */
-    deleteJob(jobId: number, userId: number) {
-        return this.http.post<any>(environment.API_URL + '/jobs/delete_job',
-            { 'job_id': jobId, 'user_id': userId }, this.httpOptions)
+    runJob(jobId: number) {
+        return this.http.post<any>(environment.API_URL + '/jobs/run',
+            { 'job_id': jobId }, this.httpOptions)
+            .pipe(map(file => {
+                const jsonString = JSON.stringify(file);
+                const jsonObj = JSON.parse(jsonString);
+                return jsonObj;
+            })).catch(JobService._handleError);
+    }
+
+    /**
+     * Delete a job given its id
+     * @param jobId job id
+     */
+    deleteJob(jobId: number) {
+        return this.http.post<any>(environment.API_URL + '/jobs/delete',
+            { 'job_id': jobId }, this.httpOptions)
+            .pipe(map(file => {
+                const jsonString = JSON.stringify(file);
+                const jsonObj = JSON.parse(jsonString);
+                return jsonObj;
+            })).catch(JobService._handleError);
+    }
+
+    /**
+     * Cancel a job given its id
+     * @param jobId job id
+     */
+    cancelJob(jobId: number) {
+        return this.http.post<any>(environment.API_URL + '/jobs/cancel',
+            { 'job_id': jobId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
                 const jsonObj = JSON.parse(jsonString);

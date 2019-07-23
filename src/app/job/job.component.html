@@ -10,55 +10,56 @@
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
 
-    <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>Id</th>
-        <td mat-cell *matCellDef="let element">{{element.id}}</td>
-      </ng-container>
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element">{{element.name}}</td>
-      </ng-container>
-      <ng-container matColumnDef="date_created">
-        <th mat-header-cell *matHeaderCellDef>Date Created</th>
-        <td mat-cell *matCellDef="let element">{{element.date_created}}</td>
-      </ng-container>
-      <ng-container matColumnDef="user_id">
-        <th mat-header-cell *matHeaderCellDef>User Id</th>
-        <td mat-cell *matCellDef="let element">{{element.user_id}}</td>
-      </ng-container>
-      <ng-container matColumnDef="parameter_id">
-        <th mat-header-cell *matHeaderCellDef>Parameter Id</th>
-        <td mat-cell *matCellDef="let element">{{element.parameter_id}}</td>
-      </ng-container>
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Status</th>
-        <td mat-cell *matCellDef="let element">{{element.status}}</td>
-      </ng-container>
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <button mat-icon-button type="submit" class="btn-just-icon btn-info pull-right"
-            matTooltip="Run this job" (click)="runJob(element)">
-            <mat-icon matSuffix>play_arrow</mat-icon>
-          </button>
-          <button mat-icon-button type="submit" class="btn-just-icon btn-info pull-right"
-            matTooltip="Cancel this job" (click)="cancelJob(element)">
-            <mat-icon matSuffix>stop</mat-icon>
-          </button>
-          <button mat-icon-button type="submit" class="btn-just-icon btn-info pull-right"
-            matTooltip="Delete this job" (click)="deleteJob(element)">
-            <mat-icon matSuffix>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+          <td mat-cell *matCellDef="let element">{{element.id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let element">{{element.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="date_created">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
+          <td mat-cell *matCellDef="let element">{{element.date_created}}</td>
+        </ng-container>
+        <ng-container matColumnDef="user_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>User Id</th>
+          <td mat-cell *matCellDef="let element">{{element.user_id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="parameter_file_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Parameter Id</th>
+          <td mat-cell *matCellDef="let element">{{element.parameter_file_id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let element">{{element.status}}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button type="submit" class="btn-just-icon btn-info pull-right" matTooltip="Delete this job"
+              (click)="deleteJob(element)">
+              <mat-icon matSuffix>delete</mat-icon>
+            </button>
+            <button mat-icon-button type="submit" class="btn-just-icon btn-info pull-right" matTooltip="Cancel this job"
+              (click)="cancelJob(element)">
+              <mat-icon matSuffix>stop</mat-icon>
+            </button>
+            <button mat-icon-button type="submit" class="btn-just-icon btn-info pull-right" matTooltip="Run this job"
+              (click)="runJob(element)">
+              <mat-icon matSuffix>play_arrow</mat-icon>
+            </button>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="element-row"></tr>
-    </table>
-    <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="25"
-      [pageSizeOptions]="[25, 50, 100, 250]">
-    </mat-paginator>
-
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="element-row"></tr>
+      </table>
+      <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="25"
+        [pageSizeOptions]="[25, 50, 100, 250]">
+      </mat-paginator>
+    </div>
   </div>
 </div>
