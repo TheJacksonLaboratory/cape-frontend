@@ -53,9 +53,8 @@
                   <td>{{ parameter.date_created }}</td>
                   <td>
                     <button mat-icon-button type="submit" class="btn-just-icon btn-info pull-right"
-                      matTooltip="Run a job on the cluster with this file as parameters input"
-                      (click)="runParameterFile(parameter)">
-                      <mat-icon matSuffix>schedule</mat-icon>
+                      matTooltip="Delete this parameter file" (click)="deleteParameterFile(parameter)">
+                      <mat-icon matSuffix>delete</mat-icon>
                     </button>
                     <button mat-icon-button type="submit" class="btn-just-icon btn-info pull-right"
                       matTooltip="Download this parameter file" (click)="downloadParameterFile(parameter)">
@@ -66,8 +65,9 @@
                       <mat-icon matSuffix>edit</mat-icon>
                     </button>
                     <button mat-icon-button type="submit" class="btn-just-icon btn-info pull-right"
-                      matTooltip="Delete this parameter file" (click)="deleteParameterFile(parameter)">
-                      <mat-icon matSuffix>delete</mat-icon>
+                      matTooltip="Run a job on the cluster with this file as parameters input"
+                      (click)="runParameterFile(parameter)">
+                      <mat-icon matSuffix>schedule</mat-icon>
                     </button>
                   </td>
                 </tr>
