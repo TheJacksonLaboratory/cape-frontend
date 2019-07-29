@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
   }
 
   onKey(event: any) {
-  	// if enter key is pressed
+    // if enter key is pressed
     if (event.keyCode === 13) {
       this.login();
     }
