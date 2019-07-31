@@ -25,6 +25,16 @@ export class JobService {
     }
 
     /**
+     * Returns the job owner (user Full name)
+     * @param jobId id of job
+     */
+    getJobOwner(jobId: number) {
+        const params = new HttpParams().set('job_id', String(jobId));
+        return this.http.get<Job[]>(environment.API_URL + '/jobs/get_owner', { params: params})
+            .catch(JobService._handleError);
+    }
+
+    /**
      * Create and run a job given its parameter id
      * @param paramFileId parameter id
      */

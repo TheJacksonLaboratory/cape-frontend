@@ -16,21 +16,17 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
           <td mat-cell *matCellDef="let element">{{element.id}}</td>
         </ng-container>
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-          <td mat-cell *matCellDef="let element">{{element.name}}</td>
-        </ng-container>
         <ng-container matColumnDef="date_created">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
           <td mat-cell *matCellDef="let element">{{element.date_created}}</td>
         </ng-container>
-        <ng-container matColumnDef="user_id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>User Id</th>
-          <td mat-cell *matCellDef="let element">{{element.user_id}}</td>
+        <ng-container matColumnDef="owner">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Owner</th>
+          <td mat-cell *matCellDef="let element">{{element.owner}}</td>
         </ng-container>
-        <ng-container matColumnDef="parameter_file_id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Parameter Id</th>
-          <td mat-cell *matCellDef="let element">{{element.parameter_file_id}}</td>
+        <ng-container matColumnDef="parameter_setup">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Parameter Setup</th>
+          <td mat-cell *matCellDef="let element">{{element.parameter_setup}}</td>
         </ng-container>
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>

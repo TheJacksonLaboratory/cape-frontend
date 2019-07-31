@@ -14,7 +14,7 @@ import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.
   styleUrls: ['./job.component.scss']
 })
 export class JobComponent implements OnInit, OnDestroy {
-  columnsToDisplay = ['id', 'name', 'date_created', 'user_id', 'parameter_file_id', 'status', 'actions'];
+  columnsToDisplay = ['id', 'date_created', 'owner', 'parameter_setup', 'status', 'actions'];
 
   dataSource: MatTableDataSource<Job>;
   expandedElement: Job | null;
@@ -94,6 +94,14 @@ export class JobComponent implements OnInit, OnDestroy {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  /**
+   * get the Job owner
+   * @param element job element
+   */
+  getJobOwner(element: any) {
+    return this.jobService.getJobOwner(element.id);
   }
 
   /**
