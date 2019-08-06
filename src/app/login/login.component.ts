@@ -38,7 +38,11 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
 
-  login(): void {
+  /**
+   * 
+   * @param authWithLDAP if true, login with LDAP
+   */
+  login(authWithLDAP): void {
     this.submitted = true;
     // stop here if form is invalid
     if (this.username === undefined || this.password === undefined) {
@@ -46,7 +50,7 @@ export class LoginComponent implements OnInit {
     }
     this.error = '';
     this.loading = true;
-    this.authenticationService.login(this.username, this.password)
+    this.authenticationService.login(this.username, this.password, authWithLDAP)
       .pipe(first())
       .subscribe(
         data => {
@@ -66,7 +70,7 @@ export class LoginComponent implements OnInit {
   onKey(event: any) {
     // if enter key is pressed
     if (event.keyCode === 13) {
-      this.login();
+      this.login(true);
     }
   }
 }

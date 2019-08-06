@@ -24,7 +24,11 @@
 
     </form>
     <mat-card-actions class="center">
-      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login()"
+      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login(true)"
+        color="primary">Jax User Login</button>
+    </mat-card-actions>
+    <mat-card-actions class="center">
+      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login(false)"
         color="primary">Login</button>
     </mat-card-actions>
   </mat-card-content>
