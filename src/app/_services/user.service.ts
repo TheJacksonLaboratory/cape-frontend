@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { throwError } from 'rxjs';
 import 'rxjs/add/operator/catch';
@@ -36,8 +36,9 @@ export class UserService {
             .catch(UserService._handleError);
     }
 
-    register(user: User) {
-        return this.http.post(`${environment.API_URL}/login/users/register`, user)
+    register(user: any) {
+        return this.http.post(`${environment.API_URL}/user/register`, user,
+            { headers: new HttpHeaders({ 'Content-Type': 'application/json' })})
             .catch(UserService._handleError);
     }
 

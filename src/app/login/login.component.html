@@ -1,7 +1,7 @@
 ﻿﻿<mat-card class="login-card">
 
   <mat-card-header>
-    <mat-card-title>Login</mat-card-title>
+    <mat-card-title>CAPE Login</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
@@ -18,18 +18,22 @@
       <div fxLayout="row" fxLayoutAlign="center" class="spinner" *ngIf="loading">
         <mat-progress-bar mode="query"></mat-progress-bar>
       </div>
+      <div class="login-alert" *ngIf="alert.length">{{alert}}</div>
       <div class="login-error" *ngIf="error.length">
         {{error}}
       </div>
 
     </form>
     <mat-card-actions class="center">
-      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login(true)"
-        color="primary">Jax User Login</button>
+      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login(true)" color="primary">Jax User
+        Login</button>
     </mat-card-actions>
     <mat-card-actions class="center">
       <button class="login-button" [disabled]="loading" mat-raised-button (click)="login(false)"
         color="primary">Login</button>
     </mat-card-actions>
+    <p>You don't have an account?
+        <a routerLink="/register" class="btn btn-link">Register</a>
+    </p>
   </mat-card-content>
 </mat-card>

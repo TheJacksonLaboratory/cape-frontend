@@ -1,8 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatFormFieldModule, MatInputModule, MatCardModule, MatIconModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { UserProfileComponent } from './user-profile.component';
-import { MatFormFieldModule, MatInputModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthenticationService } from 'src/app/_services';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
@@ -11,10 +15,19 @@ describe('UserProfileComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        MatCardModule,
+        FormsModule,
         MatFormFieldModule,
+        ReactiveFormsModule,
         MatInputModule,
+        MatIconModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
         BrowserAnimationsModule],
-      declarations: [ UserProfileComponent ]
+      declarations: [ UserProfileComponent ],
+      providers: [
+        AuthenticationService
+      ]
     })
     .compileComponents();
   }));

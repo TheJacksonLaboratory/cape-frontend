@@ -24,7 +24,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ParametersModule } from './parameters';
 import { SharedModule } from './shared/shared.module';
 import { AuthGuard } from './_guards';
-import { fakeBackendProvider } from './_helpers/fake-backend';
+import { fakeBackendProvider } from './_helpers/fake-backend';;
+import { RegisterComponent } from './register/register.component'
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { fakeBackendProvider } from './_helpers/fake-backend';
         BaseLayoutComponent,
         FooterComponent,
         SidebarComponent,
-        NavbarComponent
+        NavbarComponent,
+        RegisterComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
