@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
 
 import { AlertService, UserService } from '../_services';
+import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +23,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -52,12 +55,26 @@ export class RegisterComponent implements OnInit {
       .subscribe(
         data => {
           this.alertService.success('Registration successful', true);
-          this.router.navigate(['/login']);
+          // Open dialog to let user know of successful registration
+          const msgData = { 'title': 'Registration successful' };
+          msgData['description'] = data['message'];
+          this.openResultDialog(msgData);
         },
         error => {
           this.alertService.error(error);
           this.error = error;
           this.loading = false;
         });
+  }
+
+  private openResultDialog(data: any) {
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      width: '400px',
+      data: data
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.router.navigate(['/login']);
+      console.log(result);
+    });
   }
 }

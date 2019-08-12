@@ -37,12 +37,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // reset login status
     this.authenticationService.logout();
-    this.alertSub = this.alertService.getMessage().subscribe(msg => {
-      this.alert = msg;
-      if (msg !== undefined && msg.type === 'error') {
-        this.error = msg.message;
-      } else if (msg !== undefined && msg.type === 'alert') {
-        this.alert = msg.message;
+    this.alertSub = this.alertService.getMessage().subscribe(alert => {
+      this.alert = alert;
+      if (alert !== undefined && alert.type === 'error') {
+        this.error = alert.message;
+      } else if (alert !== undefined && alert.type === 'success') {
+        this.alert = alert.message;
       }
     });
     // get return url from route parameters or default to '/'
