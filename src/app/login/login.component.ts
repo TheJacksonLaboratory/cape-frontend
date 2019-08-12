@@ -39,6 +39,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authenticationService.logout();
     this.alertSub = this.alertService.getMessage().subscribe(msg => {
       this.alert = msg;
+      if (msg !== undefined && msg.type === 'error') {
+        this.error = msg.message;
+      } else if (msg !== undefined && msg.type === 'alert') {
+        this.alert = msg.message;
+      }
     });
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
@@ -67,8 +72,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigate([this.returnUrl]);
         },
         error => {
-          this.error = error;
-          this.alertService.error(error);
+          this.error = error.message;
           this.loading = false;
         });
   }
