@@ -44,7 +44,7 @@
         <div class="form-group">
             <mat-form-field matTooltip="Password">
                 <input name="password" matInput placeholder="Password" formControlName="password"
-                    [type]="hide ? 'password' : 'text'" (keyup)="onKey($event)" required>
+                    [type]="hide ? 'password' : 'text'" required>
                 <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                     <div *ngIf="f.password.errors.required">Password is required</div>
                     <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
