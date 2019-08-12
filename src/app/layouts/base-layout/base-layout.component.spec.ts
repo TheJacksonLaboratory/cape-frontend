@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService } from 'src/app/_services';
 
-fdescribe('BaseLayoutComponent', () => {
+describe('BaseLayoutComponent', () => {
   let component: BaseLayoutComponent;
   let fixture: ComponentFixture<BaseLayoutComponent>;
 
@@ -41,5 +41,13 @@ fdescribe('BaseLayoutComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

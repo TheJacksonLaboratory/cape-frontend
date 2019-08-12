@@ -4,7 +4,7 @@ import { MessageDialogComponent } from './message-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-fdescribe('MessageDialogComponent', () => {
+describe('MessageDialogComponent', () => {
   let component: MessageDialogComponent;
   let fixture: ComponentFixture<MessageDialogComponent>;
 

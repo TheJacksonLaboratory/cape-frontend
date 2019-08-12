@@ -3,13 +3,14 @@ import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogRef, MAT
 import { HttpClient } from '@angular/common/http';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { saveAs } from 'file-saver';
 
 import { DataFilesService, AlertService } from '../_services';
 import { DataFile } from '../_models/datafile';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 import { Parameters } from '../_models/parameters';
+import { JobService } from '../_services/job.service';
 
 
 @Component({
@@ -34,10 +35,10 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   loading = false;
   private dataFileSub: Subscription;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
 
-  constructor(private http: HttpClient, private dataFilesService: DataFilesService,
+  constructor(private http: HttpClient, private dataFilesService: DataFilesService, private jobService: JobService,
     private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef,
     private router: Router) { }
     // public dialogRef: MatDialogRef<MessageDialogComponent>
@@ -149,7 +150,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
    * @param element row element
    */
   runParameterFile(element: any) {
-    // TODO
+    this.openCreateRunJobDialog(element);
   }
 
   /**
@@ -159,13 +160,34 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   private openDeleteWarningDialog(element: any) {
     const msgData = { 'title': 'Delete Parameter File' };
     msgData['description'] = 'Delete the Parameter File named "' + element.title + '" ?';
+    const dataFileService = this.dataFilesService.deleteDataFile(element.id, element.user_id);
+    this.openDialog(msgData, dataFileService);
+  }
+
+  /**
+   * Dialog used to display a confirmation to the user before applying the wanted action
+   * @param data message to pass to dialog
+   */
+  private openCreateRunJobDialog(element: any) {
+    const msgData = { 'title': 'Create and Run Job with parameter setup' };
+    msgData['description'] = 'Create and run Job with the parameter setup named "' + element.title + '" ?';
+    const jobService = this.jobService.createRunJob(element.id);
+    this.openDialog(msgData, jobService);
+    this.router.navigate(['jobs']);
+  }
+
+  /**
+   * Dialog used to display a confirmation to the user before applying the wanted action
+   * @param data message to pass to dialog
+   */
+  private openDialog(msgData: any, service: Observable<any>) {
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       width: '400px',
       data: msgData
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'ok') {
-        const resp = this.dataFilesService.deleteDataFile(element.id, element.user_id).subscribe(data => {
+        service.subscribe(data => {
           msgData['description'] = data['message'];
           this.openResultDialog(msgData);
         }, error => {

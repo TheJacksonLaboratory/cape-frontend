@@ -11,7 +11,8 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Select plot</mat-label>
-      <mat-select placeholder="Select plot" (selectionChange)="setSelectPlot()" [(value)]="plotType">
+      <mat-select placeholder="Select plot" (selectionChange)="setSelectPlot()" [(value)]="plotType"
+        matTooltip="Which type of plot will be displayed in the viewer panel">
         <mat-option *ngFor="let plotType of plotTypes" [value]="plotType">
           {{ plotType }}
         </mat-option>
@@ -24,7 +25,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Select file</mat-label>
       <mat-select placeholder="Select file" (selectionChange)="setDataFileSelected(fileSelected)"
-        [(value)]="fileSelected">
+        [(value)]="fileSelected" matTooltip="The data file to be analyzed">
         <mat-option *ngFor="let fileSelected of files" [value]="fileSelected">
           {{ fileSelected.filename }}
         </mat-option>
@@ -33,7 +34,8 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Color by</mat-label>
-      <mat-select placeholder="Color by" (selectionChange)="setColorBy()" [(value)]="colorBy">
+      <mat-select placeholder="Color by" (selectionChange)="setColorBy()" [(value)]="colorBy"
+        matTooltip="If the viewer panel plot has points, choose a variable to color them by; can be a factor (like sex) or quantitative (like age or insulin level)">
         <mat-option *ngFor="let selection of phenotypes" [value]="selection.name">{{ selection.name }}</mat-option>
       </mat-select>
     </mat-form-field>

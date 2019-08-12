@@ -4,7 +4,7 @@ import { DescriptionComponent } from './description.component';
 import { NgxMdModule } from 'ngx-md';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-fdescribe('DescriptionComponent', () => {
+describe('DescriptionComponent', () => {
   let component: DescriptionComponent;
   let fixture: ComponentFixture<DescriptionComponent>;
 

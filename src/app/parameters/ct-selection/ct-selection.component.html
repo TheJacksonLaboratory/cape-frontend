@@ -4,16 +4,16 @@
       <app-main-selection>loading</app-main-selection>
       <div class="row">
         <div class="margin">
-          <app-tree [title]="getCovariateTitle()" [description]="getCovariateDescription()">loading</app-tree>
+          <app-tree [title]="getCovariateTitle()" [description]="getCovariateDescription()" matTooltip="Select variables to be used as covariates. can be factors or quantitative">loading</app-tree>
         </div>
         <div class="margin">
-          <app-tree [title]="getTraitTitle()" [description]="getTraitDescription()">loading</app-tree>
+          <app-tree [title]="getTraitTitle()" [description]="getTraitDescription()" matTooltip="Select variables to be analyzed in CAPE">loading</app-tree>
         </div>
       </div>
       <div class="margin">
         <p>There are {{ numberOfIndividuals }} individuals with the selected traits measured.</p>
 
-        <div class="row">
+        <div class="row" matTooltip="Select whether to normalize (rank Z normalize) and/or mean center the traits. Both are suggested, particularly if analyzing eigentraits">
           <p>Adjust Phenotypes:</p>
           <mat-checkbox class="margin" [(ngModel)]="normalize" (click)="setNormalize()">Normalize</mat-checkbox>
           <mat-checkbox class="margin" [(ngModel)]="meanCenter" (click)="setMeanCenter()">Mean Center</mat-checkbox>
@@ -22,7 +22,7 @@
         <div class="row">
           <mat-form-field appearance="outline">
             <mat-label>Traits to scan</mat-label>
-            <mat-select placeholder="Trait selected" [(ngModel)]="traitSelected" (selectionChange)="setTraitsToScan()">
+            <mat-select placeholder="Trait selected" [(ngModel)]="traitSelected" (selectionChange)="setTraitsToScan()" matTooltip="Select whether to analyze eigentraits (composite traits) or individual traits">
               <mat-option *ngFor="let traitSelected of traitsToScan" [value]="traitSelected">
                 {{ traitSelected }}
               </mat-option>
@@ -37,16 +37,12 @@
           </div>
           <mat-form-field appearance="outline">
             <mat-label>P value correction</mat-label>
-            <mat-select placeholder="P value correction" [(ngModel)]="pValueCorrection"
-              (selectionChange)="setPValueCorrection()">
+            <mat-select placeholder="P value correction" [(ngModel)]="pValueCorrection" (selectionChange)="setPValueCorrection()" matTooltip="Select the method of p value correction">
               <mat-option *ngFor="let pValueCorrection of pValueCorrectionList" [value]="pValueCorrection">
                 {{ pValueCorrection }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <button mat-icon-button color="primary" matTooltip="More info..." (click)="openDetailsDialog()">
-            <mat-icon>more</mat-icon>
-          </button>
         </div>
       </div>
     </div>

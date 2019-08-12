@@ -90,7 +90,7 @@ class MockDataFilesService {
     }
 }
 
-fdescribe('DataFilesComponent', () => {
+describe('DataFilesComponent', () => {
     let component: DataFilesComponent;
     let fixture: ComponentFixture<DataFilesComponent>;
     let dataFilesService: DataFilesService;
@@ -162,4 +162,12 @@ fdescribe('DataFilesComponent', () => {
         // check that downloaded parameter file (yaml file) is equal to mock data input
         expect(component.getDataFiles()[0].parameter_files[0].yaml_file).toBe(PARAMETER_FILES1[0].yaml_file);
     }));
+
+    afterAll(() => {
+        TestBed.resetTestingModule();
+    });
+
+    afterEach(() => {
+        TestBed.resetTestingModule();
+    });
 });

@@ -1,6 +1,8 @@
+import { TestBed } from '@angular/core/testing';
+
 import { ParametersModule } from './parameters.module';
 
-fdescribe('ParametersModule', () => {
+describe('ParametersModule', () => {
   let parametersModule: ParametersModule;
 
   beforeEach(() => {
@@ -9,5 +11,13 @@ fdescribe('ParametersModule', () => {
 
   it('should create an instance', () => {
     expect(parametersModule).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

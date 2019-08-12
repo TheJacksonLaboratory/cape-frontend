@@ -4,7 +4,7 @@ import { ReportGridComponent } from './report-grid.component';
 import { ReportSummaryComponent } from '../report-summary/report-summary.component';
 import { MatCardModule } from '@angular/material';
 
-fdescribe('ReportGridComponent', () => {
+describe('ReportGridComponent', () => {
   let component: ReportGridComponent;
   let fixture: ComponentFixture<ReportGridComponent>;
 
@@ -29,5 +29,13 @@ fdescribe('ReportGridComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

@@ -10,7 +10,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TreeSelectionService } from 'src/app/_services/tree-selection.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('TreeComponent', () => {
+describe('TreeComponent', () => {
   let component: TreeComponent;
   let fixture: ComponentFixture<TreeComponent>;
 
@@ -49,5 +49,13 @@ fdescribe('TreeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

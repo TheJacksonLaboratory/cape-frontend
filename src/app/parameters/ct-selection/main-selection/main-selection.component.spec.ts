@@ -8,7 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('MainSelectionComponent', () => {
+describe('MainSelectionComponent', () => {
   let component: MainSelectionComponent;
   let fixture: ComponentFixture<MainSelectionComponent>;
 
@@ -40,5 +40,13 @@ fdescribe('MainSelectionComponent', () => {
   // })));
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 });

@@ -8,11 +8,11 @@
 
     <form id="loginForm">
       <mat-form-field appearance="outline" matTooltip="Username">
-        <input name="username" matInput placeholder="Username" [(ngModel)]="username" required>
+        <input name="username" matInput placeholder="Username" [(ngModel)]="username" (keyup)="onKey($event)" required>
       </mat-form-field>
       <mat-form-field appearance="outline" matTooltip="Password">
         <input name="password" matInput placeholder="Enter your password" [(ngModel)]="password"
-          [type]="hide ? 'password' : 'text'" required>
+          [type]="hide ? 'password' : 'text'" (keyup)="onKey($event)" required>
         <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       </mat-form-field>
       <div fxLayout="row" fxLayoutAlign="center" class="spinner" *ngIf="loading">
