@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@ang
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, interval } from 'rxjs';
 
 import { JobService, AlertService } from '../_services';
 import { Job } from '../_models/job';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
+import { startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-job',
@@ -23,8 +24,8 @@ export class JobComponent implements OnInit, OnDestroy {
   loading = false;
   private jobSub: Subscription;
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   constructor(private http: HttpClient, private jobService: JobService,
     private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef,
@@ -33,14 +34,17 @@ export class JobComponent implements OnInit, OnDestroy {
   // @Inject(MAT_DIALOG_DATA) public data: any
 
   ngOnInit() {
-    this.jobSub = this.jobService.getJobs().subscribe(resp => {
-      this.dataSource = new MatTableDataSource(resp);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }, err => {
-      // TODO: display our server error dialog?
-      console.log(err);
-    });
+    this.jobSub = interval(5000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.jobService.getJobs())).subscribe(resp => {
+          this.dataSource = new MatTableDataSource(resp);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }, err => {
+          // TODO: display our server error dialog?
+          console.log(err);
+        });
   }
 
   ngOnDestroy() {
@@ -70,9 +74,6 @@ export class JobComponent implements OnInit, OnDestroy {
     });
     this.changeDetectorRefs.detectChanges();
   }
-
-  //  isExpansionDetailRow = (i: number, row: Object) =>
-  //    row.hasOwnProperty('detailRow');
 
   /**
    * expand collapse a row
@@ -136,7 +137,7 @@ export class JobComponent implements OnInit, OnDestroy {
    */
   private openRunJobDialog(element: any) {
     const msgData = { 'title': 'Run Job with parameter setup' };
-    msgData['description'] = 'Run Job "' + element.name +  '" with the parameter setup id "' + element.parameter_file_id + '" ?';
+    msgData['description'] = 'Run Job id "' + element.id + '" with the parameter setup id "' + element.parameter_file_id + '" ?';
     const jobService = this.jobService.runJob(element.id);
     this.openDialog(msgData, jobService);
     this.router.navigate(['jobs']);
@@ -148,7 +149,7 @@ export class JobComponent implements OnInit, OnDestroy {
    */
   private openDeleteJobDialog(element: any) {
     const msgData = { 'title': 'Delete Job' };
-    msgData['description'] = 'Delete the Job named "' + element.name + '" ?';
+    msgData['description'] = 'Delete the Job with id "' + element.id + '" ?';
     const jobService = this.jobService.deleteJob(element.id);
     this.openDialog(msgData, jobService);
   }

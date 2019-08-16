@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     // reset login status
     this.authenticationService.logout();
     this.alertSub = this.alertService.getMessage().subscribe(alert => {
-      this.alert = alert;
       if (alert !== undefined && alert.type === 'error') {
         this.error = alert.message;
       } else if (alert !== undefined && alert.type === 'success') {
