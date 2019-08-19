@@ -25,12 +25,8 @@
 
     </form>
     <mat-card-actions class="center">
-      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login(true)" color="primary">Jax User
+      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login()" color="primary">User
         Login</button>
-    </mat-card-actions>
-    <mat-card-actions class="center">
-      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login(false)"
-        color="primary">Login</button>
     </mat-card-actions>
     <p>You don't have an account?
         <a routerLink="/register" class="btn btn-link">Register</a>

@@ -34,8 +34,13 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string, with_ldap: boolean) {
-    return this.http.post<any>(environment.API_URL + '/auth/login', { username, password, with_ldap }) // , this.httpOptions)
+  /**
+   * Login using LDAP authentication or using saved hashed password in DB
+   * @param username LDAP username or username in DB
+   * @param password pass
+   */
+  login(username: string, password: string) {
+    return this.http.post<any>(environment.API_URL + '/auth/login', { username, password }) // , this.httpOptions)
       .pipe(map(res => {
         // login successful if there's a jwt token in the response
         if (res && res.access_token) {

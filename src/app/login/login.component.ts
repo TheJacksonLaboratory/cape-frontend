@@ -53,10 +53,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
-   * @param authWithLDAP if true, login with LDAP
+   * Login to the App
    */
-  login(authWithLDAP): void {
+  login(): void {
     this.submitted = true;
     // stop here if form is invalid
     if (this.username === undefined || this.password === undefined) {
@@ -64,7 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     this.error = '';
     this.loading = true;
-    this.authenticationService.login(this.username, this.password, authWithLDAP)
+    this.authenticationService.login(this.username, this.password)
       .pipe(first())
       .subscribe(
         data => {
@@ -87,7 +86,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   onKey(event: any) {
     // if enter key is pressed
     if (event.keyCode === 13) {
-      this.login(true);
+      this.login();
     }
   }
 }
