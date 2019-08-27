@@ -1,0 +1,66 @@
+<mat-card class="register-card">
+
+    <mat-card-header>
+        <mat-card-title>Register</mat-card-title>
+    </mat-card-header>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <mat-form-field matTooltip="First Name">
+                <input matInput type="text" placeholder="First Name" formControlName="first_name" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.first_name.errors }" />
+                <div *ngIf="submitted && f.first_name.errors" class="invalid-feedback">
+                    <div *ngIf="f.first_name.errors.required">First Name is required</div>
+                </div>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field matTooltip="Last Name">
+                <input matInput type="text" placeholder="Last Name" formControlName="last_name" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.last_name.errors }" />
+                <div *ngIf="submitted && f.last_name.errors" class="invalid-feedback">
+                    <div *ngIf="f.last_name.errors.required">Last Name is required</div>
+                </div>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field matTooltip="Username">
+                <input matInput type="text" placeholder="Username" formControlName="username" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                    <div *ngIf="f.username.errors.required">Username is required</div>
+                </div>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field matTooltip="Email">
+                <input matInput type="email" placeholder="Email" formControlName="email" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">Email is required</div>
+                </div>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field matTooltip="Password">
+                <input name="password" matInput placeholder="Password" formControlName="password"
+                    [type]="hide ? 'password' : 'text'" required>
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                    <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <button [disabled]="loading" class="btn btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Register
+            </button>
+            <a routerLink="/login" class="btn btn-link">Cancel</a>
+        </div>
+        <div class="register-error" *ngIf="error.length">
+            {{error}}
+        </div>
+    </form>
+</mat-card>

@@ -36,3 +36,9 @@
   color:#ff3300;
   text-align: left;
 }
+
+.login-alert {
+  margin-bottom: 20px;
+  color: green;
+  text-align: left;
+}

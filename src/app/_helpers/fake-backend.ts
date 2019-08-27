@@ -9,8 +9,8 @@ import { User, Role } from '../_models';
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const users: User[] = [
-            { id: 1, email: 'admin@test.com', username: 'admin', password: 'admin', firstName: 'Admin', lastName: 'User', role: Role.Admin },
-            { id: 2, email: 'user@test.com', username: 'user', password: 'user', firstName: 'Normal', lastName: 'User', role: Role.User }
+            { id: 1, email: 'admin@test.com', username: 'admin', password: 'admin', first_name: 'Admin', last_name: 'User', role: Role.Admin },
+            { id: 2, email: 'user@test.com', username: 'user', password: 'user', first_name: 'Normal', last_name: 'User', role: Role.User }
         ];
 
         const authHeader = request.headers.get('Authorization');
@@ -28,8 +28,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return ok({
                     id: user.id,
                     username: user.username,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
+                    firstName: user.first_name,
+                    lastName: user.last_name,
                     role: user.role,
                     access_token: `fake-jwt-token.${user.role}`
                 });

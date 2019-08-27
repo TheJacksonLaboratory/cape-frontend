@@ -20,7 +20,7 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   public static TRAIT_TITLE = 'Trait selection';
 
   traitsToScan = ['Eigentraits', 'Raw Traits'];
-  pValueCorrectionList = ['none', 'holm', 'hochberg', 'hommel', 'bonferroni', 'BH', 'BY', 'FDR'];
+  pValueCorrectionList = ['none', 'holm', 'hochberg', 'hommel', 'bonferroni', 'BH', 'BY', 'fdr'];
 
   // parameters
   normalize = true;
