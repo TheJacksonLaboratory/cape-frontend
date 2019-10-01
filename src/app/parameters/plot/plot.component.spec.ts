@@ -7,7 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('PlotComponent', () => {
+describe('PlotComponent', () => {
   let component: PlotComponent;
   let fixture: ComponentFixture<PlotComponent>;
 
