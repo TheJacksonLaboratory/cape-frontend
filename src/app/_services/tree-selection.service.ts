@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, BehaviorSubject, AsyncSubject } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class TreeSelectionService {
 
-    // Observable checkedNodes sources
-    private traitSelectionSource = new Subject<Set<string>>();
-    private covariabteSelectionSource = new Subject<Set<string>>();
+    private traitSelectionSource = new BehaviorSubject<Set<string>>(null);
+    private covariateSelectionSource = new BehaviorSubject<Set<string>>(null);
 
     setTraitSelected(traits: Set<string>) {
         this.traitSelectionSource.next(traits);
     }
     setCovariateSelected(covariates: Set<string>) {
-        this.covariabteSelectionSource.next(covariates);
+        this.covariateSelectionSource.next(covariates);
     }
 
     getTraitSelected(): Observable<Set<string>> {
-        return this.traitSelectionSource.asObservable();
+        return this.traitSelectionSource;
     }
     getCovariateSelected(): Observable<Set<string>> {
-        return this.covariabteSelectionSource.asObservable();
+        return this.covariateSelectionSource;
     }
 }

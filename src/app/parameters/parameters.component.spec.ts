@@ -18,6 +18,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertService } from '../_services/alert.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PlotComponent } from './plot/plot.component';
+import { PlotlyModule } from 'angular-plotly.js';
 
 describe('ParametersComponent', () => {
   let component: ParametersComponent;
@@ -44,7 +46,8 @@ describe('ParametersComponent', () => {
         MatTreeModule,
         RouterTestingModule,
         HttpClientModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        PlotlyModule
       ],
       declarations: [
         ParametersComponent,
@@ -53,6 +56,7 @@ describe('ParametersComponent', () => {
         MarkerSelectionComponent,
         PairScanComponent,
         MainSelectionComponent,
+        PlotComponent,
         TreeComponent
       ],
       providers: [

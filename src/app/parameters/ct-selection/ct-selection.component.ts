@@ -13,7 +13,7 @@ import { TreeSelectionService } from '../../_services/tree-selection.service';
   selector: 'app-ct-selection',
   templateUrl: './ct-selection.component.html',
   styleUrls: ['./ct-selection.component.scss'],
-  providers: [TreeSelectionService]
+  // providers: [TreeSelectionService]
 })
 export class CtSelectionComponent implements OnInit, OnDestroy {
   public static COVARIATE_TITLE = 'Covariate selection';

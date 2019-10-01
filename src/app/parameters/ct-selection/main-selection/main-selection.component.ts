@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ParametersService, DataFilesService } from 'src/app/_services';
 import { Parameters } from '../../../_models/parameters';
+import { PlotType } from '../../../_models/plot-type';
 import { DataFile } from 'src/app/_models/datafile';
 import { Phenotype } from 'src/app/_models/phenotype';
 
@@ -18,7 +19,7 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
   files: DataFile[];
   fileSelected: DataFile;
 
-  plotTypes = ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
+  plotTypes = Object.keys(PlotType); // ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
 
   plotType: string;
   colorBy: string;
@@ -91,6 +92,7 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
       this.dataFileService.getPhenotypesPerDataFile(selected.id).subscribe(pheno => {
         this.phenotypes = pheno;
       });
+      this.dataFileService.setSelectedDataFile(selected);
       this.colorBy = '';
       this.fileSelected = selected;
     }

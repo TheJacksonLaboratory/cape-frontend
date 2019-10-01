@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 import { Parameters } from '../_models/parameters';
 import { DataFile } from '../_models/datafile';
 import { Phenotype } from '../_models/phenotype';
+import { PhenotypeValue } from '../_models/phenotype-value';
+import { PlotType } from '../_models/plot-type';
 
 
 @Injectable({ providedIn: 'root' })
@@ -18,6 +20,12 @@ export class DataFilesService {
 
     // used to hold the updated phenotype list
     phenotypesSubject = new Subject<Phenotype[]>();
+
+    // used to hold the selected datafile
+    selectedDataFileSubject = new Subject<DataFile>();
+
+    // selected plotType
+    selectedPlotTypeSubject = new Subject<PlotType>();
 
     // http options used for making API calls
     private httpOptions: any;
@@ -76,7 +84,7 @@ export class DataFilesService {
         return this.http.get<DataFile[]>(environment.API_URL + '/datafiles/get_datafiles_parameters')
             .catch(DataFilesService._handleError);
     }
-  
+
     /**
      * Get the list of parameter files
      */
@@ -86,7 +94,7 @@ export class DataFilesService {
     }
 
     /**
-     * 
+     * Gets the list of phenotypes per data file
      * @param dataFileId Returns the list of phenotypes per datafile
      */
     getPhenotypesPerDataFile(dataFileId: number) {
@@ -119,4 +127,46 @@ export class DataFilesService {
                         .catch(DataFilesService._handleError);
     }
 
+    /**
+     * Get all values for the given phenotype of a datafile
+     * @param dataFileId
+     * @param phenotypeName
+     */
+    getPhenotypeValues(dataFileId: number, phenotypeName: string): Observable<PhenotypeValue[]> {
+        let params = new HttpParams();
+        params = params.append('datafile_id', String(dataFileId));
+        params = params.append('phenotype_name', String(phenotypeName));
+        return this.http.get<PhenotypeValue[]>(environment.API_URL + '/datafiles/get_phenotype_values', { params: params })
+                        .catch(DataFilesService._handleError);
+    }
+
+    /**
+     * Sets the selected Datafile
+     * @param selectedDataFile data file
+     */
+    setSelectedDataFile(selectedDataFile: DataFile) {
+        this.selectedDataFileSubject.next(selectedDataFile);
+    }
+
+    /**
+     * Returns the selected DataFile
+     */
+    getSelectedDataFile(): Observable<DataFile> {
+        return this.selectedDataFileSubject.asObservable();
+    }
+
+    /**
+     * Sets the selected plot type
+     * @param plotType plot type
+     */
+    setSelectedPlotType(plotType: PlotType) {
+        this.selectedPlotTypeSubject.next(plotType);
+    }
+
+    /**
+     * Returns the selected pot type
+     */
+    getSelectedPlotType(): Observable<PlotType> {
+        return this.selectedPlotTypeSubject.asObservable();
+    }
 }
