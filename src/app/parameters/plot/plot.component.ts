@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { HostListener } from '@angular/core';
+
 import { DataFilesService } from '../../_services/data-files.service';
 import { PhenotypeValue } from 'src/app/_models/phenotype-value';
-import { ParametersService } from '../../_services/parameters.service';
 import { TreeSelectionService } from 'src/app/_services/tree-selection.service';
-import { update } from 'plotly.js';
-import { polygonArea } from 'd3';
+import { PlotType } from '../../_models/plot-type';
 
 
 @Component({
@@ -34,12 +34,16 @@ export class PlotComponent implements OnInit, OnDestroy {
   private plotTypeSubscription: Subscription;
   private plotType: string;
 
+  private innerHeight: any;
+  private innerWidth: any;
+
   public graph = {
     data: [],
     layout: {}
   };
 
   constructor(private dataFileService: DataFilesService, private treeSelectionService: TreeSelectionService) {
+    this.onResize();
   }
 
   ngOnInit() {
@@ -49,6 +53,7 @@ export class PlotComponent implements OnInit, OnDestroy {
     });
     this.plotTypeSubscription = this.dataFileService.getSelectedPlotType().subscribe(plotType => {
       this.plotType = plotType;
+      this.updatePlot();
     });
     this.traitSelectionSubscription = this.treeSelectionService.getTraitSelected().subscribe(traits => {
       this.traitSelection = traits;
@@ -91,6 +96,25 @@ export class PlotComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Catch window resize event
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event?) {
+    this.innerHeight = window.innerHeight;
+    this.innerWidth = window.innerWidth;
+    // update layout of plot
+    let width = (this.innerWidth - 600) / 2;
+    if (width < 400) {
+      width = 400;
+    }
+    this.graph.layout['width'] = width;
+  }
+
+  /**
+   * call the API to get the phenotype data values
+   * @param phenotypeName phenotype
+   */
   requestUpdate(phenotypeName: string) {
     if (this.selectedDataFileId === undefined) {
       return;
@@ -102,31 +126,33 @@ export class PlotComponent implements OnInit, OnDestroy {
       let inc = 1;
       for (let i = 0; i < resp.length; i++) {
         const val = parseFloat(resp[i]['value']);
+        inc++;
         if (!isNaN(val)) {
-          x_values.push(inc++);
+          x_values.push(inc);
           y_values.push(val);
         }
       }
       // add new phenotype values to map
       this.dataMap.set(phenotypeName, { x: x_values, y: y_values });
 
-    // plot
-    this.updatePlot();
+      // plot
+      this.updatePlot();
     });
   }
 
   updatePlot() {
-    const phenotypeNumber = this.dataMap.size;
-    const rows = this.getRowNumber(phenotypeNumber);
-    const columns = this.getColumnNumber(phenotypeNumber);
     const dataKeys = this.dataMap.keys();
     const phenotypeName = dataKeys.next()['value'];
     let data = [];
     let layout = {};
-    let inc = 0;
+    const phenotypeNumber = this.dataMap.size;
+
+    // One plot is shown
     if (phenotypeNumber === 1) {
       const values = this.dataMap.values().next();
-      data = [{
+      // Individual plotype = 1
+      if (this.plotType === PlotType.Individual) {
+        data = [{
           x: values['value'].x,
           y: values['value'].y,
           type: 'scattergl', // this very important to activate WebGL
@@ -141,54 +167,120 @@ export class PlotComponent implements OnInit, OnDestroy {
         }];
         layout = {
           autoexpand: 'true',
-          // autosize: 'true',
-          width: 600,
+          autosize: 'true',
+          width: (this.innerWidth - 600) / 2,
+          height: 600,
           margin: {
             autoexpand: 'true',
             margin: 0
           },
           offset: 0,
-         type: 'scattergl',
+          type: 'scattergl',
           title: phenotypeName, // Title of the graph
           hovermode: 'closest',
           xaxis: {
             title: 'Individual',
             linecolor: 'black',
-            linewidth: 2,
+            linewidth: 1,
             mirror: true,
             automargin: true
           },
           yaxis: {
             title: phenotypeName,
             linecolor: 'black',
-            linewidth: 2,
+            linewidth: 1,
             mirror: true,
             automargin: true
           }
         };
-    } else if (phenotypeNumber > 1) {
-      this.dataMap.forEach((value: {x, y}, key: string) => {
-        inc++;
-        data.push({
-          x: value.x,
-          y: value.y,
-          type: 'scattergl',
-          mode: 'markers',
-          name: key,
-          xaxis: 'x' + (inc),
-          yaxis: 'y' + (inc)
+      }
+      // Histogram plot type = 1
+      if (this.plotType === PlotType.Histogram) {
+        const trace0 = {
+          type: 'histogram',
+          x: values['value'].y,
+          opacity: 0.5,
+          color: 'blue',
+          marker: {
+            line: {
+              width: 1,
+              color: 'rgb(0, 0, 0)'
+            }
+          }
+        };
+        data = [trace0];
+        layout = {
+          type: 'histogram',
+          xaxis: {
+            title: phenotypeName,
+            linecolor: 'black',
+            linewidth: 1,
+            mirror: true,
+            automargin: true
+          },
+          yaxis: {
+            title: 'Frequency',
+            linecolor: 'black',
+            linewidth: 1,
+            mirror: true,
+            automargin: true
+          }
+        };
+      }
+    } else if (phenotypeNumber > 1) { // more than one plot is shown
+      const rows = this.getRowNumber(phenotypeNumber);
+      const columns = this.getColumnNumber(phenotypeNumber);
+      let inc = 0;
+      // Individual plotype  = n + 1
+      if (this.plotType === PlotType.Individual) {
+        this.dataMap.forEach((value: { x, y }, key: string) => {
+          inc++;
+          data.push({
+            x: value.x,
+            y: value.y,
+            type: 'scattergl',
+            mode: 'markers',
+            name: key,
+            xaxis: 'x' + (inc),
+            yaxis: 'y' + (inc)
+          });
         });
-      });
-      layout = {
-        grid: { rows: rows, columns: columns, pattern: 'independent'},
-        width: 600,
-      };
+        layout = {
+          grid: { rows: rows, columns: columns, pattern: 'independent' },
+          width: (this.innerWidth - 600) / 2,
+          height: 600,
+          autoexpand: 'true',
+          autosize: 'true',
+        };
+      }
+      // Histogram plot type = n + 1
+      if (this.plotType === PlotType.Histogram) {
+        this.dataMap.forEach((value: { x, y }, key: string) => {
+          inc++;
+          data.push({
+            x: value.y,
+            type: 'histogram',
+            opcacity: 0.5,
+            marker: {
+              line: {
+                width: 1,
+                color: 'rgb(0, 0, 0)'
+              }
+            },
+            name: key,
+            xaxis: 'x' + (inc),
+            yaxis: 'y' + (inc),
+          });
+        });
+        layout = {
+          grid: { rows: rows, columns: columns, pattern: 'independent' },
+          width: (this.innerWidth - 600) / 2,
+          height: 600,
+          autoexpand: 'true',
+          autosize: 'true',
+        };
+      }
     }
-
-    const config = {
-      responsive: true,
-      scrollZoom: true
-    };
     // update graph data and layout
     this.graph.data = data;
     this.graph.layout = layout;
@@ -203,7 +295,7 @@ export class PlotComponent implements OnInit, OnDestroy {
    */
   private getUpperSquareValue(value: number) {
     let result: number;
-    for (let i = 0; i < value; i ++) {
+    for (let i = 0; i < value; i++) {
       const pow = Math.pow(i, 2);
       if (pow > value) {
         result = i;

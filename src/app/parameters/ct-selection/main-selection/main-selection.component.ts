@@ -19,9 +19,9 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
   files: DataFile[];
   fileSelected: DataFile;
 
-  plotTypes = Object.keys(PlotType); // ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
+  plotTypes = Object.values(PlotType); // ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
 
-  plotType: string;
+  plotType: any;
   colorBy: string;
 
   titleFormControl = new FormControl('', [
@@ -116,6 +116,7 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
 
   setSelectPlot() {
     this.parameters.select_plot = this.plotType;
+    this.dataFileService.setSelectedPlotType(this.plotType);
   }
 
   setColorBy() {
