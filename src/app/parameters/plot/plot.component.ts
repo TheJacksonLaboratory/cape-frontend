@@ -28,7 +28,9 @@ export class PlotComponent implements OnInit, OnDestroy {
 
   // Map to store phenotype data selected
   private dataMap = new Map();
-  //
+  // Coefficient Matrix
+  private corrCoeffMatrix: [[]];
+
   private previousDataFileId: number;
   // plot type
   private plotTypeSubscription: Subscription;
@@ -53,6 +55,10 @@ export class PlotComponent implements OnInit, OnDestroy {
     });
     this.plotTypeSubscription = this.dataFileService.getSelectedPlotType().subscribe(plotType => {
       this.plotType = plotType;
+      this.updatePhenotypeDataMap(this.traitSelection);
+      if (this.plotType === PlotType.Heatmap || this.plotType === PlotType.Correlation) {
+        this.requestUpdateCorrelationCoeff(this.traitSelection);
+      }
       this.updatePlot();
     });
     this.traitSelectionSubscription = this.treeSelectionService.getTraitSelected().subscribe(traits => {
@@ -60,6 +66,9 @@ export class PlotComponent implements OnInit, OnDestroy {
       this.previousDataFileId = this.selectedDataFileId;
       if (traits !== null && traits.size > 0) {
         this.updatePhenotypeDataMap(this.traitSelection);
+        if (this.plotType === PlotType.Heatmap || this.plotType === PlotType.Correlation) {
+          this.requestUpdateCorrelationCoeff(this.traitSelection);
+        }
       } else {
         this.dataMap.clear();
         this.updatePlot();
@@ -74,12 +83,16 @@ export class PlotComponent implements OnInit, OnDestroy {
   }
 
   private updatePhenotypeDataMap(phenotypeNames: Set<string>) {
+    if (phenotypeNames === undefined || phenotypeNames === null) {
+      return;
+    }
     // check if datafile has changed
     if (this.previousDataFileId === this.selectedDataFileId) {
-      for (const phenoName of Array.from(phenotypeNames)) {
+      const array_phenotypes = Array.from(phenotypeNames);
+      for (const phenoName of array_phenotypes) {
         // check if entry exist already in map
         if (!this.dataMap.has(phenoName)) {
-          this.requestUpdate(phenoName);
+          this.requestUpdatePhenotypeValues(phenoName);
         }
       }
       // check if dataMap has phenotypes that have been deselected and delete them
@@ -115,7 +128,7 @@ export class PlotComponent implements OnInit, OnDestroy {
    * call the API to get the phenotype data values
    * @param phenotypeName phenotype
    */
-  requestUpdate(phenotypeName: string) {
+  requestUpdatePhenotypeValues(phenotypeName: string) {
     if (this.selectedDataFileId === undefined) {
       return;
     }
@@ -134,10 +147,26 @@ export class PlotComponent implements OnInit, OnDestroy {
       }
       // add new phenotype values to map
       this.dataMap.set(phenotypeName, { x: x_values, y: y_values });
-
       // plot
       this.updatePlot();
     });
+  }
+
+  /**
+   * Call the API to get the correlation coefficients for the list of selected phenotypes
+   * @param phenotypeNames array of phenotype names
+   */
+  requestUpdateCorrelationCoeff(phenotypeNames: Set<string>) {
+    if (phenotypeNames === undefined || phenotypeNames === null) {
+      return;
+    }
+    const array_phenotypes = Array.from(phenotypeNames);
+    if (array_phenotypes.length > 1) {
+      this.dataFileService.getPhenotypesCorrelations(this.selectedDataFileId, array_phenotypes).subscribe(resp => {
+        this.corrCoeffMatrix = resp['coefficients'];
+        this.updatePlot();
+      });
+    }
   }
 
   updatePlot() {
@@ -278,6 +307,151 @@ export class PlotComponent implements OnInit, OnDestroy {
           height: 600,
           autoexpand: 'true',
           autosize: 'true',
+        };
+      }
+      // Heatmap plot type = n + 1
+      if (this.plotType === PlotType.Heatmap) {
+        const values = Array.from(this.dataMap.keys());
+        data = [
+          {
+            z: this.corrCoeffMatrix,
+            x: values,
+            y: values,
+            type: 'heatmap',
+            colorscale: 'Viridis',
+            colorbar: {
+              x: 1.5
+            }
+          }
+        ];
+        const button_layer_1_height = 1.12;
+        const annotation_offset = 0.04;
+        const annotations = [
+          {
+            text: 'Colorscale:',
+            x: 0,
+            y: button_layer_1_height - annotation_offset,
+            yref: 'paper',
+            align: 'left',
+            showarrow: false
+          },
+      ];
+        const updatemenus = [
+          {
+            buttons: [
+              {
+                args: ['reversescale', true],
+                label: 'Reverse',
+                method: 'restyle'
+              },
+              {
+                args: ['reversescale', false],
+                label: 'Undo Reverse',
+                method: 'restyle'
+              }
+            ],
+            direction: 'down',
+            pad: { 'r': 10, 't': 10 },
+            showactive: true,
+            type: 'dropdown',
+            x: 0.25,
+            xanchor: 'left',
+            y: button_layer_1_height,
+            yanchor: 'top'
+          },
+          {
+            buttons: [
+              {
+                args: ['colorscale', 'Viridis'],
+                label: 'Viridis',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Electric'],
+                label: 'Electric',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Earth'],
+                label: 'Earth',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Hot'],
+                label: 'Hot',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Jet'],
+                label: 'Jet',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Portland'],
+                label: 'Portland',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Rainbow'],
+                label: 'Rainbow',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Blackbody'],
+                label: 'Blackbody',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Cividis'],
+                label: 'Cividis',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Picnic'],
+                label: 'Picnic',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Blues'],
+                label: 'Blues',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Reds'],
+                label: 'Reds',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'RdBu'],
+                label: 'RdBu',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Bluered'],
+                label: 'Bluered',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'YlOrRd'],
+                label: 'YlOrRd',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Greens'],
+                label: 'Greens',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'YlGnBu'],
+                label: 'YlGnBu',
+                method: 'restyle'
+              }, {
+                args: ['colorscale', 'Greys'],
+                label: 'Greys',
+                method: 'restyle'
+              }
+            ],
+            direction: 'down',
+            pad: { 'r': 10, 't': 10 },
+            showactive: true,
+            type: 'dropdown',
+            x: 0.70,
+            xanchor: 'left',
+            y: button_layer_1_height,
+            yanchor: 'top'
+          },
+        ];
+        layout = {
+          yaxis: {
+            side: 'right'
+          },
+          height: 600,
+          updatemenus: updatemenus,
+          annotations: annotations
         };
       }
     }

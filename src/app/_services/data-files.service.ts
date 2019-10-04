@@ -141,6 +141,23 @@ export class DataFilesService {
     }
 
     /**
+     * Get the Pearson Coefficients matrix for the given phenotypes
+     * @param dataFileId datafile id
+     * @param phenotypeNames array of phenotype names in order
+     */
+    getPhenotypesCorrelations(dataFileId: number, phenotypeNames: string[]): any {
+        let params = new HttpParams();
+        params = params.append('datafile_id', String(dataFileId));
+        let names: string;
+        for (const name of phenotypeNames) {
+            names = names !== undefined ? names + ',' + name : name;
+        }
+        params = params.append('phenotype_names', String(names));
+        return this.http.get<any>(environment.API_URL + '/datafiles/get_pearson_coefficients', { params: params })
+                        .catch(DataFilesService._handleError);
+    }
+
+    /**
      * Sets the selected Datafile
      * @param selectedDataFile data file
      */
