@@ -39,7 +39,7 @@ export class PlotComponent implements OnInit, OnDestroy {
 
   private previousDataFileId: number;
   // plot options
-  private plotType: PlotType;
+  plotType: PlotType;
   plotTypes = Object.values(PlotType); // ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
   colorBy: string;
   private colorByPhenotypeValues: any[];
