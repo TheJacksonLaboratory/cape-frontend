@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { HostListener } from '@angular/core';
 
 import { DataFilesService } from '../../_services/data-files.service';
 import { PhenotypeValue } from 'src/app/_models/phenotype-value';
 import { TreeSelectionService } from 'src/app/_services/tree-selection.service';
 import { PlotType } from '../../_models/plot-type';
+import { Phenotype } from 'src/app/_models';
 
 
 @Component({
@@ -22,6 +22,12 @@ export class PlotComponent implements OnInit, OnDestroy {
   private selectedDataFileId: number;
   private selectedPhenotypeName: string;
 
+  // data structure used to store all correlations combinations of traits selected
+  private combinationsResult: Set<string>[];
+
+  // phenotypes
+  private phenotypesSubscription: Subscription;
+  phenotypes: Phenotype[];
   private traitSelectionSubscription: Subscription;
   private traitSelection: Set<string>;
   // private traitsSelected: string[];
@@ -32,12 +38,12 @@ export class PlotComponent implements OnInit, OnDestroy {
   private corrCoeffMatrix: [[]];
 
   private previousDataFileId: number;
-  // plot type
-  private plotTypeSubscription: Subscription;
-  private plotType: string;
-
-  private innerHeight: any;
-  private innerWidth: any;
+  // plot options
+  private plotType: PlotType;
+  plotTypes = Object.values(PlotType); // ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
+  colorBy: string;
+  private colorByPhenotypeValues: any[];
+  // private selectedColorBy: string;
 
   public graph = {
     data: [],
@@ -45,21 +51,16 @@ export class PlotComponent implements OnInit, OnDestroy {
   };
 
   constructor(private dataFileService: DataFilesService, private treeSelectionService: TreeSelectionService) {
-    this.onResize();
+    // this.onResize();
   }
 
   ngOnInit() {
     this.dataFileSub = this.dataFileService.getSelectedDataFile().subscribe(datafile => {
       this.previousDataFileId = this.selectedDataFileId;
       this.selectedDataFileId = datafile.id;
-    });
-    this.plotTypeSubscription = this.dataFileService.getSelectedPlotType().subscribe(plotType => {
-      this.plotType = plotType;
-      this.updatePhenotypeDataMap(this.traitSelection);
-      if (this.plotType === PlotType.Heatmap || this.plotType === PlotType.Correlation) {
-        this.requestUpdateCorrelationCoeff(this.traitSelection);
-      }
-      this.updatePlot();
+      this.dataFileService.getPhenotypesPerDataFile(datafile.id).subscribe(pheno => {
+        this.phenotypes = pheno;
+      });
     });
     this.traitSelectionSubscription = this.treeSelectionService.getTraitSelected().subscribe(traits => {
       this.traitSelection = traits;
@@ -74,13 +75,40 @@ export class PlotComponent implements OnInit, OnDestroy {
         this.updatePlot();
       }
     });
+    if (this.selectedDataFileId !== undefined) {
+      this.phenotypesSubscription = this.dataFileService.getPhenotypesPerDataFile(this.selectedDataFileId).subscribe(phenos => {
+        this.phenotypes = phenos;
+      });
+    }
   }
 
   ngOnDestroy() {
     this.dataFileSub.unsubscribe();
     this.traitSelectionSubscription.unsubscribe();
-    this.plotTypeSubscription.unsubscribe();
+    if (this.phenotypesSubscription !== undefined) {
+      this.phenotypesSubscription.unsubscribe();
+    }
   }
+
+  setSelectPlot() {
+    this.updatePhenotypeDataMap(this.traitSelection);
+    if (this.plotType === PlotType.Heatmap || this.plotType === PlotType.Correlation) {
+      this.requestUpdateCorrelationCoeff(this.traitSelection);
+    }
+    this.updatePlot();
+  }
+
+  setColorBy() {
+    this.dataFileService.getPhenotypeValues(this.selectedDataFileId, this.colorBy).subscribe(resp => {
+      this.colorByPhenotypeValues = new Array<any>();
+      for (let i = 0; i < resp.length; i++) {
+        this.colorByPhenotypeValues.push(resp[i]['value']);
+      }
+      this.updatePlot();
+    });
+    this.updatePlot();
+  }
+
 
   private updatePhenotypeDataMap(phenotypeNames: Set<string>) {
     if (phenotypeNames === undefined || phenotypeNames === null) {
@@ -110,21 +138,6 @@ export class PlotComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Catch window resize event
-   */
-  @HostListener('window:resize', ['$event'])
-  onResize(event?) {
-    this.innerHeight = window.innerHeight;
-    this.innerWidth = window.innerWidth;
-    // update layout of plot
-    let width = (this.innerWidth - 600) / 2;
-    if (width < 400) {
-      width = 400;
-    }
-    this.graph.layout['width'] = width;
-  }
-
-  /**
    * call the API to get the phenotype data values
    * @param phenotypeName phenotype
    */
@@ -135,7 +148,7 @@ export class PlotComponent implements OnInit, OnDestroy {
     this.dataFileService.getPhenotypeValues(this.selectedDataFileId, phenotypeName).subscribe(resp => {
       this.receivedData = resp;
       const x_values = new Array<number>();
-      const y_values = new Array<number>();
+      const y_values = new Array<any>();
       let inc = 1;
       for (let i = 0; i < resp.length; i++) {
         const val = parseFloat(resp[i]['value']);
@@ -143,7 +156,11 @@ export class PlotComponent implements OnInit, OnDestroy {
         if (!isNaN(val)) {
           x_values.push(inc);
           y_values.push(val);
+        } else {
+          x_values.push(inc);
+          y_values.push(resp[i]['value']);
         }
+
       }
       // add new phenotype values to map
       this.dataMap.set(phenotypeName, { x: x_values, y: y_values });
@@ -174,6 +191,8 @@ export class PlotComponent implements OnInit, OnDestroy {
     const phenotypeName = dataKeys.next()['value'];
     let data = [];
     let layout = {};
+    const height = 700;
+    const width = 800;
     const phenotypeNumber = this.dataMap.size;
 
     // One plot is shown
@@ -197,8 +216,9 @@ export class PlotComponent implements OnInit, OnDestroy {
         layout = {
           autoexpand: 'true',
           autosize: 'true',
-          width: (this.innerWidth - 600) / 2,
-          height: 600,
+          width: width,
+          // width: (this.innerWidth - 600) / 2,
+          height: height,
           margin: {
             autoexpand: 'true',
             margin: 0
@@ -276,8 +296,9 @@ export class PlotComponent implements OnInit, OnDestroy {
         });
         layout = {
           grid: { rows: rows, columns: columns, pattern: 'independent' },
-          width: (this.innerWidth - 600) / 2,
-          height: 600,
+          width: width,
+          // width: (this.innerWidth - 600) / 2,
+          height: height,
           autoexpand: 'true',
           autosize: 'true',
         };
@@ -293,7 +314,7 @@ export class PlotComponent implements OnInit, OnDestroy {
             marker: {
               line: {
                 width: 1,
-                color: 'rgb(0, 0, 0)'
+                color: 'black'
               }
             },
             name: key,
@@ -303,8 +324,9 @@ export class PlotComponent implements OnInit, OnDestroy {
         });
         layout = {
           grid: { rows: rows, columns: columns, pattern: 'independent' },
-          width: (this.innerWidth - 600) / 2,
-          height: 600,
+          width: width,
+          // width: (this.innerWidth - 600) / 2,
+          height: height,
           autoexpand: 'true',
           autosize: 'true',
         };
@@ -335,7 +357,7 @@ export class PlotComponent implements OnInit, OnDestroy {
             align: 'left',
             showarrow: false
           },
-      ];
+        ];
         const updatemenus = [
           {
             buttons: [
@@ -449,15 +471,137 @@ export class PlotComponent implements OnInit, OnDestroy {
           yaxis: {
             side: 'right'
           },
-          height: 600,
+          width: width,
+          height: height,
           updatemenus: updatemenus,
           annotations: annotations
         };
+      }
+      // Correlation plot type = n + 1
+      if (this.plotType === PlotType.Correlation) {
+        const phenotypesNames = Array.from(this.traitSelection.keys());
+        // data structure to store all possible combinations of correlations sets (unique pairs of phenotype correlations)
+        this.storeCombinations(phenotypesNames);
+
+        // select by
+        const colorByData = this.colorByPhenotypeValues;
+        const colors = [];
+        const text = [];
+
+        let uniqueColorByValues: any;
+        if (colorByData !== undefined) {
+          uniqueColorByValues = this.getUniqueValues(colorByData);
+          for (let i = 0; i < colorByData.length; i++) {
+            for (let j = 0; j < uniqueColorByValues.size; j++) {
+              if (colorByData[i] === Array.from(uniqueColorByValues)[j]) {
+                colors.push(j / (uniqueColorByValues.size - 1));
+              }
+            }
+            text.push(this.colorBy + ': ' + colorByData[i]);
+          }
+        }
+
+        const pl_colorscale = [
+          [0.0, '#19d3f3'],
+          [0.333, '#19d3f3'],
+          [0.333, '#e763fa'],
+          [0.666, '#e763fa'],
+          [0.666, '#636efa'],
+          [1, '#636efa']
+        ];
+
+        const axis = () => ({
+          showline: false,
+          zeroline: false,
+          gridcolor: '#ffff',
+          ticklen: colorByData !== undefined ? uniqueColorByValues.size : 1
+        });
+        const dimensions = [];
+        layout = {
+          title: 'Correlation Scatter Plot Matrix',
+          height: height,
+          width: width,
+          autosize: false,
+          hovermode: 'closest',
+          dragmode: 'select',
+          plot_bgcolor: 'rgba(240,240,240, 0.95)',
+        };
+        const keys = Array.from(this.dataMap.keys());
+
+        for (let i = 0; i < keys.length; i++) {
+          if (keys.length < 5) { // we don't disply the axis titles if more than 5 phenotypes
+            dimensions.push({ label: keys[i], values: this.dataMap.get(keys[i])['y'] });
+          } else {
+            dimensions.push({ label: '', values: this.dataMap.get(keys[i])['y'] });
+          }
+          layout['xaxis' + i + 1] = axis();
+        }
+
+        data = [{
+          type: 'splom',
+          dimensions: dimensions,
+          // showupperhalf: false,
+          diagonal: { visible: false },
+          text: text,
+          showlegend: 'true',
+          marker: {
+            color: colors,
+            colorscale: pl_colorscale,
+            size: 7,
+            line: {
+              color: 'white',
+              width: 0.5
+            }
+          }
+        }];
       }
     }
     // update graph data and layout
     this.graph.data = data;
     this.graph.layout = layout;
+  }
+
+  getUniqueValues(values: any[]) {
+    const unique = new Set<any>();
+    for (let i = 0; i < values.length; i++) {
+      if (!unique.has(values[i])) {
+        unique.add(values[i]);
+      }
+    }
+    return unique;
+  }
+
+  storeCombinations(sequence: string[]) {
+    const N = sequence.length;
+    // reitinitialize data structure to store result
+    this.combinationsResult = [];
+    // call recursive method to populate results
+    this.correlationCombinations(sequence, new Array<string>(N), 0, N - 1, 0, 2);
+    return this.combinationsResult;
+  }
+
+  /**
+   * Returns all possible combinations of r correlations given a sequence of items
+   * @param sequence items
+   * @param data temp data array
+   * @param start start idx
+   * @param end end idx
+   * @param index idx, should be 0
+   * @param r the number of item in the combination (should be 2)
+   */
+  private correlationCombinations(sequence: string[], data: string[], start: number, end: number, index: number, r: number) {
+
+    if (index === r) {
+      const combination = new Set<string>();
+      for (let j = 0; j < r; j++) {
+        combination.add(data[j]);
+      }
+      this.combinationsResult.push(combination);
+    }
+    for (let i = start; i <= end && ((end - i + 1) >= (r - index)); i++) {
+      data[index] = sequence[i];
+      this.correlationCombinations(sequence, data, i + 1, end, index + 1, r);
+    }
   }
 
   /**

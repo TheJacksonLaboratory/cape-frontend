@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { throwError, Observable, BehaviorSubject, Subject } from 'rxjs';
+import { throwError, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
@@ -9,7 +8,6 @@ import { Parameters } from '../_models/parameters';
 import { DataFile } from '../_models/datafile';
 import { Phenotype } from '../_models/phenotype';
 import { PhenotypeValue } from '../_models/phenotype-value';
-import { PlotType } from '../_models/plot-type';
 
 
 @Injectable({ providedIn: 'root' })
@@ -23,9 +21,6 @@ export class DataFilesService {
 
     // used to hold the selected datafile
     selectedDataFileSubject = new Subject<DataFile>();
-
-    // selected plotType
-    selectedPlotTypeSubject = new Subject<PlotType>();
 
     // http options used for making API calls
     private httpOptions: any;
@@ -170,20 +165,5 @@ export class DataFilesService {
      */
     getSelectedDataFile(): Observable<DataFile> {
         return this.selectedDataFileSubject.asObservable();
-    }
-
-    /**
-     * Sets the selected plot type
-     * @param plotType plot type
-     */
-    setSelectedPlotType(plotType: PlotType) {
-        this.selectedPlotTypeSubject.next(plotType);
-    }
-
-    /**
-     * Returns the selected pot type
-     */
-    getSelectedPlotType(): Observable<PlotType> {
-        return this.selectedPlotTypeSubject.asObservable();
     }
 }

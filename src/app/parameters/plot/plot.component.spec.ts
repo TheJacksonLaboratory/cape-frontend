@@ -1,11 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { PlotComponent } from './plot.component';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule, MatSelectModule } from '@angular/material';
 import { PlotlyModule } from 'angular-plotly.js';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { PlotComponent } from './plot.component';
+
 
 describe('PlotComponent', () => {
   let component: PlotComponent;
@@ -18,7 +19,8 @@ describe('PlotComponent', () => {
         PlotlyModule,
         HttpClientTestingModule,
         RouterTestingModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatSelectModule
       ],
       declarations: [ PlotComponent ]
     })
@@ -54,5 +56,29 @@ describe('PlotComponent', () => {
     expect(component.getColumnNumber(1)).toBe(1);
     expect(component.getColumnNumber(3)).toBe(3);
 
+  });
+
+  it('should return expected combinations of correlations', () => {
+    const phenotypes = ['AA0', 'APP_grch37', 'APP_mm10', 'Blood.glucose.12', 'Blood.glucose.6'];
+    const combinations = ['AA0,APP_grch37', 'AA0,APP_mm10', 'AA0,Blood.glucose.12', 'AA0,Blood.glucose.6',
+                          'APP_grch37,APP_mm10', 'APP_grch37,Blood.glucose.12', 'APP_grch37,Blood.glucose.6',
+                          'APP_mm10,Blood.glucose.12', 'APP_mm10,Blood.glucose.6',
+                          'Blood.glucose.12,Blood.glucose.6'];
+    // call method
+    const result = component.storeCombinations(phenotypes);
+    expect(result.length).toBe(combinations.length);
+
+    const strResult = [];
+    // put the result in an array of pair strings separated by commas like in the test data.
+    for (let i = 0; i < result.length; i ++) {
+      let str = '';
+      result[i].forEach(function(item) {
+        str = str.length !== 0 ? str + ',' + item : item;
+      });
+      strResult.push(str);
+    }
+    for (let i = 0; i < combinations.length; i++) {
+      expect(strResult[i]).toBe(combinations[i]);
+    }
   });
 });
