@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 
 import { DataFilesService } from '../../_services/data-files.service';
 import { PhenotypeValue } from 'src/app/_models/phenotype-value';
@@ -23,7 +23,7 @@ export class PlotComponent implements OnInit, OnDestroy {
   private selectedPhenotypeName: string;
 
   // data structure used to store all correlations combinations of traits selected
-  private combinationsResult: Set<string>[];
+  private combinationsResult: Array<string>;
 
   // phenotypes
   private phenotypesSubscription: Subscription;
@@ -35,7 +35,7 @@ export class PlotComponent implements OnInit, OnDestroy {
   // Map to store phenotype data selected
   private dataMap = new Map();
   // Coefficient Matrix
-  private corrCoeffMatrix: [[]];
+  private corrCoeffMatrix: [][];
 
   private previousDataFileId: number;
   // plot options
@@ -469,6 +469,7 @@ export class PlotComponent implements OnInit, OnDestroy {
         ];
         layout = {
           yaxis: {
+            autorange: 'reversed',
             side: 'right'
           },
           width: width,
@@ -478,17 +479,15 @@ export class PlotComponent implements OnInit, OnDestroy {
         };
       }
       // Correlation plot type = n + 1
-      if (this.plotType === PlotType.Correlation) {
-        const phenotypesNames = Array.from(this.traitSelection.keys());
-        // data structure to store all possible combinations of correlations sets (unique pairs of phenotype correlations)
-        this.storeCombinations(phenotypesNames);
-
+      if (this.plotType === PlotType.Splom) {
         // select by
         const colorByData = this.colorByPhenotypeValues;
         const colors = [];
         const text = [];
+        const keys = Array.from(this.dataMap.keys());
 
         let uniqueColorByValues: any;
+
         if (colorByData !== undefined) {
           uniqueColorByValues = this.getUniqueValues(colorByData);
           for (let i = 0; i < colorByData.length; i++) {
@@ -526,10 +525,9 @@ export class PlotComponent implements OnInit, OnDestroy {
           dragmode: 'select',
           plot_bgcolor: 'rgba(240,240,240, 0.95)',
         };
-        const keys = Array.from(this.dataMap.keys());
 
         for (let i = 0; i < keys.length; i++) {
-          if (keys.length < 5) { // we don't disply the axis titles if more than 5 phenotypes
+          if (keys.length < 5) { // we don't display the axis titles if more than 5 phenotypes
             dimensions.push({ label: keys[i], values: this.dataMap.get(keys[i])['y'] });
           } else {
             dimensions.push({ label: '', values: this.dataMap.get(keys[i])['y'] });
@@ -541,8 +539,9 @@ export class PlotComponent implements OnInit, OnDestroy {
           type: 'splom',
           dimensions: dimensions,
           // showupperhalf: false,
-          diagonal: { visible: false },
+          // diagonal: { visible: false },
           text: text,
+          name: 'this is a test',
           showlegend: 'true',
           marker: {
             color: colors,
@@ -554,6 +553,146 @@ export class PlotComponent implements OnInit, OnDestroy {
             }
           }
         }];
+      }
+      if (this.plotType === PlotType.Correlation) {
+        const phenos = Array.from(this.traitSelection);
+        const numOfPhenos = phenos.length;
+        const phenosColumns = phenos;
+        const phenosRows = phenos;
+        if (phenosColumns === undefined || phenosRows === undefined || this.corrCoeffMatrix === undefined) {
+          this.graph.data = [];
+          this.graph.layout = [];
+          return;
+        }
+        let diagonalIdx = 0;
+        let plotIdx = 1;
+        const startingXAxisValIdx = (numOfPhenos * numOfPhenos) - (numOfPhenos - 1);
+        let scatterXIdx = startingXAxisValIdx;
+        // we start the Y index for scatter plots at numPheno + 1
+        let scatterYIdx = 0;
+        // histo x axis idx
+        let histoXIdx = startingXAxisValIdx;
+        const annotations = [];
+        const subplots = [];
+        for (let i = 0; i < phenosRows.length; i++) {
+          const rowSubplots = [];
+          for (let j = 0; j < phenosColumns.length; j++) {
+            if (this.corrCoeffMatrix[i][j] === 1) {
+              // reset scatter idx
+              scatterXIdx = startingXAxisValIdx;
+              // increment scatterYIdx
+              scatterYIdx = scatterYIdx === 0 ? (numOfPhenos + 1) : (scatterYIdx + numOfPhenos);
+              // histogram
+              const xVal = this.dataMap.get(phenosColumns[j])['y'];
+              const maxXVal = this.getMax(xVal);
+              const minXVal = this.getMin(xVal);
+              // const xAxisIdx = (startingXAxisValIdx) + (plotIdx - 1);
+              const annotXVal = ((maxXVal - minXVal) / 2) + minXVal;
+              data.push({
+                x: xVal,
+                type: 'histogram',
+                opacity: 0.5,
+                marker: {
+                  line: {
+                    width: 1,
+                    color: 'black'
+                  }
+                },
+                name: phenosColumns[j],
+                xaxis: 'x' + histoXIdx,
+                yaxis: plotIdx === 1 ? 'y' : 'y' + plotIdx,
+              });
+              annotations.push(
+                {
+                  x: annotXVal,
+                  y: 9,
+                  xref: 'x' + histoXIdx,
+                  yref: plotIdx === 1 ? 'y' : 'y' + plotIdx,
+                  text: '<b>' + phenosColumns[j] + '</b>',
+                  showarrow: false,
+                  bgcolor: 'white'
+                }
+              );
+              rowSubplots.push('x' + histoXIdx + (plotIdx === 1 ? 'y' : 'y' + plotIdx));
+              console.log('histogram: ' + 'x' + histoXIdx + (plotIdx === 1 ? 'y' : 'y' + plotIdx));
+              // increment histo idx
+              histoXIdx++;
+            }
+            if (j < diagonalIdx) {
+              // plot correlation scatter plot
+              const xVal = this.dataMap.get(phenosColumns[j])['y'];
+              const yVal = this.dataMap.get(phenosRows[i])['y'];
+              const minXVal = this.getMin(xVal);
+              const maxYVal = this.getMax(yVal);
+              data.push({
+                x: xVal,
+                y: this.dataMap.get(phenosRows[i])['y'],
+                type: 'scattergl',
+                mode: 'markers',
+                name: phenosColumns[j] + '/' + phenosRows[i],
+                xaxis: 'x' + scatterXIdx,
+                yaxis: 'y' + scatterYIdx
+              });
+              annotations.push(
+                {
+                  x: minXVal,
+                  y: maxYVal,
+                  xref: 'x' + scatterXIdx,
+                  yref: 'y' + scatterYIdx,
+                  text: '',
+                  showarrow: false,
+
+                }
+              );
+              rowSubplots.push('x' + scatterXIdx + 'y' + scatterYIdx);
+              console.log('scatter: ' + 'x' + scatterXIdx + 'y' + scatterYIdx);
+              // increment scatterXIdx
+              scatterXIdx ++;
+            }
+            if (j > diagonalIdx) {
+              // plot R coefficient
+              const rVal = Math.round(this.corrCoeffMatrix[j][i] * 10000) / 10000;
+              data.push({
+                xaxis: 'x' + plotIdx,
+                yaxis: 'y' + plotIdx
+              });
+
+              annotations.push({
+                x: 1,
+                y: 1,
+                xref: 'x' + plotIdx,
+                yref: 'y' + plotIdx,
+                text: '<b>R = ' + rVal + '</b>',
+                showarrow: false,
+                // arrowhead: 7,
+                // ax: 0,
+                // ay: -40
+              });
+              rowSubplots.push('x' + plotIdx + 'y' + plotIdx);
+              console.log('R: ' + 'x' + plotIdx + 'y' + plotIdx);
+              console.log('R = ' + rVal);
+            }
+            plotIdx++;
+          }
+          diagonalIdx++;
+          subplots.push(rowSubplots);
+        }
+        layout = {
+          grid: {
+            rows: phenosRows.length,
+            columns: phenosColumns.length,
+            roworder: 'top to bottom',
+            subplots: subplots,
+            // pattern: 'independent'
+          },
+          annotations: annotations,
+          width: width,
+          // width: (this.innerWidth - 600) / 2,
+          height: height,
+          autoexpand: 'true',
+          autosize: 'true',
+          plot_bgcolor: 'rgba(228, 222, 249, 0.65)'
+        };
       }
     }
     // update graph data and layout
@@ -571,37 +710,22 @@ export class PlotComponent implements OnInit, OnDestroy {
     return unique;
   }
 
-  storeCombinations(sequence: string[]) {
-    const N = sequence.length;
-    // reitinitialize data structure to store result
-    this.combinationsResult = [];
-    // call recursive method to populate results
-    this.correlationCombinations(sequence, new Array<string>(N), 0, N - 1, 0, 2);
-    return this.combinationsResult;
+  private filter(array: number[]) {
+    return array.map(function(o) {
+      return o;
+    }).filter(function (val) {
+      return val !== null;
+    });
   }
 
-  /**
-   * Returns all possible combinations of r correlations given a sequence of items
-   * @param sequence items
-   * @param data temp data array
-   * @param start start idx
-   * @param end end idx
-   * @param index idx, should be 0
-   * @param r the number of item in the combination (should be 2)
-   */
-  private correlationCombinations(sequence: string[], data: string[], start: number, end: number, index: number, r: number) {
+  getMin(array: number[]) {
+    const values = this.filter(array);
+    return Math.min(...values);
+  }
 
-    if (index === r) {
-      const combination = new Set<string>();
-      for (let j = 0; j < r; j++) {
-        combination.add(data[j]);
-      }
-      this.combinationsResult.push(combination);
-    }
-    for (let i = start; i <= end && ((end - i + 1) >= (r - index)); i++) {
-      data[index] = sequence[i];
-      this.correlationCombinations(sequence, data, i + 1, end, index + 1, r);
-    }
+  getMax(array: number[]) {
+    const values = this.filter(array);
+    return Math.max(...values);
   }
 
   /**
