@@ -6,7 +6,6 @@ import { ActivatedRoute } from '@angular/router';
 import { ParametersService, DataFilesService } from 'src/app/_services';
 import { Parameters } from '../../../_models/parameters';
 import { DataFile } from 'src/app/_models/datafile';
-import { Phenotype } from 'src/app/_models/phenotype';
 
 
 @Component({
@@ -18,11 +17,6 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
   files: DataFile[];
   fileSelected: DataFile;
 
-  plotTypes = ['Histogram', 'By Individual', 'Correlation', 'Heatmap', 'QNorm', 'Eigentraits'];
-
-  plotType: string;
-  colorBy: string;
-
   titleFormControl = new FormControl('', [
     Validators.required
   ]);
@@ -31,8 +25,6 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
   routeSubscription: Subscription;
   dataFileSub: Subscription;
   parameters: Parameters;
-  phenotypesSub: Subscription;
-  phenotypes: Phenotype[];
 
   constructor(private parametersService: ParametersService, private dataFileService: DataFilesService,
     private route: ActivatedRoute) { }
@@ -45,7 +37,6 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
         if (fileselected !== undefined) {
           this.setDataFileSelected(fileselected);
         }
-        this.colorBy = this.parameters.color_by;
       }
     }, err => {
       // TODO: display our server error dialog?
@@ -54,9 +45,7 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
     this.parametersSubscription = this.parametersService.getParameters().subscribe(parameters => {
       this.parameters = parameters;
       if (this.parameters !== undefined) {
-        this.plotType = parameters.select_plot;
         this.titleFormControl.setValue(parameters.title);
-        this.colorBy = parameters.color_by;
         const fileselected = this.findSelectedDataFile(parameters.datafile_id);
         if (fileselected !== undefined) {
           this.setDataFileSelected(fileselected);
@@ -66,20 +55,12 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.queryParams.subscribe(params => {
       this.parametersService.setParameters(Parameters.parse(params));
     });
-    if (this.fileSelected !== undefined) {
-      this.phenotypesSub = this.dataFileService.getPhenotypesPerDataFile(this.fileSelected.id).subscribe(phenos => {
-        this.phenotypes = phenos;
-      });
-    }
   }
 
   ngOnDestroy() {
     this.parametersSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
     this.dataFileSub.unsubscribe();
-    if (this.phenotypesSub !== undefined) {
-      this.phenotypesSub.unsubscribe();
-    }
   }
 
   setDataFileSelected(selected: DataFile) {
@@ -88,10 +69,7 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
       if (this.parameters !== undefined) {
         this.parameters.datafile_id = selected.id;
       }
-      this.dataFileService.getPhenotypesPerDataFile(selected.id).subscribe(pheno => {
-        this.phenotypes = pheno;
-      });
-      this.colorBy = '';
+      this.dataFileService.setSelectedDataFile(selected);
       this.fileSelected = selected;
     }
   }
@@ -110,14 +88,6 @@ export class MainSelectionComponent implements OnInit, OnDestroy {
 
   setTitle() {
     this.parameters.title = this.titleFormControl.value;
-  }
-
-  setSelectPlot() {
-    this.parameters.select_plot = this.plotType;
-  }
-
-  setColorBy() {
-    this.parameters.color_by = this.colorBy;
   }
 
 }

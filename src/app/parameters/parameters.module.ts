@@ -16,6 +16,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { PlotlyModule } from 'angular-plotly.js';
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+
 import { MainSelectionComponent } from './ct-selection/main-selection/main-selection.component';
 import { TreeComponent } from './ct-selection/tree/tree.component';
 import { ParametersComponent } from './parameters.component';
@@ -23,7 +26,9 @@ import { MarkerSelectionComponent } from './marker-selection/marker-selection.co
 import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
 import { PairScanComponent } from './pair-scan/pair-scan.component';
 import { CtSelectionComponent } from './ct-selection/ct-selection.component';
+import { PlotComponent } from './plot/plot.component';
 
+PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
   imports: [
@@ -43,7 +48,8 @@ import { CtSelectionComponent } from './ct-selection/ct-selection.component';
     MatTooltipModule,
     MatExpansionModule,
     MatMenuModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    PlotlyModule
   ],
   declarations: [
     ParametersComponent,
@@ -52,7 +58,8 @@ import { CtSelectionComponent } from './ct-selection/ct-selection.component';
     MainSelectionComponent,
     MarkerSelectionComponent,
     SingleLocusScanComponent,
-    PairScanComponent
+    PairScanComponent,
+    PlotComponent
   ],
   exports: [
     ParametersComponent,

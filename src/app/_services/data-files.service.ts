@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { throwError, Observable, BehaviorSubject, Subject } from 'rxjs';
+import { throwError, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { Parameters } from '../_models/parameters';
 import { DataFile } from '../_models/datafile';
 import { Phenotype } from '../_models/phenotype';
+import { PhenotypeValue } from '../_models/phenotype-value';
 
 
 @Injectable({ providedIn: 'root' })
@@ -18,6 +18,9 @@ export class DataFilesService {
 
     // used to hold the updated phenotype list
     phenotypesSubject = new Subject<Phenotype[]>();
+
+    // used to hold the selected datafile
+    selectedDataFileSubject = new Subject<DataFile>();
 
     // http options used for making API calls
     private httpOptions: any;
@@ -76,7 +79,7 @@ export class DataFilesService {
         return this.http.get<DataFile[]>(environment.API_URL + '/datafiles/get_datafiles_parameters')
             .catch(DataFilesService._handleError);
     }
-  
+
     /**
      * Get the list of parameter files
      */
@@ -86,7 +89,7 @@ export class DataFilesService {
     }
 
     /**
-     * 
+     * Gets the list of phenotypes per data file
      * @param dataFileId Returns the list of phenotypes per datafile
      */
     getPhenotypesPerDataFile(dataFileId: number) {
@@ -119,4 +122,48 @@ export class DataFilesService {
                         .catch(DataFilesService._handleError);
     }
 
+    /**
+     * Get all values for the given phenotype of a datafile
+     * @param dataFileId
+     * @param phenotypeName
+     */
+    getPhenotypeValues(dataFileId: number, phenotypeName: string): Observable<PhenotypeValue[]> {
+        let params = new HttpParams();
+        params = params.append('datafile_id', String(dataFileId));
+        params = params.append('phenotype_name', String(phenotypeName));
+        return this.http.get<PhenotypeValue[]>(environment.API_URL + '/datafiles/get_phenotype_values', { params: params })
+                        .catch(DataFilesService._handleError);
+    }
+
+    /**
+     * Get the Pearson Coefficients matrix for the given phenotypes
+     * @param dataFileId datafile id
+     * @param phenotypeNames array of phenotype names in order
+     */
+    getPhenotypesCorrelations(dataFileId: number, phenotypeNames: string[]): any {
+        let params = new HttpParams();
+        params = params.append('datafile_id', String(dataFileId));
+        let names: string;
+        for (const name of phenotypeNames) {
+            names = names !== undefined ? names + ',' + name : name;
+        }
+        params = params.append('phenotype_names', String(names));
+        return this.http.get<any>(environment.API_URL + '/datafiles/get_pearson_coefficients', { params: params })
+                        .catch(DataFilesService._handleError);
+    }
+
+    /**
+     * Sets the selected Datafile
+     * @param selectedDataFile data file
+     */
+    setSelectedDataFile(selectedDataFile: DataFile) {
+        this.selectedDataFileSubject.next(selectedDataFile);
+    }
+
+    /**
+     * Returns the selected DataFile
+     */
+    getSelectedDataFile(): Observable<DataFile> {
+        return this.selectedDataFileSubject.asObservable();
+    }
 }

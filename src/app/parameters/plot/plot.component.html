@@ -1,0 +1,23 @@
+<div class="row margin">
+    <mat-form-field appearance="outline">
+        <mat-label>Select plot</mat-label>
+        <mat-select placeholder="Select plot" (selectionChange)="setSelectPlot()" [(value)]="plotType"
+            matTooltip="Which type of plot will be displayed in the viewer panel">
+            <mat-option *ngFor="let plotType of plotTypes" [value]="plotType">
+                {{ plotType }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Color by</mat-label>
+        <mat-select placeholder="Color by" (selectionChange)="setColorBy()" [(value)]="colorBy"
+            matTooltip="If the viewer panel plot has points, choose a variable to color them by; can be a factor (like sex) or quantitative (like age or insulin level)">
+            <mat-option *ngFor="let selection of phenotypes" [value]="selection.name">{{ selection.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div class="plot-content">
+    <plotly-plot [data]="graph.data" [layout]="graph.layout"></plotly-plot>'
+</div>
