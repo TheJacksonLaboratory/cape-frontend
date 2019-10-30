@@ -578,11 +578,11 @@ export class PlotComponent implements OnInit, OnDestroy {
           const rowSubplots = [];
           for (let j = 0; j < phenosColumns.length; j++) {
             if (this.corrCoeffMatrix[i][j] === 1) {
+              // histogram
               // reset scatter idx
               scatterXIdx = startingXAxisValIdx;
               // increment scatterYIdx
               scatterYIdx = scatterYIdx === 0 ? (numOfPhenos + 1) : (scatterYIdx + numOfPhenos);
-              // histogram
               const xVal = this.dataMap.get(phenosColumns[j])['y'];
               const maxXVal = this.getMax(xVal);
               const minXVal = this.getMin(xVal);
@@ -605,16 +605,16 @@ export class PlotComponent implements OnInit, OnDestroy {
               annotations.push(
                 {
                   x: annotXVal,
-                  y: 9,
+                  y: 10,
                   xref: 'x' + histoXIdx,
                   yref: plotIdx === 1 ? 'y' : 'y' + plotIdx,
-                  text: '<b>' + phenosColumns[j] + '</b>',
+                  text: phenosColumns[j],
+                  visible: numOfPhenos > 5 ? false : true,
                   showarrow: false,
                   bgcolor: 'white'
                 }
               );
               rowSubplots.push('x' + histoXIdx + (plotIdx === 1 ? 'y' : 'y' + plotIdx));
-              console.log('histogram: ' + 'x' + histoXIdx + (plotIdx === 1 ? 'y' : 'y' + plotIdx));
               // increment histo idx
               histoXIdx++;
             }
@@ -645,32 +645,32 @@ export class PlotComponent implements OnInit, OnDestroy {
                 }
               );
               rowSubplots.push('x' + scatterXIdx + 'y' + scatterYIdx);
-              console.log('scatter: ' + 'x' + scatterXIdx + 'y' + scatterYIdx);
               // increment scatterXIdx
               scatterXIdx ++;
             }
             if (j > diagonalIdx) {
               // plot R coefficient
-              const rVal = Math.round(this.corrCoeffMatrix[j][i] * 10000) / 10000;
+              const roundFactor = this.getRoundFactor(numOfPhenos);
+              const rVal = Math.round(this.corrCoeffMatrix[j][i] * roundFactor) / roundFactor;
               data.push({
                 xaxis: 'x' + plotIdx,
                 yaxis: 'y' + plotIdx
               });
 
               annotations.push({
+                font: {
+                  family: 'Courier New',
+                  size: this.getFontSize(numOfPhenos)
+                },
                 x: 1,
                 y: 1,
                 xref: 'x' + plotIdx,
                 yref: 'y' + plotIdx,
                 text: '<b>R = ' + rVal + '</b>',
                 showarrow: false,
-                // arrowhead: 7,
-                // ax: 0,
-                // ay: -40
+                hovertext: '<b>R = ' + rVal + '</b>'
               });
               rowSubplots.push('x' + plotIdx + 'y' + plotIdx);
-              console.log('R: ' + 'x' + plotIdx + 'y' + plotIdx);
-              console.log('R = ' + rVal);
             }
             plotIdx++;
           }
@@ -698,6 +698,30 @@ export class PlotComponent implements OnInit, OnDestroy {
     // update graph data and layout
     this.graph.data = data;
     this.graph.layout = layout;
+  }
+
+  getFontSize(numberOfColumns: number) {
+    if (numberOfColumns < 4) {
+      return 24;
+    }
+    if (numberOfColumns > 3 && numberOfColumns < 6) {
+      return 12;
+    }
+    if (numberOfColumns > 5) {
+      return 6;
+    }
+  }
+
+  getRoundFactor(numberOfColumns: number) {
+    if (numberOfColumns < 4) {
+      return 10000;
+    }
+    if (numberOfColumns > 3 && numberOfColumns < 6) {
+      return 1000;
+    }
+    if (numberOfColumns > 5) {
+      return 100;
+    }
   }
 
   getUniqueValues(values: any[]) {
