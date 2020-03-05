@@ -28,18 +28,28 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <div *ngIf="traitSelected=='Eigentraits'">
+          <div *ngIf="traitSelected=='eigentraits'">
             <mat-form-field appearance="outline">
               <mat-label>Nb. of ET</mat-label>
               <input matInput [(ngModel)]="numberOfEigentraits" (change)="setNumberofET()" type="number" placeholder="2"
                 min="2">
             </mat-form-field>
           </div>
+        </div>
+        <div class="row">
           <mat-form-field appearance="outline">
             <mat-label>P value correction</mat-label>
             <mat-select placeholder="P value correction" [(ngModel)]="pValueCorrection" (selectionChange)="setPValueCorrection()" matTooltip="Select the method of p value correction">
               <mat-option *ngFor="let pValueCorrection of pValueCorrectionList" [value]="pValueCorrection">
                 {{ pValueCorrection }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Population type</mat-label>
+            <mat-select placeholder="Population type" [(ngModel)]="popType" (selectionChange)="setPopType()" matTooltip="Population type: 'MPP' (multi-parental population), '2PP' (2 parents), 'RIL' (recombinant inbred line)">
+              <mat-option *ngFor="let popType of popTypeList" [value]="popType">
+                {{ popType }}
               </mat-option>
             </mat-select>
           </mat-form-field>

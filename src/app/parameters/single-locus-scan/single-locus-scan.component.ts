@@ -19,7 +19,7 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
   useKinship = false;
   kinshipType: string;
 
-  kinshipTypes = [ 'Overall', 'LTCO' ];
+  kinshipTypes = [ 'overall', 'ltco' ];
 
   documentation = Documentation.SINGLE_LOCUS_SCAN_DOC;
 

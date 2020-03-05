@@ -19,8 +19,9 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   public static COVARIATE_TITLE = 'Covariate selection';
   public static TRAIT_TITLE = 'Trait selection';
 
-  traitsToScan = ['Eigentraits', 'Raw Traits'];
+  traitsToScan = ['eigentraits', 'raw.traits', 'normalized.traits'];
   pValueCorrectionList = ['none', 'holm', 'hochberg', 'hommel', 'bonferroni', 'BH', 'BY', 'fdr'];
+  popTypeList = ['MPP', '2PP', 'RIL'];
 
   // parameters
   normalize = true;
@@ -29,6 +30,7 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   numberOfEigentraits = 2;
   traitSelected: string;
   pValueCorrection: string;
+  popType: string;
 
   parametersSubscription: Subscription;
   routeSubscription: Subscription;
@@ -54,7 +56,7 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
         this.traitSelected = this.parameters.traits_to_scan !== undefined ? this.parameters.traits_to_scan : this.traitSelected;
         this.numberOfEigentraits = this.parameters.number_of_eigentraits !== undefined ? this.parameters.number_of_eigentraits : this.numberOfEigentraits;
         this.pValueCorrection = this.parameters.p_value_correction !== undefined ? this.parameters.p_value_correction : this.pValueCorrection;
-
+        this.popType = this.parameters.pop_type !== undefined ? this.parameters.pop_type : this.popType;
         // set default
         this.parameters.normalize = this.parameters.normalize === undefined ? this.normalize : this.parameters.normalize;
         this.parameters.mean_center = this.parameters.mean_center === undefined ? this.meanCenter : this.parameters.mean_center;
@@ -107,9 +109,9 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
    */
   setTraitsToScan() {
     this.parameters.traits_to_scan = this.traitSelected;
-    if (this.traitSelected === 'Eigentraits') {
+    if (this.traitSelected === 'eigentraits') {
       this.parameters.number_of_eigentraits = this.numberOfEigentraits;
-    } else if (this.traitSelected === 'Raw Traits') {
+    } else if (this.traitSelected === 'raw.traits' || this.traitSelected === 'normalized.traits') {
       this.parameters.number_of_eigentraits = undefined;
     }
   }
@@ -118,6 +120,10 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   }
   setPValueCorrection() {
     this.parameters.p_value_correction = this.pValueCorrection;
+  }
+
+  setPopType() {
+    this.parameters.pop_type = this.popType;
   }
 
   /**

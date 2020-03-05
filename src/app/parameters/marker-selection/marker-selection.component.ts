@@ -65,11 +65,11 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
    */
   private createMarkerSelections() {
     const map = new Map();
-    map.set('Top Effects', 'This method selects the top effect size markers from under peaks of single-locus effect size curves.');
-    map.set('Uniform', 'This method selects the specified number of markers to be uniformly spaced across the genome.');
-    map.set('By Gene', 'This method selects SNPs that are near genes. It requires an ordered list of genes, for example ' +
+    map.set('top.effects', 'This method selects the top effect size markers from under peaks of single-locus effect size curves.');
+    map.set('uniform', 'This method selects the specified number of markers to be uniformly spaced across the genome.');
+    map.set('by.gene', 'This method selects SNPs that are near genes. It requires an ordered list of genes, for example ' +
             'from NetWAS output.');
-    map.set('From List', 'Select the marker selections using a file.');
+    map.set('from.list', 'Select the marker selections using a file.');
     return map;
   }
 
@@ -90,24 +90,18 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
    */
   setMarkerSelectionMethod() {
     this.parameters.ms_method = this.markerSelected;
+    this.parameters.ms_organism = this.organism;
+
     // We initialize if Top effect or From list is chosen as the UI input fields already have some default data
-    if (this.markerSelected === 'Top Effects') {
+    if (this.markerSelected === 'top.effects') {
       this.parameters.ms_peak_density = this.peakDensity;
       this.parameters.ms_tolerance = this.tolerance;
       this.parameters.ms_snp_filename = undefined;
-      this.parameters.ms_organism = undefined;
-    } else if (this.markerSelected === 'From List') {
+    } else if (this.markerSelected === 'from.list') {
       this.parameters.ms_snp_filename = this.snpsFileName;
       this.parameters.ms_peak_density = undefined;
       this.parameters.ms_tolerance = undefined;
-      this.parameters.ms_organism = undefined;
-    } else if (this.markerSelected === 'By Gene') {
-      this.parameters.ms_organism = this.organism;
-      this.parameters.ms_peak_density = undefined;
-      this.parameters.ms_tolerance = undefined;
-      this.parameters.ms_snp_filename = undefined;
-    } else if (this.markerSelected === 'Uniform') {
-      this.parameters.ms_organism = undefined;
+    } else if ((this.markerSelected === 'by.gene') || (this.markerSelected === 'uniform')) {
       this.parameters.ms_peak_density = undefined;
       this.parameters.ms_tolerance = undefined;
       this.parameters.ms_snp_filename = undefined;

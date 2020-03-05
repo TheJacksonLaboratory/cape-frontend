@@ -4,7 +4,7 @@
 </mat-form-field>
 <mat-form-field appearance="outline">
   <mat-label>Number of Permutations</mat-label>
-  <input matInput [(ngModel)]="numberOfPermutations" (change)="setNumberOfPermutations()" type="number" placeholder="1">
+  <input matInput [(ngModel)]="numberOfPermutations" (change)="setNumberOfPermutations()" type="number" placeholder="1" min="0">
 </mat-form-field>
 <mat-checkbox [(ngModel)]="useKinship" (click)="setUseKinship()">Use Kinship Correction</mat-checkbox>
 
