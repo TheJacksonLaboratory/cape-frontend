@@ -23,6 +23,8 @@ import { DataFilesService } from 'src/app/_services';
 import { ParametersService } from '../../_services/parameters.service';
 import { AdminComponent } from '../../admin/admin.component';
 import { JobComponent } from 'src/app/job/job.component';
+import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
+import { ReportDetailComponent } from 'src/app/reports/report-detail/report-detail.component';
 
 
 @NgModule({
@@ -40,6 +42,8 @@ import { JobComponent } from 'src/app/job/job.component';
   ],
   declarations: [
     ReportGridComponent,
+    ReportDetailComponent,
+    DashboardComponent,
     ReportListComponent,
     ReportSummaryComponent,
     UserProfileComponent,

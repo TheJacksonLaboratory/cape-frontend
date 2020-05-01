@@ -1,0 +1,11 @@
+.card {
+    margin-top: 5px;
+}
+
+.learn-more-button {
+    display: block;
+    border: none;
+    height: 50px;
+    color:#fff;
+    background: #3458bf;
+}

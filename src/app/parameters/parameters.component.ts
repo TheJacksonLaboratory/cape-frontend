@@ -9,7 +9,6 @@ import { MarkerSelectionComponent } from './marker-selection/marker-selection.co
 import { PairScanComponent } from './pair-scan/pair-scan.component';
 import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
 import { Parameters } from '../_models/parameters';
-import { DataFile } from '../_models/datafile';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 
 @Component({
