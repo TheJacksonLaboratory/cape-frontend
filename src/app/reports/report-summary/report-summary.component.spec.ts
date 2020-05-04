@@ -6,11 +6,17 @@ import { ReportSummaryComponent } from './report-summary.component';
 import { Report } from 'src/app/_models/report';
 import { ReportsService } from 'src/app/_services';
 
-const report = new Report(1, 'Report One', 'Alice Apple', 'Dignissim posuere vestibulum eget, sollicitudin rutrum. Justo, malesuada. Adipisicing netus et malesuada fames est. Consectetuer. Ornare. Etiam faucibus. Aliquam commodo lacus sit amet, nec, risus. Scelerisque eget, urna. Sollicitudin tortor at nulla ut accumsan, neque id turpis egestas.');
+let report: Report;
 
 class MockReportService {
   getReport(): Observable<Report> {
-      return of(report);
+    report = new Report();
+    report.id = 1;
+    report.title = 'Report One';
+    report.author = 'Alice Apple';
+    report.description = 'Dignissim posuere vestibulum eget, sollicitudin rutrum. Justo, malesuada. Adipisicing netus et malesuada fames est. Consectetuer. Ornare. Etiam faucibus. Aliquam commodo lacus sit amet, nec, risus. Scelerisque eget, urna. Sollicitudin tortor at nulla ut accumsan, neque id turpis egestas.';
+
+    return of(report);
   }
 }
 
@@ -35,7 +41,12 @@ describe('ReportSummaryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ReportSummaryComponent);
     component = fixture.componentInstance;
-    component.report = new Report(1, 'Report One', 'Alice Apple', 'Dignissim posuere vestibulum eget, sollicitudin rutrum. Justo, malesuada. Adipisicing netus et malesuada fames est. Consectetuer. Ornare. Etiam faucibus. Aliquam commodo lacus sit amet, nec, risus. Scelerisque eget, urna. Sollicitudin tortor at nulla ut accumsan, neque id turpis egestas.');
+    component.report = new Report();
+    report.id = 1;
+    report.title = 'Report One';
+    report.author = 'Alice Apple';
+    report.description = 'Dignissim posuere vestibulum eget, sollicitudin rutrum. Justo, malesuada. Adipisicing netus et malesuada fames est. Consectetuer. Ornare. Etiam faucibus. Aliquam commodo lacus sit amet, nec, risus. Scelerisque eget, urna. Sollicitudin tortor at nulla ut accumsan, neque id turpis egestas.';
+
     reportsService = TestBed.get(ReportsService);
     fixture.detectChanges();
   });
