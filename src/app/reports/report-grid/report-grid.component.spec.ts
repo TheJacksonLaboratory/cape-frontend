@@ -3,6 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReportGridComponent } from './report-grid.component';
 import { ReportSummaryComponent } from '../report-summary/report-summary.component';
 import { MatCardModule } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ReportGridComponent', () => {
   let component: ReportGridComponent;
@@ -11,7 +13,10 @@ describe('ReportGridComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatCardModule
+        MatCardModule,
+        ReportSummaryComponent,
+        RouterTestingModule,
+        HttpClientModule
       ],
       declarations: [
         ReportGridComponent,

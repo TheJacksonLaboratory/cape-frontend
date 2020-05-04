@@ -1,10 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule, MatTooltipModule } from '@angular/material';
 import { Observable, of } from 'rxjs';
 
 import { ReportSummaryComponent } from './report-summary.component';
 import { Report } from 'src/app/_models/report';
 import { ReportsService } from 'src/app/_services';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterTestingModule } from '@angular/router/testing';
 
 let report: Report;
 
@@ -28,7 +30,10 @@ describe('ReportSummaryComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatCardModule
+        MatCardModule,
+        RouterTestingModule,
+        HttpClientModule,
+        MatTooltipModule
       ],
       declarations: [ReportSummaryComponent],
       providers: [
