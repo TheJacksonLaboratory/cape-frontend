@@ -189,7 +189,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
       if (result === 'ok') {
         service.subscribe(data => {
           msgData['description'] = data['message'];
-          this.openResultDialog(msgData);
+          // this.openResultDialog(msgData);
         }, error => {
           this.error = error;
           this.alertService.error(error);

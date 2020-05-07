@@ -1,15 +1,47 @@
 export class Report {
     id: number;
+    date_created: Date;
     title: string;
     author: string;
+    job_id: number;
     description: string;
-    image: any;
+    paths: string[];
 
-    constructor(id?: number, title?: string, author?: string, description?: string, image?: any) {
+    constructor(id?: number, date_created?: Date, title?: string, author?: string, job_id?: number, description?: string, paths?: string[]) {
         this.id = id;
+        this.date_created = date_created;
         this.title = title;
         this.author = author;
+        this.job_id = job_id;
         this.description = description;
-        this.image = image;
+        this.paths = paths;
+    }
+
+    private static toReport(obj: any): Report {
+        const report = new Report();
+        report.id = obj['id'];
+        report.title = obj['title'];
+        report.date_created = obj['date_created'];
+        report.author = obj['author'];
+        report.job_id = obj['job_id'];
+        report.description = obj['description'];
+        report.paths = obj['paths'];
+        return report;
+    }
+
+    /**
+     * Parse an object and returns a Report object
+     * @param obj a json object for instance
+     */
+    public static parse(params: any): Report {
+        const report_string = params['report'];
+        let reportObj: Report;
+        if (report_string === undefined) {
+            reportObj = new Report();
+        } else {
+            // parse into obj
+            reportObj = Report.toReport(JSON.parse(report_string));
+        }
+        return reportObj;
     }
 }

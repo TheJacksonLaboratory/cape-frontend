@@ -12,9 +12,9 @@ import { AlertService } from '../_services';
 import { Parameters } from '../_models';
 
 const PARAMETER_FILES1 = [
-    new Parameters(1, 'title name 1', 'Histogram', 'C2', ['C1', 'C2', 'Creat10WK'], ['Creat15WK', 'Creat6WK', ' Alb6WK', 'Alb15WK'],
-        true, true, 'Raw Traits', undefined, 'hochberg', 'T', 2, true, 'LTCO', 1502, 'From List', undefined, undefined,
-        undefined, 'filteredSNPs.txt', 1500000, 'Minimum Individuals per Genotype', undefined, 7,
+    new Parameters(1, 'title name 1', ['C1', 'C2', 'Creat10WK'], ['Creat15WK', 'Creat6WK', ' Alb6WK', 'Alb15WK'],
+        true, true, 'Raw Traits', undefined, 'hochberg', '2PP', 'T', 2, true, 'LTCO', 1502, 'from.list', undefined, undefined,
+        undefined, 'filteredSNPs.txt', 1500000, undefined, 7,
         '# CAPE parameters YAML file\n' +
         '#================================================\n' +
         '# General Parameters \n' +

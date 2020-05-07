@@ -4,9 +4,17 @@
     (change)="setNumberOfMarkersToTest()">
 </mat-form-field>
 <mat-form-field appearance="outline">
+  <mat-label>Organism</mat-label>
+  <mat-select [(ngModel)]="organism" (selectionChange)="setOrganism()" placeholder="Organism">
+    <mat-option *ngFor="let organism of organisms" [value]="organism">
+      {{ organism }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline">
   <mat-label>Marker Selection Method</mat-label>
-  <mat-select [(value)]=markerSelected
-    matTooltip="{{ getMarkerSelectionDescription(markerSelected) }}" (selectionChange)="setMarkerSelectionMethod()">
+  <mat-select [(value)]=markerSelected matTooltip="{{ getMarkerSelectionDescription(markerSelected) }}"
+    (selectionChange)="setMarkerSelectionMethod()">
     <mat-option *ngFor="let markerSelected of getMarkerSelections()" [value]="markerSelected">
       {{ markerSelected }}
     </mat-option>
@@ -22,17 +30,6 @@
   <mat-form-field appearance="outline" matTooltip="{{ toleranceDescription }}">
     <mat-label>Tolerance</mat-label>
     <input matInput [(ngModel)]="tolerance" (change)="setTolerance()" type="number" placeholder="10" min="1" step="0.1">
-  </mat-form-field>
-</div>
-
-<div *ngIf="markerSelected==getMarkerSelections()[2]">
-  <mat-form-field appearance="outline">
-    <mat-label>Organism</mat-label>
-    <mat-select [(ngModel)]="organism" (selectionChange)="setOrganism()" placeholder="Organism">
-      <mat-option *ngFor="let organism of organisms" [value]="organism">
-        {{ organism }}
-      </mat-option>
-    </mat-select>
   </mat-form-field>
 </div>
 

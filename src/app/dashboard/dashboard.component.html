@@ -1,0 +1,68 @@
+<div class="main-content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="card-body">
+                      <div class="row">
+                          <br>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-1"></div>
+                          <div class="col-md-10">
+                              <h3>CAPE: Combined Analysis of Pleiotropy and Epistasis</h3>
+                              <p>This website offers a user interface to the R/Cape package. It enables users to trigger analysis that will use the R/CAPE software in the background, to save/share results from the analysis run amongst other things.</p>
+                              <p>Contemporary genetic studies are revealing the genetic complexity of many traits in humans and model organisms. Two hallmarks of this complexity are epistasis, meaning gene-gene interaction, and pleiotropy, in which one gene affects multiple phenotypes. Understanding the genetic architecture of complex traits requires addressing these phenomena, but interpreting the biological significance of epistasis and pleiotropy is often difficult. While epistasis reveals dependencies between genetic variants, it is often unclear how the activity of one variant is specifically modifying the other. Epistasis found in one phenotypic context may disappear in another context, rendering the genetic interaction ambiguous. Pleiotropy can suggest either redundant phenotype measures or gene variants that affect multiple biological processes. an R package, R/cape, which addresses these interpretation ambiguities by implementing a novel method to generate predictive and interpretable genetic networks that influence quantitative phenotypes. R/cape integrates information from multiple related phenotypes to constrain models of epistasis, thereby enhancing the detection of interactions that simultaneously describe all phenotypes. The networks inferred by R/cape are readily interpretable in terms of directed influences that indicate suppressive and enhancing effects of individual genetic variants on other variants, which in turn account for the variance in quantitative traits. We demonstrate the utility of R/cape by analyzing a mouse backcross, thereby discovering novel epistatic interactions influencing phenotypes related to obesity and diabetes. R/cape is an easy-to-use, platform-independent R package and can be applied to data from both genetic screens and a variety of segregating populations including backcrosses, intercrosses, and natural populations. The package is freely available under the GPL-3 license at http://cran.r-project.org/web/packages/cape.</p>
+                              <button class="learn-more-button" mat-raised-button routerLink="/aboutUs">Learn More About R/CAPE</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <br>
+      </div>
+      <!-- <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                  <div class="card-header card-header-warning card-header-icon">
+                      <div class="card-icon">
+                          <i class="material-icons">scatter_plot</i>
+                      </div>
+                      <p class="card-title">Exome Sequenced Samples: <strong>{{mmrdbStats.exomeSamplesCount | number}}</strong></p>
+                      <p class="card-title">Whole Genome Sequenced Samples: <strong>{{mmrdbStats.wholeGenomeSamplesCount | number}}</strong></p>
+                      <p class="card-title">SNP and Indel Variations: <strong>{{mmrdbStats.snpIndelVariantsCount | number}}</strong></p>
+                      <p class="card-title">Structural Variations: <strong>{{mmrdbStats.svVariantsCount | number}}</strong></p>
+                      <p class="card-title">Sequenced Strains With Medelian Diseases: <strong>{{mmrdbStats.strainCount | number}}</strong></p>
+                  </div>
+                  <div class="card-footer">
+                      <div class="stats">
+                          <i class="material-icons">table_chart</i> MMRDB database stats
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                  <div class="card-header card-header-danger card-header-icon">
+                      <div class="card-icon">
+                          <i class="material-icons">pie_chart</i>
+                      </div>
+                      <h5 class="card-title">Mendelian Pathogenic Mutations</h5>
+                      <p class="card-title">Confirmed SNP and Small Indel Mutations: <strong>{{mmrdbStats.confirmedSnpIndelMutationCount | number}}</strong></p>
+                      <p class="card-title">Confirmed Structural Mutations: <strong>{{mmrdbStats.confirmedSVMutationCount| number}}</strong></p>
+                      <p class="card-title">Likely Pathogenic SNP and Small Indel Mutations: <strong>{{mmrdbStats.snpIndelCandidateCount | number}}</strong></p>
+                      <p class="card-title">Likely Pathogenic Structural Mutations: <strong>{{mmrdbStats.svMutantCandidateCount | number}}</strong></p>
+                  </div>
+                  <div class="card-footer">
+                      <div class="stats">
+                          <i class="material-icons">table_chart</i> Analysis Stats
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div> -->
+
+  </div>
+</div>

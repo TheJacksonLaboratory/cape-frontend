@@ -1,0 +1,24 @@
+<div class="card">
+  <div class="card-header card-header-primary">
+    <h3 class="card-title">{{ report.title }}</h3>
+    <h4 class="card-subtitle">{{ report.date_created }}</h4>
+    <p class="card-category">{{ report.descrition }}</p>
+  </div>
+
+  <div class="card-body">
+    <mat-card-content>
+      <p>
+        {{report.description}}
+      </p>
+    </mat-card-content>
+    <mat-grid-list cols="2" rowHeight="2:1" >
+      <mat-grid-tile *ngFor="let image of reportImages" [colspan]=1 [rowspan]=1 [style.background]="lightblue">
+        <a href="{{image + '.pdf'}}" target="_blank">
+          <img mat-card-image src="{{image + '.jpg'}}"  alt="image"/>
+          <!-- [style.width.%]="image.width" /> -->
+          <p>{{image}}</p>
+        </a>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>

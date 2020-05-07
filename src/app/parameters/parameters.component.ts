@@ -9,7 +9,6 @@ import { MarkerSelectionComponent } from './marker-selection/marker-selection.co
 import { PairScanComponent } from './pair-scan/pair-scan.component';
 import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
 import { Parameters } from '../_models/parameters';
-import { DataFile } from '../_models/datafile';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 
 @Component({
@@ -124,23 +123,27 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
       ? 'traits_scaled:\n - ' + this.parameters.mean_center + '\n' : '';
     const pvalCorrection = this.parameters.p_value_correction !== undefined && this.parameters.p_value_correction !== null
       ? 'pval_correction:\n - ' + this.parameters.p_value_correction + '\n' : '';
+    const popType = this.parameters.pop_type !== undefined && this.parameters.pop_type !== null
+      ? 'pop:\n - ' + this.parameters.pop_type + '\n' : '';
     let eigWhich = this.parameters.number_of_eigentraits !== undefined && this.parameters.number_of_eigentraits !== null
       ? 'eig_which:\n' : '';
     for (let i = 1; i <= this.parameters.number_of_eigentraits; i++) {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
+    const saveResults = 'save_results:\n - true\n';
+    const useSavedResults = 'use_saved_results:\n - false\n';
 
     const singleScanComment = '\n#================================================\n' +
       '# Single Scan Parameters \n' +
       '#================================================\n';
     const refAllele = this.parameters.sls_reference_allele !== undefined && this.parameters.sls_reference_allele !== null
       ? 'ref_allele:\n - ' + this.parameters.sls_reference_allele + '\n' : '';
-    const singleScanPerm = this.parameters.sls_number_of_permutations !== undefined && this.parameters.sls_number_of_permutations
+    const singleScanPerm = this.parameters.sls_number_of_permutations !== undefined && this.parameters.sls_number_of_permutations !== null
       ? 'singlescan_perm:\n - ' + this.parameters.sls_number_of_permutations + '\n' : '';
     const useKinship = this.parameters.sls_use_kinship !== undefined && this.parameters.sls_use_kinship !== null
       ? 'use_kinship:\n - ' + this.parameters.sls_use_kinship + '\n' : '';
-    const kintshipType = this.parameters.sls_kinship_type !== undefined && this.parameters.sls_kinship_type !== null
-      ? 'kingship_type:\n - ' + this.parameters.sls_kinship_type + '\n' : '';
+    const kinshipType = this.parameters.sls_kinship_type !== undefined && this.parameters.sls_kinship_type !== null
+      ? 'kinship_type:\n - ' + this.parameters.sls_kinship_type + '\n' : '';
 
     const markerSelectionComment = '\n#================================================\n' +
       '# Marker Selection Parameters\n' +
@@ -166,11 +169,12 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
     const maxPairCor = this.parameters.ps_max_marker_correlation !== undefined && this.parameters.ps_max_marker_correlation !== null
       ? 'max_pair_cor:\n - ' + this.parameters.ps_max_marker_correlation + '\n' : '';
     const minPerGeno = this.parameters.ps_min_individual_per_genotype !== undefined && this.parameters.ps_min_individual_per_genotype !== null
-      ? 'min_per_geno:\n -  ' + this.parameters.ps_min_individual_per_genotype + '\n' : '';
+      ? 'min_per_genotype:\n - ' + this.parameters.ps_min_individual_per_genotype + '\n' : '';
 
     // build the yaml string from the strings above
-    const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection + eigWhich
-      + singleScanComment + refAllele + singleScanPerm + useKinship + kintshipType
+    const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection 
+      + popType + saveResults + useSavedResults + eigWhich
+      + singleScanComment + refAllele + singleScanPerm + useKinship + kinshipType
       + markerSelectionComment + markerSelectionMethod + windowSize + peakDensity + tolerance + snpFile + organism
       + pairScanComment + pairScanNullSize + maxPairCor + minPerGeno;
 

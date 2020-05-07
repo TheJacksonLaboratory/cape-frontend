@@ -4,10 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subscription, Observable, interval } from 'rxjs';
 
-import { JobService, AlertService } from '../_services';
+import { JobService, AlertService, ReportsService } from '../_services';
 import { Job } from '../_models/job';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 import { startWith, switchMap } from 'rxjs/operators';
+import { Report } from '../_models';
 
 @Component({
   selector: 'app-job',
@@ -27,7 +28,7 @@ export class JobComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
-  constructor(private http: HttpClient, private jobService: JobService,
+  constructor(private http: HttpClient, private jobService: JobService, private reportService: ReportsService,
     private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef,
     private router: Router) { }
   // public dialogRef: MatDialogRef<MessageDialogComponent>
@@ -106,6 +107,14 @@ export class JobComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Open the job results
+   * @param element row element
+   */
+  openReport(element: Report) {
+    this.router.navigate(['report-detail'], { queryParams: { 'id': element.id } });
+  }
+
+  /**
    * Run the job
    * @param element row element
    */
@@ -178,7 +187,7 @@ export class JobComponent implements OnInit, OnDestroy {
       if (result === 'ok') {
         service.subscribe(data => {
           msgData['description'] = data['message'];
-          this.openResultDialog(msgData);
+         // this.openResultDialog(msgData);
         }, error => {
           this.error = error;
           this.alertService.error(error);

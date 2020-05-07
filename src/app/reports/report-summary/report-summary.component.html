@@ -1,18 +1,19 @@
-
 <mat-card class="report">
-  <mat-card-content>
-    <mat-card-title>
-      {{ report.title }}
-    </mat-card-title>
-    <div class="panel-body">
+  <mat-card-content matTooltip="Open report" (click)="openReport(report)">
+      <mat-card-title>
+        {{ report.title }}
+      </mat-card-title>
+      <div class="panel-body">
         <div class='cover-photo-holder'>
-            <img mat-card-image src="../../../assets/circular.png" />
+
+          <img mat-card-image src="{{reportImage}}" (click)="openReport(report)" />
+          <!-- src="../../../assets/Network.Circular.pdf" /> -->
         </div>
         <p>{{ report.description }}</p>
         <div>
-            <div class='data-title'>Author:</div>
-            <div>{{ report.author }}</div>
+          <div class='data-title'>Author:</div>
+          <div>{{ report.author }}</div>
         </div>
-    </div>
+      </div>
   </mat-card-content>
 </mat-card>
