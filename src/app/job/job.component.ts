@@ -9,6 +9,7 @@ import { Job } from '../_models/job';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 import { startWith, switchMap } from 'rxjs/operators';
 import { Report } from '../_models';
+import { ProgressDialogComponent } from '../shared/progress-dialog/progress-dialog.component';
 
 @Component({
   selector: 'app-job',
@@ -115,6 +116,14 @@ export class JobComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * View the job progress
+   * @param element row element
+   */
+  viewJobProgress(element: Report) {
+    this.viewJobProgressDialog(element);
+  }
+
+  /**
    * Run the job
    * @param element row element
    */
@@ -172,6 +181,31 @@ export class JobComponent implements OnInit, OnDestroy {
     msgData['description'] = 'Cancel the Job named "' + element.name + '" ?';
     const jobService = this.jobService.cancelJob(element.id);
     this.openDialog(msgData, jobService);
+  }
+
+  /**
+   * Dialog used to display a modal window showing the job progress
+   * @param data message to pass to dialog
+   */
+  private viewJobProgressDialog(element: any) {
+    const msgData = { 'title': 'Job Progress' };
+    msgData['description'] = 'This is the Job Progress "' + element.name;
+    msgData['service'] = this.jobService;
+    msgData['jobid'] = element.id;
+    msgData['status'] = element.status;
+    console.log(element.name);
+    // const jobProgress = this.jobService.getJobProgress(element.id);
+
+    const dialogRef = this.dialog.open(ProgressDialogComponent, {
+      width:'400px',
+      height:'500px',
+      data: msgData
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'ok') {
+       // do smthg
+      }
+    });
   }
 
   /**

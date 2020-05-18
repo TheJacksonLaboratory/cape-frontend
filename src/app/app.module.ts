@@ -1,4 +1,4 @@
-﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+﻿﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -24,7 +24,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ParametersModule } from './parameters';
 import { SharedModule } from './shared/shared.module';
 import { AuthGuard } from './_guards';
-import { fakeBackendProvider } from './_helpers/fake-backend';;
 import { RegisterComponent } from './register/register.component'
 
 

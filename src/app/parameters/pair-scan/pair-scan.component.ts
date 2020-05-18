@@ -13,6 +13,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PairScanComponent implements OnInit, OnDestroy {
 
+  markerPairConstraints = ['Maximum Marker Correlation', 'Minimum Individuals per Genotype'];
+
   // parameters
   nullSize = 1000;
   markerPairConstraint: string;
@@ -59,8 +61,14 @@ export class PairScanComponent implements OnInit, OnDestroy {
   }
   setMarkerPairConstraints() {
     if (this.parameters !== undefined) {
-      this.parameters.ps_max_marker_correlation = this.maxMarkerCorrelation;
-      this.parameters.ps_min_individual_per_genotype = this.minIndPerGenotype;
+      // We initialize the max marker correlation and min individual per Genotype as the input fields have already a default value
+      if (this.markerPairConstraint === this.markerPairConstraints[0]) {
+        this.parameters.ps_max_marker_correlation = this.maxMarkerCorrelation;
+        this.parameters.ps_min_individual_per_genotype = undefined;
+      } else if (this.markerPairConstraint === this.markerPairConstraints[1]) {
+        this.parameters.ps_max_marker_correlation = undefined;
+        this.parameters.ps_min_individual_per_genotype = this.minIndPerGenotype;
+      }
     }
   }
   setMaxMarkerCorrelation() {

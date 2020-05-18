@@ -19,6 +19,8 @@ import {
 import { NgxMdModule } from 'ngx-md';
 import { DescriptionComponent } from './description/description.component';
 import { MessageDialogComponent } from './message-dialog/message-dialog.component';
+import { ProgressDialogComponent } from './progress-dialog/progress-dialog.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -37,21 +39,25 @@ import { MessageDialogComponent } from './message-dialog/message-dialog.componen
     MatProgressSpinnerModule,
     NgxMdModule.forRoot(),
     MatTableModule,
-    MatSelectModule
+    MatSelectModule,
+    NoopAnimationsModule
     ],
   declarations: [
     DescriptionComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    ProgressDialogComponent
   ],
   providers: [],
   entryComponents: [
     DescriptionComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    ProgressDialogComponent
   ],
   exports: [
     DescriptionComponent,
     CommonModule,
-    MessageDialogComponent
+    MessageDialogComponent,
+    ProgressDialogComponent
   ]
 })
 export class SharedModule { }

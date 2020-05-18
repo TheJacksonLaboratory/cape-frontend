@@ -29,8 +29,8 @@ export class JobService {
      * @param jobId id of job
      */
     getJobOwner(jobId: number) {
-        const params = new HttpParams().set('job_id', String(jobId));
-        return this.http.get<Job[]>(environment.API_URL + '/jobs/get_owner', { params: params})
+        const params = new HttpParams().set('id', String(jobId));
+        return this.http.get<Job[]>(environment.API_URL + '/jobs/get_owner', { params: params })
             .catch(JobService._handleError);
     }
 
@@ -40,7 +40,7 @@ export class JobService {
      */
     createRunJob(paramFileId: number) {
         return this.http.post<any>(environment.API_URL + '/jobs/create_run',
-            { 'parameter_file_id': paramFileId}, this.httpOptions)
+            { 'parameter_file_id': paramFileId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
                 const jsonObj = JSON.parse(jsonString);
@@ -54,7 +54,7 @@ export class JobService {
      */
     runJob(jobId: number) {
         return this.http.post<any>(environment.API_URL + '/jobs/run',
-            { 'job_id': jobId }, this.httpOptions)
+            { 'id': jobId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
                 const jsonObj = JSON.parse(jsonString);
@@ -68,7 +68,7 @@ export class JobService {
      */
     deleteJob(jobId: number) {
         return this.http.post<any>(environment.API_URL + '/jobs/delete',
-            { 'job_id': jobId }, this.httpOptions)
+            { 'id': jobId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
                 const jsonObj = JSON.parse(jsonString);
@@ -82,12 +82,22 @@ export class JobService {
      */
     cancelJob(jobId: number) {
         return this.http.post<any>(environment.API_URL + '/jobs/cancel',
-            { 'job_id': jobId }, this.httpOptions)
+            { 'id': jobId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
                 const jsonObj = JSON.parse(jsonString);
                 return jsonObj;
             })).catch(JobService._handleError);
+    }
+
+    /**
+     * Cancel a job given its id
+     * @param jobId job id
+     */
+    getJobProgress(jobId: number) {
+        const params = new HttpParams().set('id', String(jobId));
+        return this.http.get(environment.API_URL + '/jobs/progress', { params: params })
+            .catch(JobService._handleError);
     }
 
     /**

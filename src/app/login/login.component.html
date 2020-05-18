@@ -19,7 +19,7 @@
         <mat-progress-bar mode="query"></mat-progress-bar>
       </div>
       <div class="login-alert" *ngIf="alert.length">{{alert}}</div>
-      <div class="login-error" *ngIf="error.length">
+      <div class="login-error" *ngIf="error != null ? error.length : error">
         {{error}}
       </div>
 

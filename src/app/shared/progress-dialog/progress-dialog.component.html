@@ -1,0 +1,11 @@
+<h1 mat-dialog-title name="dialogTitle" ngDefaultControl>{{ messageTitle }}</h1>
+<div mat-dialog-content name="dialogMessage">
+  <!-- <mat-form-field style="height: 100%"> -->
+    <!-- <mat-label>Log</mat-label> -->
+    <textarea style="background-color: lightgray;" matInput readonly>{{ messageDescription }}</textarea>
+  <!-- </mat-form-field> -->
+</div>
+<div mat-dialog-actions>
+  <!-- <button mat-button (click)="onCancelClick()" cdkFocusInitial>Cancel</button> -->
+  <button mat-button ngbAutofocus cdkFocusInitial (click)="onOkClick()">Close</button>
+</div>
