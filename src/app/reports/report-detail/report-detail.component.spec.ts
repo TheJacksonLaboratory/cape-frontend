@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule, MatGridListModule } from '@angular/material';
 import { Observable, of } from 'rxjs';
 
 import { ReportDetailComponent } from './report-detail.component';
@@ -31,7 +31,8 @@ describe('ReportSummaryComponent', () => {
       imports: [
         MatCardModule,
         RouterTestingModule,
-        HttpClientModule
+        HttpClientModule,
+        MatGridListModule
       ],
       declarations: [ReportDetailComponent],
       providers: [

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatFormFieldModule, MatIconModule, MatInputModule,
-  MatTableModule, MatPaginatorModule, MatDialog } from '@angular/material';
+  MatTableModule, MatPaginatorModule, MatDialog, MatProgressSpinnerModule } from '@angular/material';
 
 import { JobComponent } from './job.component';
 import { AlertService } from '../_services';
@@ -22,7 +22,8 @@ describe('JobComponent', () => {
         MatPaginatorModule,
         HttpClientTestingModule,
         RouterTestingModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatProgressSpinnerModule
       ],
       declarations: [JobComponent],
       providers: [

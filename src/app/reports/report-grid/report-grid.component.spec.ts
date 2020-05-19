@@ -14,7 +14,6 @@ describe('ReportGridComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         MatCardModule,
-        ReportSummaryComponent,
         RouterTestingModule,
         HttpClientModule
       ],
