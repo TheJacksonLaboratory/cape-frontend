@@ -154,8 +154,8 @@ export class JobComponent implements OnInit, OnDestroy {
    * @param data message to pass to dialog
    */
   private openRunJobDialog(element: any) {
-    const msgData = { 'title': 'Run Job with parameter setup' };
-    msgData['description'] = 'Run Job id "' + element.id + '" with the parameter setup id "' + element.parameter_file_id + '" ?';
+    const msgData = { 'title': 'Run Analysis Job with parameter setup' };
+    msgData['description'] = 'Run Analysis Job id "' + element.id + '" with the parameter setup id "' + element.parameter_file_id + '" ?';
     const jobService = this.jobService.runJob(element.id);
     this.openDialog(msgData, jobService);
     this.router.navigate(['jobs']);
@@ -177,7 +177,7 @@ export class JobComponent implements OnInit, OnDestroy {
    * @param data message to pass to dialog
    */
   private openCancelJobDialog(element: any) {
-    const msgData = { 'title': 'Cancel Job' };
+    const msgData = { 'title': 'Cancel Analysis Job' };
     msgData['description'] = 'Cancel the Job named "' + element.name + '" ?';
     const jobService = this.jobService.cancelJob(element.id);
     this.openDialog(msgData, jobService);
@@ -188,7 +188,7 @@ export class JobComponent implements OnInit, OnDestroy {
    * @param data message to pass to dialog
    */
   private viewJobProgressDialog(element: any) {
-    const msgData = { 'title': 'Job Progress' };
+    const msgData = { 'title': 'Analysis Progress' };
     msgData['description'] = 'This is the Job Progress "' + element.name;
     msgData['service'] = this.jobService;
     msgData['jobid'] = element.id;
