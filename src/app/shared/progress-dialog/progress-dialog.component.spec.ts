@@ -14,7 +14,6 @@ let DIALOG_DATA = {
 describe('ProgressDialogComponent', () => {
   let component: ProgressDialogComponent;
   let fixture: ComponentFixture<ProgressDialogComponent>;
-  let jobService: JobService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

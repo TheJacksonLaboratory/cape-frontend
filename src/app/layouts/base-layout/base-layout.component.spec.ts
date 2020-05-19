@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService } from 'src/app/_services';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('BaseLayoutComponent', () => {
   let component: BaseLayoutComponent;
@@ -18,7 +19,7 @@ describe('BaseLayoutComponent', () => {
       imports: [
         RouterModule,
         RouterTestingModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
       declarations: [
         BaseLayoutComponent,

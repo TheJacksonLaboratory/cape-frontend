@@ -7,6 +7,7 @@ import { Report } from 'src/app/_models/report';
 import { ReportsService } from 'src/app/_services';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 
 describe('ReportSummaryComponent', () => {
@@ -19,7 +20,7 @@ describe('ReportSummaryComponent', () => {
       imports: [
         MatCardModule,
         RouterTestingModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         MatTooltipModule
       ],
       declarations: [ReportSummaryComponent],

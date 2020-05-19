@@ -5,6 +5,7 @@ import { ReportSummaryComponent } from '../report-summary/report-summary.compone
 import { MatCardModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ReportGridComponent', () => {
   let component: ReportGridComponent;
@@ -15,7 +16,7 @@ describe('ReportGridComponent', () => {
       imports: [
         MatCardModule,
         RouterTestingModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
       declarations: [
         ReportGridComponent,
