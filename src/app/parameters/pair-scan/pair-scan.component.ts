@@ -17,8 +17,8 @@ export class PairScanComponent implements OnInit, OnDestroy {
 
   // parameters
   nullSize = 1000;
-  markerPairConstraint: string;
-  maxMarkerCorrelation = 0.1;
+  markerPairConstraint: string = "Maximum Marker Correlation";
+  maxMarkerCorrelation = 0.5;
   minIndPerGenotype = 5;
 
   documentation = Documentation.PAIR_SCAN_DOC;

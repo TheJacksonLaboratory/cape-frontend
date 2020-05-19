@@ -15,7 +15,7 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
 
   // parameters
   referenceAllele = 'A';
-  numberOfPermutations = 1;
+  numberOfPermutations = 0;
   useKinship = false;
   kinshipType: string;
 

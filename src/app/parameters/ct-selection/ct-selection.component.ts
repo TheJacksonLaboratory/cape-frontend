@@ -28,9 +28,9 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   meanCenter = true;
   numberOfIndividuals = 0;
   numberOfEigentraits = 2;
-  traitSelected: string;
-  pValueCorrection: string;
-  popType: string;
+  traitSelected: string = "eigentraits";
+  pValueCorrection: string = "fdr";
+  popType: string = "2PP";
 
   parametersSubscription: Subscription;
   routeSubscription: Subscription;

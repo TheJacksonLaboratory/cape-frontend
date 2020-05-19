@@ -14,14 +14,14 @@ import { ActivatedRoute } from '@angular/router';
 export class MarkerSelectionComponent implements OnInit, OnDestroy {
 
   // parameters
-  numberOfMarkersToTest = 1500;
+  numberOfMarkersToTest = 100;
   snpsFileName = 'filteredSNPs.txt';
 
   peakDensity = 0.5;
-  tolerance = 10;
-  organism: string;
+  tolerance = 5;
+  organism: string = "mouse";
 
-  markerSelected: string;
+  markerSelected: string = "top.effects";
   markerSelectionMethods = this.createMarkerSelections();
   peakDensityDescription = 'Peak density is the fraction of markers under a large effect peak you would like to select.';
   toleranceDescription = 'Tolerance is the number of markers away from the target number you will tolerate selecting.';
