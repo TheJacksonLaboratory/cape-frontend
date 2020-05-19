@@ -6,7 +6,8 @@ import {
   MatButtonModule,
   MatInputModule,
   MatRippleModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 import { BaseLayoutRoutes } from './base-layout.routing';
@@ -38,7 +39,8 @@ import { ReportDetailComponent } from 'src/app/reports/report-detail/report-deta
     MatInputModule,
     MatTooltipModule,
     CustomMaterialModule,
-    ParametersModule
+    ParametersModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     ReportGridComponent,
