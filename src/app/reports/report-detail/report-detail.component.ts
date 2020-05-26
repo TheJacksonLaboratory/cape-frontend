@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Report } from 'src/app/_models';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError, Subscription } from 'rxjs';
 import { ReportsService } from 'src/app/_services';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-report-detail',
@@ -19,7 +19,7 @@ export class ReportDetailComponent implements OnInit {
   imagesRightColumn: string[] = [];
   routeSubscription: Subscription;
 
-  constructor(private http: HttpClient, private reportService: ReportsService, private route: ActivatedRoute, private router: Router) {
+  constructor(private reportService: ReportsService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -30,7 +30,7 @@ export class ReportDetailComponent implements OnInit {
         console.log("paths: " + resp.paths);
         this.report = resp;
         resp.paths.forEach((value, index) => {
-          this.reportImages[index] = "http://localhost:8080" + value;
+          this.reportImages[index] = environment.FILE_URL + value;
         });
         this.reportImages.forEach((value, index) => {
           if (index%2 ==0) 
