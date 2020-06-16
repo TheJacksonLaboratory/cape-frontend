@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Report } from 'src/app/_models';
 import { Router } from '@angular/router';
 import { ReportsService } from 'src/app/_services';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-report-summary',
@@ -17,7 +18,7 @@ export class ReportSummaryComponent implements OnInit {
   constructor(private router: Router, private reportService: ReportsService) { 
   }
   ngOnInit(): void {
-    this.reportImage = "http://localhost:8080" + this.report.paths[0] + ".jpg";
+    this.reportImage = environment.FILE_URL + this.report.paths[0] + ".jpg";
 
   }
 
