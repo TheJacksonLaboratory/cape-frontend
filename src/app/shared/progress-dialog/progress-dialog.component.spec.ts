@@ -4,6 +4,7 @@ import { ProgressDialogComponent } from './progress-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule } from '@angular/material';
 import { JobService } from 'src/app/_services';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 let DIALOG_DATA = {
   "jobid": 1,
@@ -19,7 +20,8 @@ describe('ProgressDialogComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
-        MatInputModule
+        MatInputModule,
+        HttpClientTestingModule
       ],
       declarations: [ ProgressDialogComponent ],
       providers: [

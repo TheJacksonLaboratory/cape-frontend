@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subscription, Observable, interval } from 'rxjs';
 
@@ -29,7 +28,7 @@ export class JobComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
-  constructor(private http: HttpClient, private jobService: JobService, private reportService: ReportsService,
+  constructor(private jobService: JobService, private reportService: ReportsService,
     private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef,
     private router: Router) { }
   // public dialogRef: MatDialogRef<MessageDialogComponent>
@@ -111,16 +110,8 @@ export class JobComponent implements OnInit, OnDestroy {
    * Open the job results
    * @param element row element
    */
-  openReport(element: Report) {
-    this.router.navigate(['report-detail'], { queryParams: { 'id': element.id } });
-  }
-
-  /**
-   * View the job progress
-   * @param element row element
-   */
-  viewJobProgress(element: Report) {
-    this.viewJobProgressDialog(element);
+  openReport(element: Job) {
+    this.router.navigate(['report-detail'], { queryParams: { 'id': element.report_id } });
   }
 
   /**
@@ -183,23 +174,35 @@ export class JobComponent implements OnInit, OnDestroy {
     this.openDialog(msgData, jobService);
   }
 
-  /**
-   * Dialog used to display a modal window showing the job progress
-   * @param data message to pass to dialog
-   */
-  private viewJobProgressDialog(element: any) {
+  viewAnalysisProgressDialog(element: any) {
     const msgData = { 'title': 'Analysis Progress' };
     msgData['description'] = 'This is the Job Progress "' + element.name;
     msgData['service'] = this.jobService;
     msgData['jobid'] = element.id;
     msgData['status'] = element.status;
     console.log(element.name);
-    // const jobProgress = this.jobService.getJobProgress(element.id);
+    this.viewJobProgressDialog(msgData);
+  }
 
+  viewAnalysisLogDialog(element: any) {
+    const msgData = { 'title': 'Analysis Logs' };
+    msgData['description'] = 'This is the Analysis logs "' + element.name;
+    msgData['service'] = this.jobService;
+    msgData['jobid'] = element.id;
+    msgData['status'] = element.status;
+    console.log(element.name);
+    this.viewJobProgressDialog(msgData);
+  }
+
+  /**
+   * Dialog used to display a modal window showing the job progress
+   * @param data message to pass to dialog
+   */
+  private viewJobProgressDialog(data: any) {
     const dialogRef = this.dialog.open(ProgressDialogComponent, {
       width:'400px',
       height:'500px',
-      data: msgData
+      data: data
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'ok') {

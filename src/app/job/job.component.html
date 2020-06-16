@@ -53,15 +53,15 @@
             </button>
             <div *ngIf="element.status=='In Progress'">
               <button mat-icon-button type="submit" color="primary" class="pull-right" matTooltip="Analysis Progress"
-                (click)="viewJobProgress(element)">
+                (click)="viewAnalysisProgressDialog(element)">
                 <mat-icon matSuffix>
                   <mat-spinner color="primary" diameter="20" mode="indeterminate"></mat-spinner>
                 </mat-icon>
               </button>
             </div>
             <div *ngIf="element.status!='In Progress'">
-              <button mat-icon-button type="submit" color="primary" class="pull-right" matTooltip="Analysis Progress"
-                (click)="viewJobProgress(element)">
+              <button mat-icon-button type="submit" color="primary" class="pull-right" matTooltip="Analysis Logs"
+                (click)="viewAnalysisLogDialog(element)">
                 <mat-icon matSuffix>
                   message
                 </mat-icon>

@@ -7,4 +7,5 @@ export class Job {
     status: string;
     owner: string;
     parameter_setup: string;
+    report_id: number;
 }
