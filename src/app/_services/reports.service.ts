@@ -51,6 +51,15 @@ export class ReportsService {
       .catch(ReportsService._handleError);
   }
 
+ /**
+  * Get Report for given job id
+  */
+ getReportByJobId(jobId: number) {
+  const params = new HttpParams().set('job_id', String(jobId));
+  return this.http.get<Report>(environment.API_URL + '/reports/get', { params: params })
+    .catch(ReportsService._handleError);
+}
+
    /**
   * Get files for Report with report id
   */
