@@ -111,7 +111,8 @@ export class JobComponent implements OnInit, OnDestroy {
    * @param element row element
    */
   openReport(element: Job) {
-    this.router.navigate(['report-detail'], { queryParams: { 'id': element.report_id } });
+    //TODO get report id from report endpoint given the job id then we can have the proper report id instead of the current job id
+    this.router.navigate(['report-detail'], { queryParams: { 'id': element.id } });
   }
 
   /**
