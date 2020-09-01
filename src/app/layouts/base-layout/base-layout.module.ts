@@ -10,6 +10,7 @@ import {
   MatProgressSpinnerModule
 } from '@angular/material';
 
+import { AboutComponent } from '../../about/about.component';
 import { BaseLayoutRoutes } from './base-layout.routing';
 import { ReportsService} from '../../_services/reports.service';
 import { ReportGridComponent } from '../../reports/report-grid/report-grid.component';
@@ -43,6 +44,7 @@ import { ReportDetailComponent } from 'src/app/reports/report-detail/report-deta
     MatProgressSpinnerModule
   ],
   declarations: [
+    AboutComponent,
     ReportGridComponent,
     ReportDetailComponent,
     DashboardComponent,
