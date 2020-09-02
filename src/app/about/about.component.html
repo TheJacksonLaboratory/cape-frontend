@@ -1,1 +1,295 @@
-﻿about
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
+              <mat-tab label="CAPE2">
+                <br>
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-10">
+                    <p>
+                      Here we present an R package for the Combined Analysis of Epistasis and Pleiotropy, or cape.
+                      This package implements a method, originally described in Carter et al. (2012), that infers
+                      directed interaction networks between genetic variants for predicting the influence of genetic
+                      perturbations on phenotypes. This method takes advantage of complementary information in
+                      partially pleiotropic genetic variants to resolve directional influences between variants
+                      that interact epistatically. cape can be applied to a variety of genetic variants, such as
+                      single nucleotide polymorphisms (SNPs), copy number variations (CNVs) or structural variations (SVs).
+                      Here we demonstrate the functionality of cape by inferring a predictive network between quantitative
+                      trait loci (QTL) in a cross between the non-obese, non-diabetic (NON) mouse and the New Zealand
+                      obese (NZO) mouse (Reifsnyder (2000)).
+                    </p>
+                  </div>
+                </div>
+              </mat-tab>
+
+              <mat-tab label="Team">
+                <br>
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-10">
+                    <ul>
+                      <li>
+                        <h3>
+                          <a href="https://www.jax.org/research-and-faculty/faculty/research-scientists/anna-tyler"
+                            target="_blank">Anna Tyler, Ph.D.</a>
+                        </h3>
+                        <span>{{ 'Research Scientist, Program PI' | uppercase }}</span>
+                      </li>
+                      <li>
+                        <h3>
+                          <a href="https://www.jax.org/research-and-faculty/faculty/greg-carter"
+                            target="_blank">Gregory Carter, Ph.D.</a>
+                        </h3>
+                        <span>{{ 'Associate Professor, Program PI' | uppercase }}</span>
+                      </li>
+                      <li>
+                        <h3>
+                          <a href="https://www.jax.org/people/ann-wells" target="_blank">Ann Wells, Ph.D.</a>
+                        </h3>
+                        <span>{{ 'Postdoctoral Associate' | uppercase}}</span>
+                      </li>
+                      <li>
+                        <h3>
+                          <a href="https://www.jax.org/people/vivek-philip" target="_blank">Vivek Philip, Ph.D.</a>
+                        </h3>
+                        <span>{{ 'Associate Director, Computational Sciences' | uppercase }}</span>
+                      </li>
+                      <li>
+                        <h3>
+                          <a href="https://www.jax.org/people/jake-emerson" target="_blank">Jake Emerson, M.S.</a>
+                        </h3>
+                        <span>{{ 'Principal Scientific Software Engineer' | uppercase }}</span>
+                      </li>
+                      <li>
+                        <h3>
+                          <a href="https://www.jax.org/people/baha-el-kassaby" target="_blank">Baha El Kassaby, M.S.</a>
+                        </h3>
+                        <span>{{ 'Senior Scientific Software Engineer' | uppercase }}</span>
+                      </li>
+                      <li>
+                        <h3>
+                          <a href="https://www.jax.org/people/georgi-kolishovski" target="_blank">Georgi Kolishovski, M.S.</a>
+                        </h3>
+                        <span>{{ 'Scientific Software Engineer' | uppercase }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </mat-tab>
+
+              <mat-tab label="Publications">
+                <br>
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-10">
+                    <ul>
+                      <li>
+                        <h4>
+                          <a href="https://www.genetics.org/content/211/2/495" target="_blank">
+                            R/Qtl2: Software for Mapping Quantitative Trait Loci with High-Dimensional Data and Multiparent Populations
+                          </a>
+                        </h4>
+                        <p>
+                          Broman, Karl W, Daniel M Gatti, Petr Simecek, Nicholas A Furlotte, Pjotr Prins, Śaunak Sen, Brian S Yandell, Gary A Churchill.
+                          <br>
+                          Genetics 211 (2). Genetics Soc America: 495–502.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://pubmed.ncbi.nlm.nih.gov/12724300/" target="_blank">
+                            R/Qtl: QTL Mapping in Experimental Crosses.
+                          </a>
+                        </h4>
+                        <p>
+                          Broman, Karl W., Hao Wu, Saunak Sen, and Gary A. Churchill.
+                          <br>
+                          Bioinformatics 19: 889–90.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://pubmed.ncbi.nlm.nih.gov/11882503/" target="_blank">
+                            Heterogeneous metabolic adaptation of C57BL/6J mice to high-fat diet.
+                          </a>
+                        </h4>
+                        <p>
+                          Burcelin, Rémy, Valérie Crivelli, Anabela Dacosta, Alexandra Roy-Tirelli, and Bernard Thorens.
+                          <br>
+                          American Journal of Physiology. Endocrinology and Metabolism 282 (4): E834–42.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1003010" target="_blank">
+                            Use of pleiotropy to model genetic interactions in a population.
+                          </a>
+                        </h4>
+                        <p>
+                          Carter, Gregory W, Michelle Hays, Amir Sherman, and Timothy Galitski.
+                          <br>
+                          PLoS Genetics 8 (10): e1003010.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://pubmed.ncbi.nlm.nih.gov/18716833/" target="_blank">
+                            The Collaborative Cross at Oak Ridge National Laboratory: Developing a Powerful Resource for Systems Genetics.
+                          </a>
+                        </h4>
+                        <p>
+                          Chesler, Elissa J, Darla R Miller, Lisa R Branstetter, Leslie D Galloway, Barbara L Jackson, Vivek M Philip, Brynn H Voy, et al.
+                          <br>
+                          Mammalian Genome 19 (6). Springer: 382–89.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1526773/" target="_blank">
+                            The Genetic Basis of Type 2 Diabetes.
+                          </a>
+                        </h4>
+                        <p>
+                          Das, Swapan Kumar, and Steven C Elbein
+                          <br>
+                          Cellscience 2 (4): 100–131.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="http://www.stat.columbia.edu/~gelman/arm/" target="_blank">
+                            Data Analysis Using Regression and Multilevel/Hierarchical Models.
+                          </a>
+                        </h4>
+                        <p>
+                          Gelman, Andrew, and Jennifer Hill.
+                          <br>
+                          Cambridge University Press.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://pubmed.ncbi.nlm.nih.gov/14517149/" target="_blank">
+                            Epidemic Obesity and the Metabolic Syndrome.
+                          </a>
+                        </h4>
+                        <p>
+                          Haffner, S
+                          <br>
+                          Circulation 108 (13): 1541–5.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://www.genetics.org/content/178/3/1709" target="_blank">
+                            Efficient control of population structure in model organism association mapping.
+                          </a>
+                        </h4>
+                        <p>
+                          Kang, Hyun Min, Noah A Zaitlen, Claire M Wade, Andrew Kirby, David Heckerman, Mark J Daly, and Eleazar Eskin.
+                          <br>
+                          Genetics 178 (3): 1709–23.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://pubmed.ncbi.nlm.nih.gov/15931378/" target="_blank">
+                            Genetic epidemiology of diabetes.
+                          </a>
+                        </h4>
+                        <p>
+                          Permutt, M Alan, Jonathon Wasson, and Nancy Cox.
+                          <br>
+                          The Journal of Clinical Investigation 115 (6): 1431–9.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://pubmed.ncbi.nlm.nih.gov/17701901/" target="_blank">
+                            PLINK: A Tool Set for Whole-Genome Association and Population-Based Linkage Analyses.
+                          </a>
+                        </h4>
+                        <p>
+                          Purcell, Shaun, Benjamin Neale, Kathe Todd-Brown, Lori Thomas, Manuel AR Ferreira, David Bender, Julian Maller, et al.
+                          <br>
+                          The American Journal of Human Genetics 81 (3). Elsevier: 559–75.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC310941/" target="_blank">
+                            Maternal Environment and Genotype Interact to Establish Diabesity in Mice.
+                          </a>
+                        </h4>
+                        <p>
+                          Reifsnyder, P C.
+                          <br>
+                          Genome Research 10 (10): 1568–78.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://pubmed.ncbi.nlm.nih.gov/28592500/" target="_blank">
+                            Epistatic Networks Jointly Influence Phenotypes Related to Metabolic Disease and Gene Expression in Diversity Outbred Mice.
+                          </a>
+                        </h4>
+                        <p>
+                          Tyler, Anna L, Bo Ji, Daniel M Gatti, Steven C Munger, Gary A Churchill, Karen L Svenson, and Gregory W Carter.
+                          <br>
+                          Genetics 206 (2). Genetics Soc America: 621–39.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>
+                          <a href="https://pubmed.ncbi.nlm.nih.gov/17237038/" target="_blank">
+                            R/qtlbim: QTL with Bayesian Interval Mapping in experimental crosses.
+                          </a>
+                        </h4>
+                        <p>
+                          Yandell, Brian S, Tapan Mehta, Samprit Banerjee, Daniel Shriner, Ramprasad Venkataraman, Jee Young Moon, W Whipple Neely, Hao Wu, Randy von Smith, and Nengjun Yi.
+                          <br>
+                          Bioinformatics 23 (5): 641–43.
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </mat-tab>
+
+              <mat-tab label="Contact Us">
+                <br>
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-10">
+                    <p>
+                      For program or data related questions, please contact Anna Tyler, Ph.D. <a href="mailto:anna.tyler@jax.org">anna.tyler@jax.org</a>
+                      <br>
+                      For database related questions, please contact Baha El Kassaby, M.S. <a href="mailto:baha.elkassaby@jax.org">baha.elkassaby@jax.org</a>
+                    </p>
+                  </div>
+                </div>
+              </mat-tab>
+
+              <mat-tab label="License">
+                <br>
+                <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-10">
+                    <p>CAPE2 is licensed under <a href="https://www.r-project.org/Licenses/GPL-3" target="_blank">GPL-3</a></p>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+<br>
+</div>

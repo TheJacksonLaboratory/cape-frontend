@@ -6,17 +6,10 @@ import {Router} from "@angular/router";
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss']
 })
-export class AboutComponent implements OnInit {
 
-  // searchOption = 'variant';
+export class AboutComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-  ngOnInit() {
-
-  }
-
-  // onSelectedItem(event: any){
-
-  // }
+  ngOnInit() { }
 }

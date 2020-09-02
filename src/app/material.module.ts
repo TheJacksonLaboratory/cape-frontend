@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatInputModule,
   MatTableModule, MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule,
-  MatPaginatorModule, MatSortModule, MatSelectModule, MatGridListModule
+  MatPaginatorModule, MatSortModule, MatSelectModule, MatGridListModule, MatTabsModule
 } from '@angular/material';
 
 @NgModule({
@@ -22,7 +22,8 @@ import {
     MatPaginatorModule,
     MatSortModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTabsModule
   ],
   exports: [
     CommonModule,
@@ -39,7 +40,8 @@ import {
     MatPaginatorModule,
     MatSortModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTabsModule
   ],
 })
 export class CustomMaterialModule {
