@@ -1,41 +1,48 @@
-<mat-form-field appearance="outline">
-  <mat-label>Number of Markers to Test</mat-label>
-  <input matInput type="number" placeholder="100" min="0" [(ngModel)]="numberOfMarkersToTest"
-    (change)="setNumberOfMarkersToTest()">
-</mat-form-field>
-<mat-form-field appearance="outline">
-  <mat-label>Organism</mat-label>
-  <mat-select [(ngModel)]="organism" (selectionChange)="setOrganism()" placeholder="Organism">
-    <mat-option *ngFor="let organism of organisms" [value]="organism">
-      {{ organism }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<mat-form-field appearance="outline">
-  <mat-label>Marker Selection Method</mat-label>
-  <mat-select [(value)]=markerSelected matTooltip="{{ getMarkerSelectionDescription(markerSelected) }}"
-    (selectionChange)="setMarkerSelectionMethod()">
-    <mat-option *ngFor="let markerSelected of getMarkerSelections()" [value]="markerSelected">
-      {{ markerSelected }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="card">
+  <div class="card-header">Marker Selection</div>
+  <div class="card-body">
+    <label>Parameters for selecting markers for the pairwise scan</label>
+    <mat-form-field appearance="outline">
+      <mat-label>Number of Markers to Test</mat-label>
+      <input matInput type="number" placeholder="100" min="0" [(ngModel)]="numberOfMarkersToTest"
+        (change)="setNumberOfMarkersToTest()">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Organism</mat-label>
+      <mat-select [(ngModel)]="organism" (selectionChange)="setOrganism()" placeholder="Organism">
+        <mat-option *ngFor="let organism of organisms" [value]="organism">
+          {{ organism }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Marker Selection Method</mat-label>
+      <mat-select [(value)]=markerSelected matTooltip="{{ getMarkerSelectionDescription(markerSelected) }}"
+        (selectionChange)="setMarkerSelectionMethod()">
+        <mat-option *ngFor="let markerSelected of getMarkerSelections()" [value]="markerSelected">
+          {{ markerSelected }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-<div *ngIf="markerSelected==getMarkerSelections()[0]">
-  <mat-form-field appearance="outline" matTooltip="{{ peakDensityDescription }}">
-    <mat-label>Peak Density</mat-label>
-    <input matInput [(ngModel)]="peakDensity" (change)="setPeakDensity()" type="number" placeholder="0.5" min="0.1"
-      max="1" step="0.1">
-  </mat-form-field>
-  <mat-form-field appearance="outline" matTooltip="{{ toleranceDescription }}">
-    <mat-label>Tolerance</mat-label>
-    <input matInput [(ngModel)]="tolerance" (change)="setTolerance()" type="number" placeholder="5" min="1" step="0.1">
-  </mat-form-field>
-</div>
+    <div *ngIf="markerSelected==getMarkerSelections()[0]">
+      <mat-form-field appearance="outline" matTooltip="{{ peakDensityDescription }}">
+        <mat-label>Peak Density</mat-label>
+        <input matInput [(ngModel)]="peakDensity" (change)="setPeakDensity()" type="number" placeholder="0.5" min="0.1"
+          max="1" step="0.1">
+      </mat-form-field>
+      <mat-form-field appearance="outline" matTooltip="{{ toleranceDescription }}">
+        <mat-label>Tolerance</mat-label>
+        <input matInput [(ngModel)]="tolerance" (change)="setTolerance()" type="number" placeholder="5" min="1"
+          step="0.1">
+      </mat-form-field>
+    </div>
 
-<div *ngIf="markerSelected==getMarkerSelections()[3]">
-  <mat-form-field appearance="outline">
-    <mat-label>SNP File Name</mat-label>
-    <input matInput type="text" placeholder="SNP File Name" [(ngModel)]="snpsFileName" (change)="setSNPFileName()">
-  </mat-form-field>
+    <div *ngIf="markerSelected==getMarkerSelections()[3]">
+      <mat-form-field appearance="outline">
+        <mat-label>SNP File Name</mat-label>
+        <input matInput type="text" placeholder="SNP File Name" [(ngModel)]="snpsFileName" (change)="setSNPFileName()">
+      </mat-form-field>
+    </div>
+  </div>
 </div>

@@ -5,35 +5,28 @@
   </div>
 
   <div class="card-body">
-    <div class="row">
-      <app-ct-selection>loading</app-ct-selection>
-
-      <mat-card>
-        <mat-tab-group>
-          <mat-tab label="Plot">
-            <app-plot>loading</app-plot>
-          </mat-tab>
-          <mat-tab label="Single Locus Scan">
-            <app-single-locus-scan matTooltip="Parameters for the single-locus scan">loading</app-single-locus-scan>
-          </mat-tab>
-          <mat-tab label="Marker Selection">
-            <app-marker-selection matTooltip="Parameters for selecting markers for the pairwise scan">loading</app-marker-selection>
-          </mat-tab>
-          <mat-tab label="Pair Scan">
-            <app-pair-scan matTooltip="Parameters for running the pairwise scan">loading</app-pair-scan>
-          </mat-tab>
-        </mat-tab-group>
-      </mat-card>
+    <div class="container-fluid">
+      <app-ct-selection></app-ct-selection>
+      <div class="row">
+        <div class="col-md-4">
+          <app-single-locus-scan></app-single-locus-scan>
+        </div>
+        <div class="col-md-4">
+          <app-marker-selection></app-marker-selection>
+        </div>
+        <div class="col-md-4">
+          <app-pair-scan></app-pair-scan>
+        </div>
+      </div>
+      
+      <div class="row">
+        <button mat-raised-button type="submit" class="btn btn-info pull-right"
+          matTooltip="Saves the parameters file associated with the parameters set up on this page"
+          (click)='saveParametersFile()'>
+          <mat-icon matSuffix>create</mat-icon>
+          Save Parameter File
+        </button>
+      </div>
 
     </div>
-    <div fxLayout="row" fxLayoutAlign="space-between end">
-      <button mat-raised-button type="submit" class="btn btn-info pull-right"
-        matTooltip="Saves the parameters file associated with the parameters set up on this page"
-        (click)='saveParametersFile()'>
-        <mat-icon matSuffix>create</mat-icon>
-        Save Parameter File
-      </button>
-    </div>
-    <div class="clearfix"></div>
   </div>
-</div>

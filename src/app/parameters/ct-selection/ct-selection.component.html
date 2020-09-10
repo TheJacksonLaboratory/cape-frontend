@@ -1,60 +1,81 @@
-<mat-card>
-  <mat-card-content>
-    <div class="column">
-      <app-main-selection>loading</app-main-selection>
-      <div class="row">
-        <div class="margin">
-          <app-tree [title]="getCovariateTitle()" [description]="getCovariateDescription()" matTooltip="Select variables to be used as covariates. can be factors or quantitative">loading</app-tree>
-        </div>
-        <div class="margin">
-          <app-tree [title]="getTraitTitle()" [description]="getTraitDescription()" matTooltip="Select variables to be analyzed in CAPE">loading</app-tree>
-        </div>
+<div class="row">
+  <div class="col-md-6">
+    <app-main-selection></app-main-selection>
+
+    <div class="row">
+      <div class="col-md-6">
+        <app-tree [title]="getCovariateTitle()" [description]="getCovariateDescription()"
+          matTooltip="Select variables to be used as covariates. can be factors or quantitative">loading</app-tree>
       </div>
-      <div class="margin">
-        <p>There are {{ numberOfIndividuals }} individuals with the selected traits measured.</p>
+      <div class="col-md-6">
+        <app-tree [title]="getTraitTitle()" [description]="getTraitDescription()"
+          matTooltip="Select variables to be analyzed in CAPE">loading</app-tree>
+      </div>
+    </div>
+    <br>
+    <p>There are {{ numberOfIndividuals }} individuals with the selected traits measured.</p>
 
-        <div class="row" matTooltip="Select whether to normalize (rank Z normalize) and/or mean center the traits. Both are suggested, particularly if analyzing eigentraits">
-          <p>Adjust Phenotypes:</p>
-          <mat-checkbox class="margin" [(ngModel)]="normalize" (click)="setNormalize()">Normalize</mat-checkbox>
-          <mat-checkbox class="margin" [(ngModel)]="meanCenter" (click)="setMeanCenter()">Mean Center</mat-checkbox>
-        </div>
+    <div class="row"
+      matTooltip="Select whether to normalize (rank Z normalize) and/or mean center the traits. Both are suggested, particularly if analyzing eigentraits">
+      <div class="col-md-6">
+        <p>Adjust Phenotypes:</p>
 
-        <div class="row">
+      </div>
+      <div class="col-md-6">
+        <mat-checkbox [(ngModel)]="normalize" (click)="setNormalize()">Normalize</mat-checkbox>
+        &nbsp;
+        <mat-checkbox [(ngModel)]="meanCenter" (click)="setMeanCenter()">Mean Center</mat-checkbox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Traits to scan</mat-label>
+          <mat-select placeholder="Trait selected" [(ngModel)]="traitSelected" (selectionChange)="setTraitsToScan()"
+            matTooltip="Select whether to analyze eigentraits (composite traits) or individual traits">
+            <mat-option *ngFor="let traitSelected of traitsToScan" [value]="traitSelected">
+              {{ traitSelected }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <div *ngIf="traitSelected=='eigentraits'">
           <mat-form-field appearance="outline">
-            <mat-label>Traits to scan</mat-label>
-            <mat-select placeholder="Trait selected" [(ngModel)]="traitSelected" (selectionChange)="setTraitsToScan()" matTooltip="Select whether to analyze eigentraits (composite traits) or individual traits">
-              <mat-option *ngFor="let traitSelected of traitsToScan" [value]="traitSelected">
-                {{ traitSelected }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <div *ngIf="traitSelected=='eigentraits'">
-            <mat-form-field appearance="outline">
-              <mat-label>Nb. of ET</mat-label>
-              <input matInput [(ngModel)]="numberOfEigentraits" (change)="setNumberofET()" type="number" placeholder="2"
-                min="2">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row">
-          <mat-form-field appearance="outline">
-            <mat-label>P value correction</mat-label>
-            <mat-select placeholder="P value correction" [(ngModel)]="pValueCorrection" (selectionChange)="setPValueCorrection()" matTooltip="Select the method of p value correction">
-              <mat-option *ngFor="let pValueCorrection of pValueCorrectionList" [value]="pValueCorrection">
-                {{ pValueCorrection }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Population type</mat-label>
-            <mat-select placeholder="Population type" [(ngModel)]="popType" (selectionChange)="setPopType()" matTooltip="Population type: 'MPP' (multi-parental population), '2PP' (2 parents), 'RIL' (recombinant inbred line)">
-              <mat-option *ngFor="let popType of popTypeList" [value]="popType">
-                {{ popType }}
-              </mat-option>
-            </mat-select>
+            <mat-label>Nb. of ET</mat-label>
+            <input matInput [(ngModel)]="numberOfEigentraits" (change)="setNumberofET()" type="number" placeholder="2"
+              min="2">
           </mat-form-field>
         </div>
       </div>
     </div>
-  </mat-card-content>
-</mat-card>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>P value correction</mat-label>
+          <mat-select placeholder="P value correction" [(ngModel)]="pValueCorrection"
+            (selectionChange)="setPValueCorrection()" matTooltip="Select the method of p value correction">
+            <mat-option *ngFor="let pValueCorrection of pValueCorrectionList" [value]="pValueCorrection">
+              {{ pValueCorrection }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Population type</mat-label>
+          <mat-select placeholder="Population type" [(ngModel)]="popType" (selectionChange)="setPopType()"
+            matTooltip="Population type: 'MPP' (multi-parental population), '2PP' (2 parents), 'RIL' (recombinant inbred line)">
+            <mat-option *ngFor="let popType of popTypeList" [value]="popType">
+              {{ popType }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <app-plot></app-plot>
+  </div>
+</div>

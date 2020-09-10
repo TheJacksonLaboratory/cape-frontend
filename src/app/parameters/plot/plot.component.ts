@@ -50,6 +50,8 @@ export class PlotComponent implements OnInit, OnDestroy {
     layout: {}
   };
 
+  config = {responsive: true};
+
   constructor(private dataFileService: DataFilesService, private treeSelectionService: TreeSelectionService) {
     // this.onResize();
   }
@@ -192,7 +194,7 @@ export class PlotComponent implements OnInit, OnDestroy {
     let data = [];
     let layout = {};
     const height = 700;
-    const width = 800;
+    // const width = 800;
     const phenotypeNumber = this.dataMap.size;
 
     // One plot is shown
@@ -216,8 +218,7 @@ export class PlotComponent implements OnInit, OnDestroy {
         layout = {
           autoexpand: 'true',
           autosize: 'true',
-          width: width,
-          // width: (this.innerWidth - 600) / 2,
+          // width: width,
           height: height,
           margin: {
             autoexpand: 'true',
@@ -240,7 +241,8 @@ export class PlotComponent implements OnInit, OnDestroy {
             linewidth: 1,
             mirror: true,
             automargin: true
-          }
+          },
+          legend: {"orientation": "h"}
         };
       }
       // Histogram plot type = 1
@@ -273,7 +275,8 @@ export class PlotComponent implements OnInit, OnDestroy {
             linewidth: 1,
             mirror: true,
             automargin: true
-          }
+          },
+          legend: {"orientation": "h"}
         };
       }
     } else if (phenotypeNumber > 1) { // more than one plot is shown
@@ -296,11 +299,12 @@ export class PlotComponent implements OnInit, OnDestroy {
         });
         layout = {
           grid: { rows: rows, columns: columns, pattern: 'independent' },
-          width: width,
+          // width: width,
           // width: (this.innerWidth - 600) / 2,
           height: height,
           autoexpand: 'true',
           autosize: 'true',
+          legend: {"orientation": "h"}
         };
       }
       // Histogram plot type = n + 1
@@ -324,11 +328,12 @@ export class PlotComponent implements OnInit, OnDestroy {
         });
         layout = {
           grid: { rows: rows, columns: columns, pattern: 'independent' },
-          width: width,
+          // width: width,
           // width: (this.innerWidth - 600) / 2,
           height: height,
           autoexpand: 'true',
           autosize: 'true',
+          legend: {"orientation": "h"}
         };
       }
       // Heatmap plot type = n + 1
@@ -472,7 +477,7 @@ export class PlotComponent implements OnInit, OnDestroy {
             autorange: 'reversed',
             side: 'right'
           },
-          width: width,
+          // width: width,
           height: height,
           updatemenus: updatemenus,
           annotations: annotations
@@ -519,7 +524,7 @@ export class PlotComponent implements OnInit, OnDestroy {
         layout = {
           title: 'Correlation Scatter Plot Matrix',
           height: height,
-          width: width,
+          // width: width,
           autosize: false,
           hovermode: 'closest',
           dragmode: 'select',
@@ -686,8 +691,7 @@ export class PlotComponent implements OnInit, OnDestroy {
             // pattern: 'independent'
           },
           annotations: annotations,
-          width: width,
-          // width: (this.innerWidth - 600) / 2,
+          // width: width,
           height: height,
           autoexpand: 'true',
           autosize: 'true',
