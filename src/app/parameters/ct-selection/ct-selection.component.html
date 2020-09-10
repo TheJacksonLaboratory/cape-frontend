@@ -12,6 +12,7 @@
           matTooltip="Select variables to be analyzed in CAPE">loading</app-tree>
       </div>
     </div>
+    <br>
     <p>There are {{ numberOfIndividuals }} individuals with the selected traits measured.</p>
 
     <div class="row"
@@ -22,6 +23,7 @@
       </div>
       <div class="col-md-6">
         <mat-checkbox [(ngModel)]="normalize" (click)="setNormalize()">Normalize</mat-checkbox>
+        &nbsp;
         <mat-checkbox [(ngModel)]="meanCenter" (click)="setMeanCenter()">Mean Center</mat-checkbox>
       </div>
     </div>
@@ -74,6 +76,6 @@
     </div>
   </div>
   <div class="col-md-6">
-    <app-plot></app-plot>
+    <app-plot class="plot-content"></app-plot>
   </div>
 </div>

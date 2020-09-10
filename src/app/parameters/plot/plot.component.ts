@@ -219,8 +219,7 @@ export class PlotComponent implements OnInit, OnDestroy {
           autoexpand: 'true',
           autosize: 'true',
           // width: width,
-          // width: (this.innerWidth - 600) / 2,
-          // height: height,
+          height: height,
           margin: {
             autoexpand: 'true',
             margin: 0
@@ -242,7 +241,8 @@ export class PlotComponent implements OnInit, OnDestroy {
             linewidth: 1,
             mirror: true,
             automargin: true
-          }
+          },
+          legend: {"orientation": "h"}
         };
       }
       // Histogram plot type = 1
@@ -275,7 +275,8 @@ export class PlotComponent implements OnInit, OnDestroy {
             linewidth: 1,
             mirror: true,
             automargin: true
-          }
+          },
+          legend: {"orientation": "h"}
         };
       }
     } else if (phenotypeNumber > 1) { // more than one plot is shown
@@ -300,9 +301,10 @@ export class PlotComponent implements OnInit, OnDestroy {
           grid: { rows: rows, columns: columns, pattern: 'independent' },
           // width: width,
           // width: (this.innerWidth - 600) / 2,
-          // height: height,
+          height: height,
           autoexpand: 'true',
           autosize: 'true',
+          legend: {"orientation": "h"}
         };
       }
       // Histogram plot type = n + 1
@@ -328,9 +330,10 @@ export class PlotComponent implements OnInit, OnDestroy {
           grid: { rows: rows, columns: columns, pattern: 'independent' },
           // width: width,
           // width: (this.innerWidth - 600) / 2,
-          // height: height,
+          height: height,
           autoexpand: 'true',
           autosize: 'true',
+          legend: {"orientation": "h"}
         };
       }
       // Heatmap plot type = n + 1
@@ -520,7 +523,7 @@ export class PlotComponent implements OnInit, OnDestroy {
         const dimensions = [];
         layout = {
           title: 'Correlation Scatter Plot Matrix',
-          // height: height,
+          height: height,
           // width: width,
           autosize: false,
           hovermode: 'closest',
@@ -689,8 +692,7 @@ export class PlotComponent implements OnInit, OnDestroy {
           },
           annotations: annotations,
           // width: width,
-          // width: (this.innerWidth - 600) / 2,
-          // height: height,
+          height: height,
           autoexpand: 'true',
           autosize: 'true',
           plot_bgcolor: 'rgba(228, 222, 249, 0.65)'
