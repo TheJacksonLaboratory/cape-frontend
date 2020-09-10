@@ -1,3 +1,5 @@
+import { Alphas } from "../parameters/single-locus-scan/single-locus-scan.component";
+
 export class Parameters {
   id: number;
   title: string;
@@ -12,7 +14,8 @@ export class Parameters {
   sls_reference_allele: string;
   sls_number_of_permutations: number;
   sls_use_kinship: boolean;
-  sls_kinship_type: string;
+  sls_alpha_values: Alphas[];
+  // sls_kinship_type: string;
   ms_number_to_test: number;
   ms_method: string;
   ms_peak_density: number;
@@ -30,7 +33,7 @@ export class Parameters {
   constructor(id?: number, title?: string, covariateSelection?: string[],
     traitSelection?: string[], normalize?: boolean, meanCenter?: boolean, traitsToScan?: string,
     numberOfEigentraits?: number, pValueCorrection?: string, popType?: string, slsReferenceAllele?: string,
-    slsNumberOfPermutation?: number, slsUseKinship?: boolean, slsKinshipType?: string,
+    slsNumberOfPermutation?: number, slsUseKinship?: boolean, alphaValues?: Alphas[],
     msNumberToTest?: number, msMethod?: string, msPeakDensity?: number, msTolerance?: number,
     msOrganism?: string, msSnpFilename?: string, psNullSize?: number, psMaxMarkerCorrelation?: number, 
     psMinIndividualPerGenotype?: number, yamlFile?: string,
@@ -47,7 +50,8 @@ export class Parameters {
     this.sls_reference_allele = slsReferenceAllele;
     this.sls_number_of_permutations = slsNumberOfPermutation;
     this.sls_use_kinship = slsUseKinship;
-    this.sls_kinship_type = slsKinshipType;
+    this.sls_alpha_values = alphaValues;
+    // this.sls_kinship_type = slsKinshipType;
     this.ms_number_to_test = msNumberToTest;
     this.ms_method = msMethod;
     this.ms_peak_density = msPeakDensity;
@@ -78,7 +82,8 @@ export class Parameters {
     parameter.sls_reference_allele = obj['sls_reference_allele'];
     parameter.sls_number_of_permutations = obj['sls_number_of_permutations'];
     parameter.sls_use_kinship = obj['sls_use_kinship'];
-    parameter.sls_kinship_type = obj['sls_kinship_type'];
+    parameter.sls_alpha_values = obj['sls_alpha_values']
+    // parameter.sls_kinship_type = obj['sls_kinship_type'];
     parameter.ms_number_to_test = obj['ms_number_to_test'];
     parameter.ms_method = obj['ms_method'];
     parameter.ms_peak_density = obj['ms_peak_density'];
