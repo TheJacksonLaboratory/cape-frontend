@@ -1,24 +1,22 @@
-<div class="row" layout-align="space-around none">
-
-  <div class="column margin" layout-align="space-around none">
+<div class="row">
+  <div class="col-md-6">
+    <mat-form-field appearance="outline">
+      <mat-label>Select file</mat-label>
+      <mat-select placeholder="Select file" (selectionChange)="setDataFileSelected(fileSelected)" [(value)]="fileSelected"
+        matTooltip="The data file to be analyzed">
+        <mat-option *ngFor="let fileSelected of files" [value]="fileSelected">
+          {{ fileSelected.filename }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-md-6">
     <mat-form-field appearance="outline">
       <mat-label>Title input</mat-label>
       <input matInput placeholder="Title" (change)="setTitle()" [formControl]="titleFormControl">
       <mat-error *ngIf="titleFormControl.hasError('required')">
         Title is <strong>required</strong>
       </mat-error>
-    </mat-form-field>
-  </div>
-
-  <div class="column margin" layout-align="space-around none">
-    <mat-form-field appearance="outline">
-      <mat-label>Select file</mat-label>
-      <mat-select placeholder="Select file" (selectionChange)="setDataFileSelected(fileSelected)"
-        [(value)]="fileSelected" matTooltip="The data file to be analyzed">
-        <mat-option *ngFor="let fileSelected of files" [value]="fileSelected">
-          {{ fileSelected.filename }}
-        </mat-option>
-      </mat-select>
     </mat-form-field>
   </div>
 </div>

@@ -50,6 +50,8 @@ export class PlotComponent implements OnInit, OnDestroy {
     layout: {}
   };
 
+  config = {responsive: true};
+
   constructor(private dataFileService: DataFilesService, private treeSelectionService: TreeSelectionService) {
     // this.onResize();
   }
@@ -192,7 +194,7 @@ export class PlotComponent implements OnInit, OnDestroy {
     let data = [];
     let layout = {};
     const height = 700;
-    const width = 800;
+    // const width = 800;
     const phenotypeNumber = this.dataMap.size;
 
     // One plot is shown
@@ -216,9 +218,9 @@ export class PlotComponent implements OnInit, OnDestroy {
         layout = {
           autoexpand: 'true',
           autosize: 'true',
-          width: width,
+          // width: width,
           // width: (this.innerWidth - 600) / 2,
-          height: height,
+          // height: height,
           margin: {
             autoexpand: 'true',
             margin: 0
@@ -296,9 +298,9 @@ export class PlotComponent implements OnInit, OnDestroy {
         });
         layout = {
           grid: { rows: rows, columns: columns, pattern: 'independent' },
-          width: width,
+          // width: width,
           // width: (this.innerWidth - 600) / 2,
-          height: height,
+          // height: height,
           autoexpand: 'true',
           autosize: 'true',
         };
@@ -324,9 +326,9 @@ export class PlotComponent implements OnInit, OnDestroy {
         });
         layout = {
           grid: { rows: rows, columns: columns, pattern: 'independent' },
-          width: width,
+          // width: width,
           // width: (this.innerWidth - 600) / 2,
-          height: height,
+          // height: height,
           autoexpand: 'true',
           autosize: 'true',
         };
@@ -472,7 +474,7 @@ export class PlotComponent implements OnInit, OnDestroy {
             autorange: 'reversed',
             side: 'right'
           },
-          width: width,
+          // width: width,
           height: height,
           updatemenus: updatemenus,
           annotations: annotations
@@ -518,8 +520,8 @@ export class PlotComponent implements OnInit, OnDestroy {
         const dimensions = [];
         layout = {
           title: 'Correlation Scatter Plot Matrix',
-          height: height,
-          width: width,
+          // height: height,
+          // width: width,
           autosize: false,
           hovermode: 'closest',
           dragmode: 'select',
@@ -686,9 +688,9 @@ export class PlotComponent implements OnInit, OnDestroy {
             // pattern: 'independent'
           },
           annotations: annotations,
-          width: width,
+          // width: width,
           // width: (this.innerWidth - 600) / 2,
-          height: height,
+          // height: height,
           autoexpand: 'true',
           autosize: 'true',
           plot_bgcolor: 'rgba(228, 222, 249, 0.65)'
