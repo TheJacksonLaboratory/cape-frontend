@@ -1,4 +1,3 @@
-import { Alphas } from "../parameters/single-locus-scan/single-locus-scan.component";
 
 export class Parameters {
   id: number;
@@ -14,8 +13,7 @@ export class Parameters {
   sls_reference_allele: string;
   sls_number_of_permutations: number;
   sls_use_kinship: boolean;
-  sls_alpha_values: Alphas[];
-  // sls_kinship_type: string;
+  sls_alpha_values: string[];
   ms_number_to_test: number;
   ms_method: string;
   ms_peak_density: number;
@@ -33,7 +31,7 @@ export class Parameters {
   constructor(id?: number, title?: string, covariateSelection?: string[],
     traitSelection?: string[], normalize?: boolean, meanCenter?: boolean, traitsToScan?: string,
     numberOfEigentraits?: number, pValueCorrection?: string, popType?: string, slsReferenceAllele?: string,
-    slsNumberOfPermutation?: number, slsUseKinship?: boolean, alphaValues?: Alphas[],
+    slsNumberOfPermutation?: number, slsUseKinship?: boolean, alphaValues?: string[],
     msNumberToTest?: number, msMethod?: string, msPeakDensity?: number, msTolerance?: number,
     msOrganism?: string, msSnpFilename?: string, psNullSize?: number, psMaxMarkerCorrelation?: number, 
     psMinIndividualPerGenotype?: number, yamlFile?: string,

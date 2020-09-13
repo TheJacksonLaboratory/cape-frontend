@@ -7,10 +7,8 @@ import { Documentation } from '../documentation';
 import { Parameters } from '../../_models/parameters';
 import { ActivatedRoute } from '@angular/router';
 import { MatChipInputEvent } from '@angular/material';
+import { stringify } from 'querystring';
 
-export interface Alphas {
-  alpha: number;
-}
 
 @Component({
   selector: 'app-single-locus-scan',
@@ -30,13 +28,7 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  alphaValues: Alphas[] = [
-    {alpha: 0.05},
-    {alpha: 0.01}
-  ];
-  // kinshipType: string;
-
-  // kinshipTypes = [ 'overall', 'ltco' ];
+  alphaValues: string[] = [ '0.05', '0.01' ];
 
   documentation = Documentation.SINGLE_LOCUS_SCAN_DOC;
 
@@ -57,7 +49,11 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
                       : this.numberOfPermutations;
         this.useKinship = this.parameters.sls_use_kinship !== undefined ? this.parameters.sls_use_kinship : this.useKinship;
         // this.kinshipType = this.parameters.sls_kinship_type !== undefined ? this.parameters.sls_kinship_type : this.kinshipType;
-        this.alphaValues = this.parameters.sls_alpha_values !== undefined ? this.parameters.sls_alpha_values : this.alphaValues;
+        //alpha
+        let alphaValuesTmp = this.parameters.sls_alpha_values !== undefined ? this.parameters.sls_alpha_values : this.alphaValues;
+        if (typeof alphaValuesTmp == 'string') {
+          this.alphaValues = (<string>alphaValuesTmp).split(',');
+        }
         // set default
         this.parameters.sls_reference_allele = this.parameters.sls_reference_allele === undefined ? this.referenceAllele
                                                 : this.parameters.sls_reference_allele;
@@ -83,9 +79,6 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
   }
   setUseKinship() {
     this.parameters.sls_use_kinship = !this.useKinship;
-    // if (this.useKinship) {  // if the useKinship checkbox is unchecked we reset the kinshipType
-    //   this.parameters.sls_kinship_type = undefined;
-    // }
   }
   setAlphaValues() {
     this.parameters.sls_alpha_values = this.alphaValues;
@@ -97,8 +90,10 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
 
     // Add our alpha
     var numberValue = parseFloat(value);
-    if ((value || '').trim()) {
-      this.alphaValues.push({alpha: numberValue});
+    const idx = this.alphaValues.indexOf(value);
+    if ((numberValue !== NaN  && value !== '' && idx == -1)) {
+      this.alphaValues.push(value);
+      this.setAlphaValues();
     }
 
     // Reset the input value
@@ -107,15 +102,15 @@ export class SingleLocusScanComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeAlpha(alpha: Alphas): void {
+  removeAlpha(alpha: string): void {
     const index = this.alphaValues.indexOf(alpha);
 
     if (index >= 0) {
       this.alphaValues.splice(index, 1);
     }
+    for(let i = 0; i < this.alphaValues.length; i++) {
+      console.log(this.alphaValues[i]);
+    }
   }
 
-  // setKinshipType() {
-  //   this.parameters.sls_kinship_type = this.kinshipType;
-  // }
 }
