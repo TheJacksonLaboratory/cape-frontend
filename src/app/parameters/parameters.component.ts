@@ -146,9 +146,17 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
     //   ? 'kinship_type:\n - ' + this.parameters.sls_kinship_type + '\n' : '';
     let alphaValues = this.parameters.sls_alpha_values !== undefined && this.parameters.sls_alpha_values !== null
       ? 'alpha:\n' : '';
-    for (let i = 1; i <= this.parameters.sls_alpha_values.length; i++) {
-      alphaValues = alphaValues + ' - ' + i + '\n';
+    if (typeof this.parameters.sls_alpha_values == 'string') {
+      let values = (<string>this.parameters.sls_alpha_values).split(',');
+      for (var value of values) {
+        alphaValues = alphaValues + ' - ' + value + '\n';
+      }
+    } else {
+      for (var value of this.parameters.sls_alpha_values) {
+        alphaValues = alphaValues + ' - ' + value + '\n';
+      }
     }
+    
 
     const markerSelectionComment = '\n#================================================\n' +
       '# Marker Selection Parameters\n' +
