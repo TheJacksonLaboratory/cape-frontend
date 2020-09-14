@@ -130,6 +130,8 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let i = 1; i <= this.parameters.number_of_eigentraits; i++) {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
+    const transformToPhenospace = this.parameters.transform_to_phenospace !== undefined && this.parameters.transform_to_phenospace !== null
+      ? 'transform_to_phenospace:\n -' + this.parameters.transform_to_phenospace + '\n' : '';
     const saveResults = 'save_results:\n - true\n';
     const useSavedResults = 'use_saved_results:\n - false\n';
 
@@ -186,7 +188,7 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // build the yaml string from the strings above
     const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection
-      + popType + saveResults + useSavedResults + eigWhich
+      + popType + transformToPhenospace + saveResults + useSavedResults + eigWhich
       + singleScanComment + refAllele + singleScanPerm + useKinship + alphaValues
       + markerSelectionComment + markerSelectionMethod + windowSize + peakDensity + tolerance + snpFile + organism
       + pairScanComment + pairScanNullSize + maxPairCor + minPerGeno;
