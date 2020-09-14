@@ -49,6 +49,10 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
         // set default
         this.parameters.ms_number_to_test = this.parameters.ms_number_to_test === undefined ? this.numberOfMarkersToTest
                                             : this.parameters.ms_number_to_test;
+        this.parameters.ms_peak_density = this.parameters.ms_peak_density === undefined && this.markerSelected === 'top.effects'
+                                            ? this.peakDensity : this.parameters.ms_peak_density;
+        this.parameters.ms_tolerance = this.parameters.ms_tolerance === undefined && this.markerSelected === 'top.effects'
+                                            ? this.tolerance : this.parameters.ms_tolerance;
       }
     });
     this.routeSubscription = this.route.queryParams.subscribe(params => {
