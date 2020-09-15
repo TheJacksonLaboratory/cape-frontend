@@ -12,7 +12,23 @@
         placeholder="1" min="0">
     </mat-form-field>
     <mat-checkbox [(ngModel)]="useKinship" (click)="setUseKinship()">Use Kinship Correction</mat-checkbox>
-    <div *ngIf="useKinship">
+
+    <label>Alpha significance level:</label>
+    <mat-form-field class="example-chip-list" appearance="outline" matTooltip="The significance level for calculating effect size thresholds in the 
+    Singlescan. If number of permutations is 0, this parameter is ignored.">
+      <mat-chip-list #chipList aria-label="Alpha selection">
+        <mat-chip *ngFor="let alpha of alphaValues" [selectable]="selectable" [removable]="removable"
+          (removed)="removeAlpha(alpha)">
+          {{alpha}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="New alpha..." [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="addAlpha($event)">
+      </mat-chip-list>
+    </mat-form-field>
+
+    <!-- <div *ngIf="useKinship">
       <mat-form-field appearance="outline">
         <mat-label>Kinship Type</mat-label>
         <mat-select placeholder="Kinship Type" [(ngModel)]="kinshipType" (selectionChange)="setKinshipType()">
@@ -21,6 +37,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </div>
+    </div> -->
   </div>
 </div>

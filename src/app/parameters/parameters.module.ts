@@ -11,7 +11,8 @@ import { MatTreeModule,
          MatTooltipModule,
          MatExpansionModule,
          MatMenuModule,
-         MatButtonToggleModule} from '@angular/material';
+         MatButtonToggleModule,
+         MatChipsModule} from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -49,7 +50,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     MatExpansionModule,
     MatMenuModule,
     MatButtonToggleModule,
-    PlotlyModule
+    PlotlyModule,
+    MatChipsModule
   ],
   declarations: [
     ParametersComponent,

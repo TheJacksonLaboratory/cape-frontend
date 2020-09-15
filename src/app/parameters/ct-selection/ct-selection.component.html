@@ -55,7 +55,9 @@
         <mat-form-field appearance="outline">
           <mat-label>P value correction</mat-label>
           <mat-select placeholder="P value correction" [(ngModel)]="pValueCorrection"
-            (selectionChange)="setPValueCorrection()" matTooltip="Select the method of p value correction">
+            (selectionChange)="setPValueCorrection()" matTooltip="One of 'holm', 'hochberg', 'hommel', 'bonferroni', 'BH', 'BY', 'fdr', 'none', 
+            indicating whether the p value correction method used should be the Holm step-down procedure, 
+            false discovery rate or local false discovery rate respectively.">
             <mat-option *ngFor="let pValueCorrection of pValueCorrectionList" [value]="pValueCorrection">
               {{ pValueCorrection }}
             </mat-option>
@@ -72,6 +74,17 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-checkbox [(ngModel)]="transformToPhenospace" (click)="setTransformToPhenospace()" matTooltip="A logical value. If TRUE, the influence of each marker on 
+        each eigentrait is transformed to the influence of each marker on each of the original 
+        phenotypes. If FALSE, no transformation is made. If the pair scan was done on eigentraits, 
+        the influence of each marker on each eigentrait is calculated. If the pair scan was done 
+        on raw phenotypes, the influence of each marker on each phenotype is calculated. The 
+        default behavior is to transform variant influences on eigentraits to variant influences 
+        on phenotypes.">Transform to Phenospace</mat-checkbox>
       </div>
     </div>
   </div>

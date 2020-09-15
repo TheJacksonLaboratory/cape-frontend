@@ -31,6 +31,7 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
   traitSelected: string = "eigentraits";
   pValueCorrection: string = "fdr";
   popType: string = "2PP";
+  transformToPhenospace: boolean = false;
 
   parametersSubscription: Subscription;
   routeSubscription: Subscription;
@@ -60,6 +61,11 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
         // set default
         this.parameters.normalize = this.parameters.normalize === undefined ? this.normalize : this.parameters.normalize;
         this.parameters.mean_center = this.parameters.mean_center === undefined ? this.meanCenter : this.parameters.mean_center;
+        this.parameters.p_value_correction = this.parameters.p_value_correction === undefined ? this.pValueCorrection : this.parameters.p_value_correction;
+        this.parameters.number_of_eigentraits = this.parameters.number_of_eigentraits === undefined && this.traitSelected === 'eigentraits' ? this.numberOfEigentraits
+                            : this.parameters.number_of_eigentraits;
+        this.parameters.pop_type = this.parameters.pop_type === undefined ? this.popType : this.parameters.pop_type;
+        this.transformToPhenospace = this.parameters.transform_to_phenospace === undefined ? this.transformToPhenospace : this.parameters.transform_to_phenospace;
       }
     });
     this.routeSubscription = this.route.queryParams.subscribe(params => {
@@ -124,6 +130,10 @@ export class CtSelectionComponent implements OnInit, OnDestroy {
 
   setPopType() {
     this.parameters.pop_type = this.popType;
+  }
+
+  setTransformToPhenospace() {
+    this.parameters.transform_to_phenospace = !this.transformToPhenospace;
   }
 
   /**

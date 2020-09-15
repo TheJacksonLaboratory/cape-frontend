@@ -29,9 +29,9 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
   parameters: Parameters;
 
   // documentation
-  @ViewChild(SingleLocusScanComponent, {static: false}) singleScanChildDoc: SingleLocusScanComponent;
-  @ViewChild(MarkerSelectionComponent, {static: false}) markerSelectionChildDoc: MarkerSelectionComponent;
-  @ViewChild(PairScanComponent, {static: false}) pairScanChildDoc: PairScanComponent;
+  @ViewChild(SingleLocusScanComponent, { static: false }) singleScanChildDoc: SingleLocusScanComponent;
+  @ViewChild(MarkerSelectionComponent, { static: false }) markerSelectionChildDoc: MarkerSelectionComponent;
+  @ViewChild(PairScanComponent, { static: false }) pairScanChildDoc: PairScanComponent;
   singleLocusScanDocumentation: string;
   markerSelectionDocumentation: string;
   pairScanDocumentation: string;
@@ -130,6 +130,8 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let i = 1; i <= this.parameters.number_of_eigentraits; i++) {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
+    const transformToPhenospace = this.parameters.transform_to_phenospace !== undefined && this.parameters.transform_to_phenospace !== null
+      ? 'transform_to_phenospace:\n -' + this.parameters.transform_to_phenospace + '\n' : '';
     const saveResults = 'save_results:\n - true\n';
     const useSavedResults = 'use_saved_results:\n - false\n';
 
@@ -142,8 +144,21 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
       ? 'singlescan_perm:\n - ' + this.parameters.sls_number_of_permutations + '\n' : '';
     const useKinship = this.parameters.sls_use_kinship !== undefined && this.parameters.sls_use_kinship !== null
       ? 'use_kinship:\n - ' + this.parameters.sls_use_kinship + '\n' : '';
-    const kinshipType = this.parameters.sls_kinship_type !== undefined && this.parameters.sls_kinship_type !== null
-      ? 'kinship_type:\n - ' + this.parameters.sls_kinship_type + '\n' : '';
+    // const kinshipType = this.parameters.sls_kinship_type !== undefined && this.parameters.sls_kinship_type !== null
+    //   ? 'kinship_type:\n - ' + this.parameters.sls_kinship_type + '\n' : '';
+    let alphaValues = this.parameters.sls_alpha_values !== undefined && this.parameters.sls_alpha_values !== null
+      ? 'alpha:\n' : '';
+    if (typeof this.parameters.sls_alpha_values == 'string') {
+      let values = (<string>this.parameters.sls_alpha_values).split(',');
+      for (var value of values) {
+        alphaValues = alphaValues + ' - ' + value + '\n';
+      }
+    } else {
+      for (var value of this.parameters.sls_alpha_values) {
+        alphaValues = alphaValues + ' - ' + value + '\n';
+      }
+    }
+    
 
     const markerSelectionComment = '\n#================================================\n' +
       '# Marker Selection Parameters\n' +
@@ -172,9 +187,9 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
       ? 'min_per_genotype:\n - ' + this.parameters.ps_min_individual_per_genotype + '\n' : '';
 
     // build the yaml string from the strings above
-    const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection 
-      + popType + saveResults + useSavedResults + eigWhich
-      + singleScanComment + refAllele + singleScanPerm + useKinship + kinshipType
+    const data = first_comment + traits + covariates + scanWhat + traitsNormalized + traitsScaled + pvalCorrection
+      + popType + transformToPhenospace + saveResults + useSavedResults + eigWhich
+      + singleScanComment + refAllele + singleScanPerm + useKinship + alphaValues
       + markerSelectionComment + markerSelectionMethod + windowSize + peakDensity + tolerance + snpFile + organism
       + pairScanComment + pairScanNullSize + maxPairCor + minPerGeno;
 
