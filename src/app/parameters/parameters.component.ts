@@ -10,6 +10,7 @@ import { PairScanComponent } from './pair-scan/pair-scan.component';
 import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
 import { Parameters } from '../_models/parameters';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
+import { MainSelectionComponent } from './ct-selection/main-selection';
 
 @Component({
   selector: 'app-parameter',
@@ -131,7 +132,7 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
       eigWhich = eigWhich + ' - ' + i + '\n';
     }
     const transformToPhenospace = this.parameters.transform_to_phenospace !== undefined && this.parameters.transform_to_phenospace !== null
-      ? 'transform_to_phenospace:\n -' + this.parameters.transform_to_phenospace + '\n' : '';
+      ? 'transform_to_phenospace:\n - ' + this.parameters.transform_to_phenospace + '\n' : '';
     const saveResults = 'save_results:\n - true\n';
     const useSavedResults = 'use_saved_results:\n - false\n';
 
@@ -158,7 +159,6 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
         alphaValues = alphaValues + ' - ' + value + '\n';
       }
     }
-    
 
     const markerSelectionComment = '\n#================================================\n' +
       '# Marker Selection Parameters\n' +
@@ -200,11 +200,44 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
    * Creates/save a new parameters file by calling the corresponding back end API endpoint
    */
   saveParametersFile() {
-    this.loading = true;
-    // Add the full yaml file to the list of parameters
-    this.parameters.yaml_file = this.createYaml();
-    // open intermediary dialog
-    this.openWarningDialog();
+    try {
+      this.loading = true;
+      // Add the full yaml file to the list of parameters
+      this.parameters.yaml_file = this.createYaml();
+      // open intermediary dialog
+      this.openWarningDialog();
+    } catch (error) {
+      console.error('The following error occured:', error);
+      this.openMessageDialog('Error Message', 'The following error occured:\n' + error);
+    }
+
+  }
+
+  /**
+   * Download the parameters as a YAML file
+   */
+  downloadParametersFile() {
+    try {
+      this.loading = true;
+      // Add the full yaml file to the list of parameters
+      const data = this.createYaml();
+      const filename = this.parameters.title + '.yml';
+      const blob = new Blob([data], { type: 'text/yaml' });
+      saveAs(blob, filename);
+    } catch (error) {
+      console.error('The following error occured:', error);
+      this.openMessageDialog('Error Message', 'The following error occured:\n' + error);
+    }
+  }
+
+  private openMessageDialog(title: string, message: string) {
+    const msgData = { 'title': title };
+    msgData['description'] = message;
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      width: '400px',
+      data: msgData
+    });
+    return dialogRef;
   }
 
   /**
@@ -214,10 +247,7 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
   private openWarningDialog() {
     const msgData = { 'title': 'Parameter Initialization' };
     msgData['description'] = 'Save the parameter file named "' + this.parameters.title + '" ?';
-    const dialogRef = this.dialog.open(MessageDialogComponent, {
-      width: '400px',
-      data: msgData
-    });
+    const dialogRef = this.openMessageDialog('Parameter Initialization', 'Save the parameter file named "' + this.parameters.title + '" ?')
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'ok') {
         const resp = this.parametersService.saveParameterFile(this.parameters).subscribe(data => {

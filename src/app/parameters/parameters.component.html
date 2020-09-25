@@ -22,9 +22,15 @@
       <div class="row">
         <button mat-raised-button type="submit" class="btn btn-info pull-right"
           matTooltip="Saves the parameters file associated with the parameters set up on this page"
-          (click)='saveParametersFile()'>
+          (click)='saveParametersFile()' [disabled]="this.parameters.title == undefined">
           <mat-icon matSuffix>create</mat-icon>
           Save Parameter File
+        </button>
+        <button mat-raised-button type="submit" class="btn btn-info pull-right"
+          matTooltip="Download the parameters as a yaml file"
+          (click)='downloadParametersFile()' [disabled]="this.parameters.title == undefined">
+          <mat-icon matSuffix>save_alt</mat-icon>
+          Download as YAML
         </button>
       </div>
 
