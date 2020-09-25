@@ -1,1 +1,9 @@
-<app-report-summary *ngFor="let report of reports" [report]="report"></app-report-summary>
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h3 class="card-title">Reports</h3>
+        <p class="card-category">List of analysis reports</p>
+    </div>
+    <div class="card-body">
+        <app-report-summary *ngFor="let report of reports" [report]="report"></app-report-summary>
+    </div>
+</div>
