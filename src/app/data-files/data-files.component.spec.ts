@@ -12,9 +12,10 @@ import { AlertService } from '../_services';
 import { Parameters } from '../_models';
 
 const PARAMETER_FILES1 = [
-    new Parameters(1, 'title name 1', ['C1', 'C2', 'Creat10WK'], ['Creat15WK', 'Creat6WK', ' Alb6WK', 'Alb15WK'],
-        true, true, 'Raw Traits', undefined, 'hochberg', '2PP', 'T', 2, true, 'LTCO', 1502, 'from.list', undefined, undefined,
-        undefined, 'filteredSNPs.txt', 1500000, undefined, 7,
+    new Parameters(1, 'title name 1', ['C1', 'C2', 'Creat10WK'], ['Creat15WK', 'Creat6WK', 
+                  ' Alb6WK', 'Alb15WK'], true, true, 'raw_traits', undefined, 'hochberg', 
+                  '2PP', false, 'T', 2, true, ['0.01', '0.05'], 1502, 'from_list', undefined, undefined,
+                  undefined, 'filteredSNPs.txt', 1500000, undefined, 7,
         '# CAPE parameters YAML file\n' +
         '#================================================\n' +
         '# General Parameters \n' +
@@ -29,7 +30,7 @@ const PARAMETER_FILES1 = [
         ' - C2\n' +
         ' - Creat10WK\n' +
         'scan_what:\n' +
-        ' - Eigentraits\n' +
+        ' - eigentraits\n' +
         'traits_normalized:\n' +
         ' - true\n' +
         'traits_scaled:\n' +
