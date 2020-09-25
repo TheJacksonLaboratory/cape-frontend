@@ -1,0 +1,56 @@
+<input type="file" #filesUploadBtn style="display: none" (change)="onFilesAdded()" />
+<div id="uploadDialog" class="container">
+
+  <h1 mat-dialog-title>{{titleText}}</h1>
+  <div>
+    <button [disabled]="uploading || uploadSuccessful" mat-raised-button class="btn btn-danger pull-right"   (click)="addFiles()">
+      Select Files
+    </button>
+  </div>
+
+
+  <!-- This is the content of the dialog, containing a list of the files to upload -->
+  <mat-dialog-content fxFlex>
+    <mat-list>
+      <mat-list-item *ngFor="let file of files">
+        <h4 mat-line>{{file.name}}</h4>
+        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress.percentDone | async"></mat-progress-bar>
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
+
+
+
+  <!-- Info -->
+
+  <mat-list *ngIf="allProgressInfo && allProgressInfo.length > 0">
+    <h3 mat-subheader>Uodates</h3>
+    <mat-list-item *ngFor="let info of allProgressInfo">
+      <mat-icon mat-list-icon>info</mat-icon>
+      <p id="info-message" mat-line>{{info}}</p>
+    </mat-list-item>
+  </mat-list>
+
+
+  <!-- Errors -->
+
+  <mat-list *ngIf="allProgressErrors && allProgressErrors.length > 0">
+    <h3 mat-subheader>Errors</h3>
+    <mat-list-item *ngFor="let error of allProgressErrors">
+        <mat-icon mat-list-icon>warning</mat-icon>
+        <p id="error-message" mat-line>{{error.message}}</p>
+    </mat-list-item>
+  </mat-list>
+
+
+
+  <!-- This are the actions of the dialog, containing the primary and the cancel button-->
+  <mat-dialog-actions class="actions">
+    <button *ngIf="showCancelButton" mat-button mat-dialog-close>Cancel</button>
+    <button *ngIf="files.size > 0" mat-raised-button class="btn btn-danger" [disabled]="!canBeClosed" (click)="closeDialog()">{{primaryButtonText}}</button>
+  </mat-dialog-actions>
+
+</div>
+
+
+

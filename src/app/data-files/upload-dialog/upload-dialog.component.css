@@ -1,0 +1,36 @@
+.add-files-btn {
+  float: right;
+}
+
+:host {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.actions {
+  justify-content: flex-end;
+  position: absolute;
+  width: 100%;
+  bottom: 20px;
+}
+
+.container {
+  position: relative;
+  height: 100%;
+}
+
+.mat-list-icon {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+#error-message .mat-list .mat-list-item .mat-line{
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/*::ng-deep .mat-list .mat-list-item .mat-line{*/
+  /*word-wrap: break-word;*/
+  /*white-space: pre-wrap;*/
+/*}*/

@@ -11,6 +11,7 @@ import { DataFile } from '../_models/datafile';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 import { Parameters } from '../_models/parameters';
 import { JobService } from '../_services/job.service';
+import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
 
 
 @Component({
@@ -213,8 +214,12 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     });
   }
 
-  // onOkClick(): void {
-  //   this.dialogRef.close('ok');
-  // }
+  public openDataFileUploadDialog() {
+    const dialogRef = this.dialog.open(UploadDialogComponent, {
+        width: '50%',
+        height: '50%',
+        data: { fileType: 'vcf', titleText: 'Upload VCF Files' }
+    });
+}
 
 }
