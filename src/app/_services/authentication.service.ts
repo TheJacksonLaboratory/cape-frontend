@@ -40,7 +40,7 @@ export class AuthenticationService {
    * @param password pass
    */
   login(username: string, password: string) {
-    return this.http.post<any>(environment.API_URL + '/auth/login', { username, password }) // , this.httpOptions)
+    return this.http.post<any>(environment.AUTH_URL + '/login', { username, password }) // , this.httpOptions)
       .pipe(map(res => {
         // login successful if there's a jwt token in the response
         if (res && res.access_token) {

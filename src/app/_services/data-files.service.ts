@@ -55,7 +55,7 @@ export class DataFilesService {
      * @param userId user id
      */
     deleteDataFile(paramId: number, userId: number) {
-        return this.http.post<any>(environment.API_URL + '/parameters/delete_parameter_file',
+        return this.http.post<any>(environment.PARAMETERS_URL + '/delete_parameter_file',
             { 'param_id': paramId, 'user_id': userId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
@@ -68,7 +68,7 @@ export class DataFilesService {
      * Get the list of data files
      */
     getDataFiles(): Observable<DataFile[]> {
-        return this.http.get<DataFile[]>(environment.API_URL + '/datafiles/get_datafiles')
+        return this.http.get<DataFile[]>(environment.DATA_FILE_URL + '/get_datafiles')
             .catch(DataFilesService._handleError);
     }
 
@@ -76,7 +76,7 @@ export class DataFilesService {
      * Get the list of data files
      */
     getDataFilesAndParameters(): Observable<DataFile[]> {
-        return this.http.get<DataFile[]>(environment.API_URL + '/datafiles/get_datafiles_parameters')
+        return this.http.get<DataFile[]>(environment.DATA_FILE_URL + '/get_datafiles_parameters')
             .catch(DataFilesService._handleError);
     }
 
@@ -84,7 +84,7 @@ export class DataFilesService {
      * Get the list of parameter files
      */
     getParameterFiles(): Observable<Parameters[]> {
-        return this.http.get<Parameters[]>(environment.API_URL + '/parameters/get_parameter_files')
+        return this.http.get<Parameters[]>(environment.PARAMETERS_URL + '/get_parameter_files')
             .catch(DataFilesService._handleError);
     }
 
@@ -94,7 +94,7 @@ export class DataFilesService {
      */
     getPhenotypesPerDataFile(dataFileId: number) {
         const params = new HttpParams().set('datafile_id', String(dataFileId));
-        return this.http.get<Phenotype[]>(environment.API_URL + '/datafiles/get_phenotypes', { params: params})
+        return this.http.get<Phenotype[]>(environment.DATA_FILE_URL + '/get_phenotypes', { params: params})
                         .catch(DataFilesService._handleError);
     }
 
@@ -105,7 +105,7 @@ export class DataFilesService {
     getParameterFilesPerDataFile(datafileId: number): any {
         let params = new HttpParams();
         params = params.append('datafile_id', String(datafileId));
-        return this.http.get<Parameters[]>(environment.API_URL + '/datafiles/get_parameter_files', { params: params})
+        return this.http.get<Parameters[]>(environment.DATA_FILE_URL + '/get_parameter_files', { params: params})
                         .catch(DataFilesService._handleError);
     }
 
@@ -118,7 +118,7 @@ export class DataFilesService {
         params = params.append('param_id', String(paramId));
         params = params.append('datafile_id', String(dataFileId));
 
-        return this.http.get<Parameters>(environment.API_URL + '/parameters/get_parameter_file', { params: params })
+        return this.http.get<Parameters>(environment.PARAMETERS_URL + '/get_parameter_file', { params: params })
                         .catch(DataFilesService._handleError);
     }
 
@@ -131,7 +131,7 @@ export class DataFilesService {
         let params = new HttpParams();
         params = params.append('datafile_id', String(dataFileId));
         params = params.append('phenotype_name', String(phenotypeName));
-        return this.http.get<PhenotypeValue[]>(environment.API_URL + '/datafiles/get_phenotype_values', { params: params })
+        return this.http.get<PhenotypeValue[]>(environment.DATA_FILE_URL + '/get_phenotype_values', { params: params })
                         .catch(DataFilesService._handleError);
     }
 
@@ -148,7 +148,7 @@ export class DataFilesService {
             names = names !== undefined ? names + ',' + name : name;
         }
         params = params.append('phenotype_names', String(names));
-        return this.http.get<any>(environment.API_URL + '/datafiles/get_pearson_coefficients', { params: params })
+        return this.http.get<any>(environment.DATA_FILE_URL + '/get_pearson_coefficients', { params: params })
                         .catch(DataFilesService._handleError);
     }
 

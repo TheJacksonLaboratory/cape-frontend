@@ -17,38 +17,38 @@ export class UserService {
 
     getUsers(): Observable<User[]> {
         return this.http
-            .get<User[]>(environment.API_URL + '/auth/users/')
+            .get<User[]>(environment.AUTH_URL + '/users/')
             .catch(UserService._handleError);
     }
 
     getAll() {
-        return this.http.get<User[]>(`${environment.API_URL}/login/users`)
+        return this.http.get<User[]>(`${environment.AUTH_URL}/login/users`)
             .catch(UserService._handleError);
     }
 
     getCurrentUser() {
-        return this.http.get<User>(`${environment.API_URL}/user/current`)
+        return this.http.get<User>(`${environment.USER_URL}/current`)
             .catch(UserService._handleError);
     }
 
     getById(id: number) {
-        return this.http.get(`${environment.API_URL}/login/users/` + id)
+        return this.http.get(`${environment.AUTH_URL}/login/users/` + id)
             .catch(UserService._handleError);
     }
 
     register(user: any) {
-        return this.http.post(`${environment.API_URL}/user/register`, user,
+        return this.http.post(`${environment.USER_URL}/register`, user,
             { headers: new HttpHeaders({ 'Content-Type': 'application/json' })})
             .catch(UserService._handleError);
     }
 
     update(user: User) {
-        return this.http.put(`${environment.API_URL}/login/users/` + user.id, user)
+        return this.http.put(`${environment.AUTH_URL}/login/users/` + user.id, user)
             .catch(UserService._handleError);
     }
 
     delete(id: number) {
-        return this.http.delete(`${environment.API_URL}/login/users/` + id)
+        return this.http.delete(`${environment.AUTH_URL}/login/users/` + id)
             .catch(UserService._handleError);
     }
 }

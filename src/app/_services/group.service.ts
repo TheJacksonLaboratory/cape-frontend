@@ -7,7 +7,7 @@ import { Group } from '../_models/group';
 
 @Injectable({ providedIn: 'root' })
 export class GroupService {
-    private base_url: string = environment.API_URL + '/user/get_groups';
+    private base_url: string = environment.USER_URL + '/get_groups';
 
     /** Stream that emits whenever the data has been modified. */
     dataChange: BehaviorSubject<Group[]> = new BehaviorSubject<Group[]>([]);

@@ -30,7 +30,7 @@ export class JobService {
      */
     getJobOwner(jobId: number) {
         const params = new HttpParams().set('id', String(jobId));
-        return this.http.get<Job[]>(environment.API_URL + '/jobs/get_owner', { params: params })
+        return this.http.get<Job[]>(environment.JOB_URL + '/get_owner', { params: params })
             .catch(JobService._handleError);
     }
 
@@ -39,7 +39,7 @@ export class JobService {
      * @param paramFileId parameter id
      */
     createRunJob(paramFileId: number) {
-        return this.http.post<any>(environment.API_URL + '/jobs/create_run',
+        return this.http.post<any>(environment.JOB_URL + '/create_run',
             { 'parameter_file_id': paramFileId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
@@ -53,7 +53,7 @@ export class JobService {
      * @param jobId job id
      */
     runJob(jobId: number) {
-        return this.http.post<any>(environment.API_URL + '/jobs/run',
+        return this.http.post<any>(environment.JOB_URL + '/run',
             { 'id': jobId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
@@ -67,7 +67,7 @@ export class JobService {
      * @param jobId job id
      */
     deleteJob(jobId: number) {
-        return this.http.post<any>(environment.API_URL + '/jobs/delete',
+        return this.http.post<any>(environment.JOB_URL + '/delete',
             { 'id': jobId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
@@ -81,7 +81,7 @@ export class JobService {
      * @param jobId job id
      */
     cancelJob(jobId: number) {
-        return this.http.post<any>(environment.API_URL + '/jobs/cancel',
+        return this.http.post<any>(environment.JOB_URL + '/cancel',
             { 'id': jobId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
@@ -96,7 +96,7 @@ export class JobService {
      */
     getJobProgress(jobId: number) {
         const params = new HttpParams().set('id', String(jobId));
-        return this.http.get(environment.API_URL + '/jobs/progress', { params: params })
+        return this.http.get(environment.JOB_URL + '/progress', { params: params })
             .catch(JobService._handleError);
     }
 
@@ -104,7 +104,7 @@ export class JobService {
      * Get the list of jobs
      */
     getJobs(): Observable<Job[]> {
-        return this.http.get<Job[]>(environment.API_URL + '/jobs/get_all')
+        return this.http.get<Job[]>(environment.JOB_URL + '/get_all')
             .catch(JobService._handleError);
     }
 
