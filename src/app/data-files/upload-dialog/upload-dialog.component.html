@@ -1,56 +1,22 @@
-<input type="file" #filesUploadBtn style="display: none" (change)="onFilesAdded()" />
-<div id="uploadDialog" class="container">
-
-  <h1 mat-dialog-title>{{titleText}}</h1>
-  <div>
-    <button [disabled]="uploading || uploadSuccessful" mat-raised-button class="btn btn-danger pull-right"   (click)="addFiles()">
-      Select Files
-    </button>
+<div mat-dialog-title>Upload Data file</div>
+<div mat-dialog-content>
+  <div class="row">
+    <h3>
+      Select a data file in R/QTL<sup>1</sup> or R/QTL2<sup>2</sup> format:
+    </h3>
+    <p>1. Broman et al. (2003) R/qtl: QTL mapping in experimental crosses.
+      #' Bioinformatics 19:889-890 <a href="https://academic.oup.com/bioinformatics/article/19/7/889/197785">doi:10.1093/bioinformatics/btg112</a></p>
+    <p>2. <a href="https://kbroman.org/qtl2/assets/vignettes/input_files.html">https://kbroman.org/qtl2/assets/vignettes/input_files.html</a></p>
   </div>
+  <div class="row">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 
-
-  <!-- This is the content of the dialog, containing a list of the files to upload -->
-  <mat-dialog-content fxFlex>
-    <mat-list>
-      <mat-list-item *ngFor="let file of files">
-        <h4 mat-line>{{file.name}}</h4>
-        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress.percentDone | async"></mat-progress-bar>
-      </mat-list-item>
-    </mat-list>
-  </mat-dialog-content>
-
-
-
-  <!-- Info -->
-
-  <mat-list *ngIf="allProgressInfo && allProgressInfo.length > 0">
-    <h3 mat-subheader>Uodates</h3>
-    <mat-list-item *ngFor="let info of allProgressInfo">
-      <mat-icon mat-list-icon>info</mat-icon>
-      <p id="info-message" mat-line>{{info}}</p>
-    </mat-list-item>
-  </mat-list>
-
-
-  <!-- Errors -->
-
-  <mat-list *ngIf="allProgressErrors && allProgressErrors.length > 0">
-    <h3 mat-subheader>Errors</h3>
-    <mat-list-item *ngFor="let error of allProgressErrors">
-        <mat-icon mat-list-icon>warning</mat-icon>
-        <p id="error-message" mat-line>{{error.message}}</p>
-    </mat-list-item>
-  </mat-list>
-
-
-
-  <!-- This are the actions of the dialog, containing the primary and the cancel button-->
-  <mat-dialog-actions class="actions">
-    <button *ngIf="showCancelButton" mat-button mat-dialog-close>Cancel</button>
-    <button *ngIf="files.size > 0" mat-raised-button class="btn btn-danger" [disabled]="!canBeClosed" (click)="closeDialog()">{{primaryButtonText}}</button>
-  </mat-dialog-actions>
+  </div>
+  
 
 </div>
-
-
-
+<div mat-dialog-actions>
+  <input hidden type="file" #uploader (change)="uploadFile($event)"/>
+  <button mat-button [disabled]="uploading || uploadSuccessful" mat-raised-button (click)="uploader.click()">Select File</button>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

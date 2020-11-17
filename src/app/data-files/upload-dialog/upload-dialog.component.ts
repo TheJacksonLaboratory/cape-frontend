@@ -2,7 +2,10 @@ import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UploadService } from '../upload/upload.service';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
+import { Observable } from 'rxjs';
+import { DataFilesService } from 'src/app/_services';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-upload-dialog',
@@ -11,10 +14,10 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 })
 export class UploadDialogComponent implements OnInit {
 
-  @ViewChild('filesUploadBtn', {static: true}) filesUploadBtn;
+  // @ViewChild('filesUploadBtn', { static: true }) filesUploadBtn;
 
   public files: Set<File> = new Set();
-
+  public file: File;
   progress;
   canBeClosed = true;
   primaryButtonText = 'Upload';
@@ -26,7 +29,14 @@ export class UploadDialogComponent implements OnInit {
   allProgressErrors;
   allProgressInfo;
 
-  constructor(public dialogRef: MatDialogRef<UploadDialogComponent>, public uploadService: UploadService, @Inject(MAT_DIALOG_DATA) public data: any) {
+  percentCompleted: number = 0;
+  isMultipleUploaded = false;
+  isSingleUploaded = false;
+  urlAfterUpload = '';
+  percentUploaded = [0];
+  acceptedExtensions = "csv, zip";
+
+  constructor(public dialogRef: MatDialogRef<UploadDialogComponent>, public datafileService: DataFilesService, @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.fileType = this.data.fileType;
     this.titleText = this.data.titleText;
@@ -35,22 +45,27 @@ export class UploadDialogComponent implements OnInit {
   ngOnInit() {
   }
 
-  addFiles() {
-    if (this.fileType === 'vcf') {
-        this.filesUploadBtn.nativeElement.multiple = true;
-    }
-    this.filesUploadBtn.nativeElement.click();
-  }
+  uploadFile($event) {
+    console.log('---Uploading single file---');
+    this.file = $event.target.files[0];
+    console.log(this.file.name);
+    this.isSingleUploaded = false;
+    this.urlAfterUpload = '';
 
-  onFilesAdded() {
-    const files: { [key: string]: File } = this.filesUploadBtn.nativeElement.files;
-    for (let key in files) {
-      if (!isNaN(parseInt(key))) {
-        this.files.add(files[key]);
-      }
-    }
+    this.datafileService.uploadWithProgress(this.file)
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.percentCompleted = Math.round(100 * event.loaded / event.total);
+        } else if (event instanceof HttpResponse) {
+          this.isSingleUploaded = true;
+          this.urlAfterUpload = event.body.link;
+        }
+        if (this.percentCompleted == 100) {
+          this.uploadSuccessful = true;
+          this.dialogRef.close(true);
+        }
+      });
   }
-
 
   closeDialog() {
     // if everything was uploaded already, just close the dialog
@@ -62,7 +77,7 @@ export class UploadDialogComponent implements OnInit {
     this.uploading = true;
 
     // start the upload and save the progress map
-    this.progress = this.uploadService.upload(this.files, this.fileType);
+    this.progress = this.datafileService.uploadDataFile(this.file, this.fileType, null);
 
     // convert the progress map into an array
     const allProgressObservables = [];
@@ -86,7 +101,7 @@ export class UploadDialogComponent implements OnInit {
 
 
     // When all progress-observables are completed...
-    forkJoin(allProgressObservables).subscribe((end: any) =>{
+    forkJoin(allProgressObservables).subscribe((end: any) => {
 
       console.log("fork end")
       //console.log(end);
@@ -95,13 +110,13 @@ export class UploadDialogComponent implements OnInit {
         if (res.data) {
 
           if (res.data.errors) {
-              res.data.errors.forEach(error => {
-                  this.allProgressErrors.push(error);
-              });
+            res.data.errors.forEach(error => {
+              this.allProgressErrors.push(error);
+            });
           }
 
-          if (res.data.message){
-              this.allProgressInfo.push(res.data.message);
+          if (res.data.message) {
+            this.allProgressInfo.push(res.data.message);
           }
         }
       });
@@ -114,13 +129,8 @@ export class UploadDialogComponent implements OnInit {
       this.uploadSuccessful = true;
 
       if (this.fileType === 'vcf') {
-          // //emit file changes event
-          this.uploadService.isThereFileChanges.next(true);
-      }
-
-      if (this.fileType === 'sample'){
-          // //emit sample changes event
-          this.uploadService.isThereSampleChanges.next(true);
+        // //emit file changes event
+        this.datafileService.isThereFileChanges.next(true);
       }
 
       // ... and the component is no longer uploading
@@ -129,15 +139,15 @@ export class UploadDialogComponent implements OnInit {
       console.log('allProgressErrors')
       console.log(this.allProgressErrors)
     }, error => {
-        this.allProgressErrors.push(error.error);
+      this.allProgressErrors.push(error.error);
 
-        console.log('allProgressErrors')
-        console.log(this.allProgressErrors)
+      console.log('allProgressErrors')
+      console.log(this.allProgressErrors)
 
-        this.canBeClosed = true;
-        this.uploadSuccessful = true;
+      this.canBeClosed = true;
+      this.uploadSuccessful = true;
     },
-        () => console.log('end')
+      () => console.log('end')
     );
   }
 

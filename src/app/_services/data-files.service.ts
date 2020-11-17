@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError, Observable, Subject } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
+import { throwError, Observable, Subject, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
@@ -49,14 +49,30 @@ export class DataFilesService {
     getPhenotypes(): Observable<Phenotype[]> {
         return this.phenotypesSubject.asObservable();
     }
+
     /**
      * Delete a parameter file given its parameter id and user id
      * @param paramId parameter id
      * @param userId user id
      */
-    deleteDataFile(paramId: number, userId: number) {
+    deleteParameterDataFile(paramId: number, userId: number) {
         return this.http.post<any>(environment.PARAMETERS_URL + '/delete_parameter_file',
             { 'param_id': paramId, 'user_id': userId }, this.httpOptions)
+            .pipe(map(file => {
+                const jsonString = JSON.stringify(file);
+                const jsonObj = JSON.parse(jsonString);
+                return jsonObj;
+            })).catch(DataFilesService._handleError);
+    }
+
+    /**
+     * Delete a data file given its  id and user id
+     * @param dataFileId datafile id
+     * @param userId user id
+     */
+    deleteDataFile(dataFileId: number, userId: number) {
+        return this.http.post<any>(environment.DATA_FILE_URL + '/delete_datafile',
+            { 'datafile_id': dataFileId, 'user_id': userId }, this.httpOptions)
             .pipe(map(file => {
                 const jsonString = JSON.stringify(file);
                 const jsonObj = JSON.parse(jsonString);
@@ -94,8 +110,8 @@ export class DataFilesService {
      */
     getPhenotypesPerDataFile(dataFileId: number) {
         const params = new HttpParams().set('datafile_id', String(dataFileId));
-        return this.http.get<Phenotype[]>(environment.DATA_FILE_URL + '/get_phenotypes', { params: params})
-                        .catch(DataFilesService._handleError);
+        return this.http.get<Phenotype[]>(environment.DATA_FILE_URL + '/get_phenotypes', { params: params })
+            .catch(DataFilesService._handleError);
     }
 
     /**
@@ -105,8 +121,8 @@ export class DataFilesService {
     getParameterFilesPerDataFile(datafileId: number): any {
         let params = new HttpParams();
         params = params.append('datafile_id', String(datafileId));
-        return this.http.get<Parameters[]>(environment.DATA_FILE_URL + '/get_parameter_files', { params: params})
-                        .catch(DataFilesService._handleError);
+        return this.http.get<Parameters[]>(environment.DATA_FILE_URL + '/get_parameter_files', { params: params })
+            .catch(DataFilesService._handleError);
     }
 
     /**
@@ -119,7 +135,7 @@ export class DataFilesService {
         params = params.append('datafile_id', String(dataFileId));
 
         return this.http.get<Parameters>(environment.PARAMETERS_URL + '/get_parameter_file', { params: params })
-                        .catch(DataFilesService._handleError);
+            .catch(DataFilesService._handleError);
     }
 
     /**
@@ -132,7 +148,7 @@ export class DataFilesService {
         params = params.append('datafile_id', String(dataFileId));
         params = params.append('phenotype_name', String(phenotypeName));
         return this.http.get<PhenotypeValue[]>(environment.DATA_FILE_URL + '/get_phenotype_values', { params: params })
-                        .catch(DataFilesService._handleError);
+            .catch(DataFilesService._handleError);
     }
 
     /**
@@ -149,7 +165,7 @@ export class DataFilesService {
         }
         params = params.append('phenotype_names', String(names));
         return this.http.get<any>(environment.DATA_FILE_URL + '/get_pearson_coefficients', { params: params })
-                        .catch(DataFilesService._handleError);
+            .catch(DataFilesService._handleError);
     }
 
     /**
@@ -165,5 +181,82 @@ export class DataFilesService {
      */
     getSelectedDataFile(): Observable<DataFile> {
         return this.selectedDataFileSubject.asObservable();
+    }
+
+    public isThereFileChanges: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+    uploadDataFile(file: File, fileType: string, status: { [key: string]: { progress: Observable<any> } }): { [key: string]: { progress: Observable<any> } } {
+
+        if (status == null || status == undefined) {
+            status = {};
+        }
+        // create a new multipart-form for every file
+        const formData: FormData = new FormData();
+        formData.append('file', file, file.name);
+
+        // create a http-post request and pass the form
+        // tell it to report the upload progress
+        const req = new HttpRequest('POST', environment.DATA_FILE_URL + '/add_datafile', formData, {
+            reportProgress: true
+        });
+
+        // create a new progress-subject for every file
+        const progress = new Subject<any>();
+
+
+        // this.http.request(req)
+
+
+        // send the http-request and subscribe for progress-updates
+        this.http.request(req).subscribe(event => {
+            if (event.type === HttpEventType.UploadProgress) {
+
+                // calculate the progress percentage
+                const percentDone = Math.round(100 * event.loaded / event.total);
+
+                // pass the percentage into the progress-stream
+                progress.next({ percentDone: percentDone });
+            } else if (event instanceof HttpResponse) {
+
+                console.log(event.body)
+                // Close the progress-stream if we get an answer form the API
+                // The upload is complete
+                progress.next({ data: event.body });
+                progress.complete();
+            }
+
+            // console.log(event.status)
+            //   console.log(event.type);
+        }, error => {
+            progress.error(error)
+        },
+            () => {
+                console.log('end');
+            });
+
+        // Save every progress-observable in a map of all observables
+        status[file.name] = {
+            progress: progress.asObservable()
+        };
+        return status;
+    }
+
+    errorHandler(error: HttpErrorResponse) {
+        console.log('error handler')
+        //console.log (error)
+
+        return Observable.throwError(error.message || 'Server Error');
+    }
+
+    uploadWithProgress(file: File): Observable<any> {
+        const formData = new FormData();
+        formData.append("file", file, file.name);
+        this.httpOptions = {
+            headers: new HttpHeaders({ 'Authorization': 'currentUser' }),
+            params: new HttpParams(),
+            observe: 'events',
+            reportProgress: true
+        };
+        return this.http.post<any>(environment.DATA_FILE_URL + '/add_datafile', formData, this.httpOptions);
     }
 }
