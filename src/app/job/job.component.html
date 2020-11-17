@@ -53,8 +53,8 @@
             </button>
             <div *ngIf="element.status=='In Progress'">
               <button mat-icon-button type="submit" color="primary" class="pull-right" matTooltip="Analysis Progress"
-                (click)="viewAnalysisProgressDialog(element)">
-                <div class="spinner-border text-primary" role="status">
+                (click)="viewAnalysisProgressDialog(element)" diameter="20">
+                <div class="spinner-border" style="width: 1rem; height: 1rem;" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
                 <!-- <mat-icon matSuffix>
