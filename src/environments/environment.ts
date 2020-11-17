@@ -8,12 +8,12 @@ export const environment = {
   production: false,
   FILE_URL: 'http://localhost:8080',
   V1_URL: API_URL + '/v1',
-  AUTH_URL: API_URL + '/auth/',
-  DATA_FILE_URL: API_URL + '/datafiles/',
-  PARAMETERS_URL: API_URL + '/parameters/',
-  USER_URL: API_URL + '/user/',
-  JOB_URL: API_URL + '/jobs/',
-  REPORT_URL: API_URL + '/reports/'
+  AUTH_URL: API_URL + '/auth',
+  DATA_FILE_URL: API_URL + '/datafiles',
+  PARAMETERS_URL: API_URL + '/parameters',
+  USER_URL: API_URL + '/user',
+  JOB_URL: API_URL + '/jobs',
+  REPORT_URL: API_URL + '/reports'
 };
 
 /*
