@@ -37,12 +37,16 @@ export class AuthenticationService {
   }
 
   public getUserFullname() {
-    let identity = JWT(this.currentUserSubject.value.access_token).identity;
+    if (this.currentUserValue == null)
+      return '';
+    let identity = JWT(this.currentUserValue.access_token).identity;
     return identity.first_name + ' ' + identity.last_name;
   }
 
   public getUserId() {
-    let identity = JWT(this.currentUserSubject.value.access_token).identity;
+    if (this.currentUserValue == null)
+      return '';
+    let identity = JWT(this.currentUserValue.access_token).identity;
     return identity.user_id;
   }
 

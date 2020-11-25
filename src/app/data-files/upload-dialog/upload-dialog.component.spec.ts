@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog, MatProgressBarModule } from '@angular/material';
+import { DataFilesService } from 'src/app/_services';
 
 import { UploadDialogComponent } from './upload-dialog.component';
 
@@ -8,7 +10,15 @@ describe('UploadDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UploadDialogComponent ]
+      declarations: [ UploadDialogComponent ],
+      imports: [
+        MatProgressBarModule,
+
+      ],
+      providers: [
+        DataFilesService,
+        { provide: MatDialog, useValue: {} },
+      ]
     })
     .compileComponents();
   }));

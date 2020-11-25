@@ -1,9 +1,7 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UploadService } from '../upload/upload.service';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { Observable } from 'rxjs';
 import { DataFilesService } from 'src/app/_services';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 

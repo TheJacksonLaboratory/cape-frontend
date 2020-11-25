@@ -79,9 +79,9 @@ const PARAMETER_FILES2 = [
     new Parameters()
 ];
 const DATAFILES = [
-    new DataFile(1, 'AD_5xFAD.RDATA', PARAMETER_FILES1),
-    new DataFile(2, 'AD_All.RDATA', PARAMETER_FILES2),
-    new DataFile(3, 'AD_NTG.RDATA', undefined)
+    new DataFile(1, 'AD_5xFAD.RDATA', 'admin',PARAMETER_FILES1),
+    new DataFile(2, 'AD_All.RDATA', 'admin', PARAMETER_FILES2),
+    new DataFile(3, 'AD_NTG.RDATA', 'admin', undefined)
 ];
 
 // We use this class to mock the getDataFilesAndParameters method from the DataFilesService

@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PlotComponent } from '../plot/plot.component';
+import { PlotlyModule } from 'angular-plotly.js';
 
 describe('CtSelectionComponent', () => {
   let component: CtSelectionComponent;
@@ -35,12 +37,13 @@ describe('CtSelectionComponent', () => {
         MatTreeModule,
         HttpClientTestingModule,
         RouterTestingModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
       ],
       declarations: [
         CtSelectionComponent,
         MainSelectionComponent,
-        TreeComponent
+        TreeComponent,
+        PlotComponent
       ],
       providers: [
         { provide: MatDialog, useValue: {} }
