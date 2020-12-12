@@ -2,21 +2,23 @@
 <div mat-dialog-content>
   <div class="row">
     <h3>
-      Select a data file in R/QTL<sup>1</sup> or R/QTL2<sup>2</sup> format:
+      Select a data file in <a href="https://rqtl.org">R/QTL</a> or <a href="https://kbroman.org/qtl2/assets/vignettes/input_files.html">R/QTL2</a> format:
     </h3>
-    <p>1. Broman et al. (2003) R/qtl: QTL mapping in experimental crosses.
-      #' Bioinformatics 19:889-890 <a href="https://academic.oup.com/bioinformatics/article/19/7/889/197785">doi:10.1093/bioinformatics/btg112</a></p>
-    <p>2. <a href="https://kbroman.org/qtl2/assets/vignettes/input_files.html">https://kbroman.org/qtl2/assets/vignettes/input_files.html</a></p>
+    <p>A CSV phenotype data file can also be uploaded and the traits data can be visualized using the phenotype plotting.</p>
+    <p>The <a href='https://zzz.bwh.harvard.edu/plink/index.shtml'>PLINK</a> data format is soon to be supported as well.</p>
   </div>
   <div class="row">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <mat-progress-bar mode="determinate" value=percentCompleted></mat-progress-bar>
 
   </div>
-  
+
 
 </div>
+
 <div mat-dialog-actions>
-  <input hidden type="file" #uploader (change)="uploadFile($event)"/>
-  <button mat-button [disabled]="uploading || uploadSuccessful" mat-raised-button (click)="uploader.click()">Select File</button>
+  <input hidden type="file" #uploader (change)="uploadFile($event)" />
+  <button mat-button [disabled]="uploading || uploadSuccessful" mat-raised-button (click)="uploader.click()">Select
+    File</button>
+
   <button mat-button mat-dialog-close>Close</button>
 </div>
