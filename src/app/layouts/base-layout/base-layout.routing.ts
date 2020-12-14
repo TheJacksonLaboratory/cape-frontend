@@ -17,10 +17,10 @@ export const BaseLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
     { path: 'groups', component: GroupListComponent, canActivate: [AuthGuard] },
-    { path: 'parameters', component: ParametersComponent, canActivate: [AuthGuard] },
     { path: 'datafiles', component: DataFilesComponent, canActivate: [AuthGuard] },
+    { path: 'parameters', component: ParametersComponent, canActivate: [AuthGuard] },
     { path: 'jobs', component: JobComponent, canActivate: [AuthGuard] },
     { path: 'reports', component: ReportGridComponent, canActivate: [AuthGuard] },
     { path: 'report-detail', component: ReportDetailComponent, canActivate: [AuthGuard] },
-    { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }}
+    { path: 'administration', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }}
 ];
