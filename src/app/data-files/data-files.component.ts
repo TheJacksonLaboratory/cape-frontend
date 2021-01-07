@@ -187,13 +187,27 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     msgData['description'] = 'Delete the Data File named "' + element.filename + '" ?';
     const userId = this.auth.getUserId();
     const dataFileService = this.dataFilesService.deleteDataFile(element.id, userId);
-    const dialogRef = this.openDialog(msgData, dataFileService);
+    // const dialogRef = this.openDialog(msgData, dataFileService);
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      width: '400px',
+      data: msgData
+    });
     dialogRef.afterClosed().subscribe(result => {
-      //wait 3 sec
-      (async () => {
-        await this.delay(3000);
-        this.refresh();
-      })();
+      if (result === 'ok') {
+        dataFileService.subscribe(data => {
+          msgData['description'] = data['message'];
+          console.log(data['message']);
+          this.refresh();
+          // this.openResultDialog(msgData);
+        }, error => {
+          this.error = error;
+          this.alertService.error(error);
+          this.loading = false;
+          msgData['title'] = 'Error';
+          msgData['description'] = error;
+          this.openResultDialog(msgData);
+        });
+      }
     });
   }
 
