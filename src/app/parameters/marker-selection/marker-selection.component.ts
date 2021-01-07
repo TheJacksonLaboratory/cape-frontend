@@ -21,7 +21,7 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
   tolerance = 5;
   organism: string = "mouse";
 
-  markerSelected: string = "top.effects";
+  markerSelected: string = 'top_effects';
   markerSelectionMethods = this.createMarkerSelections();
   peakDensityDescription = 'Peak density is the fraction of markers under a large effect peak you would like to select.';
   toleranceDescription = 'Tolerance is the number of markers away from the target number you will tolerate selecting.';
@@ -49,9 +49,10 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
         // set default
         this.parameters.ms_number_to_test = this.parameters.ms_number_to_test === undefined ? this.numberOfMarkersToTest
                                             : this.parameters.ms_number_to_test;
-        this.parameters.ms_peak_density = this.parameters.ms_peak_density === undefined && this.markerSelected === 'top.effects'
+        this.parameters.ms_method = this.parameters.ms_method === undefined ? this.markerSelected : this.parameters.ms_method;
+        this.parameters.ms_peak_density = this.parameters.ms_peak_density === undefined && this.markerSelected === 'top_effects'
                                             ? this.peakDensity : this.parameters.ms_peak_density;
-        this.parameters.ms_tolerance = this.parameters.ms_tolerance === undefined && this.markerSelected === 'top.effects'
+        this.parameters.ms_tolerance = this.parameters.ms_tolerance === undefined && this.markerSelected === 'top_effects'
                                             ? this.tolerance : this.parameters.ms_tolerance;
       }
     });
@@ -69,11 +70,11 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
    */
   private createMarkerSelections() {
     const map = new Map();
-    map.set('top.effects', 'This method selects the top effect size markers from under peaks of single-locus effect size curves.');
+    map.set('top_effects', 'This method selects the top effect size markers from under peaks of single-locus effect size curves.');
     map.set('uniform', 'This method selects the specified number of markers to be uniformly spaced across the genome.');
-    map.set('by.gene', 'This method selects SNPs that are near genes. It requires an ordered list of genes, for example ' +
+    map.set('by_gene', 'This method selects SNPs that are near genes. It requires an ordered list of genes, for example ' +
             'from NetWAS output.');
-    map.set('from.list', 'Select the marker selections using a file.');
+    map.set('from_list', 'Select the marker selections using a file.');
     return map;
   }
 
@@ -97,15 +98,15 @@ export class MarkerSelectionComponent implements OnInit, OnDestroy {
     this.parameters.ms_organism = this.organism;
 
     // We initialize if Top effect or From list is chosen as the UI input fields already have some default data
-    if (this.markerSelected === 'top.effects') {
+    if (this.markerSelected === 'top_effects') {
       this.parameters.ms_peak_density = this.peakDensity;
       this.parameters.ms_tolerance = this.tolerance;
       this.parameters.ms_snp_filename = undefined;
-    } else if (this.markerSelected === 'from.list') {
+    } else if (this.markerSelected === 'from_list') {
       this.parameters.ms_snp_filename = this.snpsFileName;
       this.parameters.ms_peak_density = undefined;
       this.parameters.ms_tolerance = undefined;
-    } else if ((this.markerSelected === 'by.gene') || (this.markerSelected === 'uniform')) {
+    } else if ((this.markerSelected === 'by_gene') || (this.markerSelected === 'uniform')) {
       this.parameters.ms_peak_density = undefined;
       this.parameters.ms_tolerance = undefined;
       this.parameters.ms_snp_filename = undefined;

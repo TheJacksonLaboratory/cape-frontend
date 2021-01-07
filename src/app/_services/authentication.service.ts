@@ -7,6 +7,8 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { User } from '../_models';
 
+import * as JWT from 'jwt-decode';
+
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
 
@@ -34,16 +36,31 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
+  public getUserFullname() {
+    if (this.currentUserValue == null)
+      return '';
+    let identity = JWT(this.currentUserValue.access_token).identity;
+    return identity.first_name + ' ' + identity.last_name;
+  }
+
+  public getUserId() {
+    if (this.currentUserValue == null)
+      return '';
+    let identity = JWT(this.currentUserValue.access_token).identity;
+    return identity.user_id;
+  }
+
   /**
    * Login using LDAP authentication or using saved hashed password in DB
    * @param username LDAP username or username in DB
    * @param password pass
    */
   login(username: string, password: string) {
-    return this.http.post<any>(environment.API_URL + '/auth/login', { username, password }) // , this.httpOptions)
+    return this.http.post<any>(environment.AUTH_URL + '/login', { username, password }) // , this.httpOptions)
       .pipe(map(res => {
         // login successful if there's a jwt token in the response
         if (res && res.access_token) {
+          this.token = res;
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('currentUser', JSON.stringify(res));
           // store the time at which the token should expire

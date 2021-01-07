@@ -3,11 +3,13 @@
 export class DataFile {
     id: number;
     filename: string;
+    owner: string;
     parameter_files: Parameters[];
 
-    constructor(id?: number, filename?: string, parameterFiles?: Parameters[]) {
+    constructor(id?: number, filename?: string, owner?: string, parameterFiles?: Parameters[]) {
         this.id = id;
         this.filename = filename;
+        this.owner = owner;
         this.parameter_files = parameterFiles;
     }
 
@@ -15,6 +17,7 @@ export class DataFile {
         const datafile = new DataFile();
         datafile.id = obj['id'];
         datafile.filename = obj['filename'];
+        datafile.owner = obj['owner'];
         datafile.parameter_files = obj['parameter_files'];
         return datafile;
     }

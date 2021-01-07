@@ -30,7 +30,7 @@ export class ReportsService {
    */
   getReportOwner(reportId: number) {
     const params = new HttpParams().set('job_id', String(reportId));
-    return this.http.get<Job[]>(environment.API_URL + '/reports/get_owner', { params: params })
+    return this.http.get<Job[]>(environment.REPORT_URL + '/get_owner', { params: params })
       .catch(ReportsService._handleError);
   }
 
@@ -38,7 +38,7 @@ export class ReportsService {
    * Get the list of reports
    */
   getReports(): Observable<Report[]> {
-    return this.http.get<Report[]>(environment.API_URL + '/reports/get_all')
+    return this.http.get<Report[]>(environment.REPORT_URL + '/get_all')
       .catch(ReportsService._handleError);
   }
 
@@ -47,7 +47,7 @@ export class ReportsService {
   */
   getReport(reportId: number) {
     const params = new HttpParams().set('id', String(reportId));
-    return this.http.get<Report>(environment.API_URL + '/reports/get', { params: params })
+    return this.http.get<Report>(environment.REPORT_URL + '/get', { params: params })
       .catch(ReportsService._handleError);
   }
 
@@ -56,7 +56,7 @@ export class ReportsService {
   */
  getReportByJobId(jobId: number) {
   const params = new HttpParams().set('job_id', String(jobId));
-  return this.http.get<Report>(environment.API_URL + '/reports/get', { params: params })
+  return this.http.get<Report>(environment.REPORT_URL + '/get', { params: params })
     .catch(ReportsService._handleError);
 }
 
@@ -65,7 +65,7 @@ export class ReportsService {
   */
  getFiles(reportId: number) {
   const params = new HttpParams().set('report_id', String(reportId));
-  return this.http.get(environment.API_URL + '/files', { params: params })
+  return this.http.get(environment.REPORT_URL + '/files', { params: params })
     .catch(ReportsService._handleError);
 }
 }

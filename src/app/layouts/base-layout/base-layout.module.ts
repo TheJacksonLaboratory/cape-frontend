@@ -27,6 +27,7 @@ import { AdminComponent } from '../../admin/admin.component';
 import { JobComponent } from 'src/app/job/job.component';
 import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 import { ReportDetailComponent } from 'src/app/reports/report-detail/report-detail.component';
+import { UploadDialogComponent } from 'src/app/data-files/upload-dialog/upload-dialog.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { ReportDetailComponent } from 'src/app/reports/report-detail/report-deta
     UserProfileComponent,
     GroupListComponent,
     DataFilesComponent,
+    UploadDialogComponent,
     AdminComponent,
     JobComponent
   ],
@@ -60,6 +62,9 @@ import { ReportDetailComponent } from 'src/app/reports/report-detail/report-deta
     ReportsService,
     DataFilesService,
     ParametersService
+  ],
+  entryComponents: [
+    UploadDialogComponent
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 

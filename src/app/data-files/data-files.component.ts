@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { saveAs } from 'file-saver';
 
-import { DataFilesService, AlertService } from '../_services';
+import { DataFilesService, AlertService, AuthenticationService } from '../_services';
 import { DataFile } from '../_models/datafile';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 import { Parameters } from '../_models/parameters';
 import { JobService } from '../_services/job.service';
+import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
 
 
 @Component({
@@ -26,7 +27,7 @@ import { JobService } from '../_services/job.service';
   ],
 })
 export class DataFilesComponent implements OnInit, OnDestroy {
-  columnsToDisplay = ['id', 'filename', 'add'];
+  columnsToDisplay = ['filename', 'owner', 'add', 'del'];
 
   dataSource: MatTableDataSource<DataFile>;
   expandedElement: DataFile | null;
@@ -35,14 +36,14 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   loading = false;
   private dataFileSub: Subscription;
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
-  constructor(private http: HttpClient, private dataFilesService: DataFilesService, private jobService: JobService,
+  constructor(private auth: AuthenticationService, private dataFilesService: DataFilesService, private jobService: JobService,
     private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef,
     private router: Router) { }
-    // public dialogRef: MatDialogRef<MessageDialogComponent>
-    // @Inject(MAT_DIALOG_DATA) public data: any
+  // public dialogRef: MatDialogRef<MessageDialogComponent>
+  // @Inject(MAT_DIALOG_DATA) public data: any
 
   ngOnInit() {
     this.dataFileSub = this.dataFilesService.getDataFilesAndParameters().subscribe(resp => {
@@ -51,6 +52,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
       // TODO: display our server error dialog?
       console.log(err);
     });
+    this.changeDetectorRefs.detectChanges();
   }
 
   ngOnDestroy() {
@@ -81,8 +83,8 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     this.changeDetectorRefs.detectChanges();
   }
 
-//  isExpansionDetailRow = (i: number, row: Object) =>
-//    row.hasOwnProperty('detailRow');
+  //  isExpansionDetailRow = (i: number, row: Object) =>
+  //    row.hasOwnProperty('detailRow');
 
   /**
    * expand collapse a row
@@ -106,10 +108,10 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     }
   }
 
-   /**
-   * Download corresponding YAML file
-   * @param element row element
-   */
+  /**
+  * Download corresponding YAML file
+  * @param element row element
+  */
   downloadParameterFile(element: any) {
     const data = element.yaml_file;
     const filename = element.title + '.yml';
@@ -146,6 +148,22 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Delete dta file
+   * @param element row element
+   */
+  deleteFile(element: any) {
+    this.openDeleteFileWarningDialog(element);
+  }
+
+  /**
+   * Returns the current user: first name and last name
+   * as a string
+   */
+  getCurrentUser() {
+    return this.auth.getUserFullname();
+  }
+
+  /**
    * Run a job with this file as input
    * @param element row element
    */
@@ -160,8 +178,45 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   private openDeleteWarningDialog(element: any) {
     const msgData = { 'title': 'Delete Parameter File' };
     msgData['description'] = 'Delete the Parameter File named "' + element.title + '" ?';
-    const dataFileService = this.dataFilesService.deleteDataFile(element.id, element.user_id);
+    const dataFileService = this.dataFilesService.deleteParameterDataFile(element.id, element.user_id);
     this.openDialog(msgData, dataFileService);
+  }
+
+  private openDeleteFileWarningDialog(element: any) {
+    const msgData = { 'title': 'Delete Data File' };
+    msgData['description'] = 'Delete the Data File named "' + element.filename + '" ?';
+    const userId = this.auth.getUserId();
+    const dataFileService = this.dataFilesService.deleteDataFile(element.id, userId);
+    // const dialogRef = this.openDialog(msgData, dataFileService);
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      width: '400px',
+      data: msgData
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'ok') {
+        dataFileService.subscribe(data => {
+          msgData['description'] = data['message'];
+          console.log(data['message']);
+          this.refresh();
+          // this.openResultDialog(msgData);
+        }, error => {
+          this.error = error;
+          this.alertService.error(error);
+          this.loading = false;
+          msgData['title'] = 'Error';
+          msgData['description'] = error;
+          this.openResultDialog(msgData);
+        });
+      }
+    });
+  }
+
+  /**
+   * 
+   * @param ms Delay function to be called in an async block
+   */
+  private delay(ms: number) { //pass a time in milliseconds to this function
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**
@@ -200,6 +255,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
         });
       }
     });
+    return dialogRef;
   }
 
   private openResultDialog(data: any) {
@@ -213,8 +269,23 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     });
   }
 
-  // onOkClick(): void {
-  //   this.dialogRef.close('ok');
-  // }
+  /**
+   * Open dialog to upload a new file
+   */
+  public openDataFileUploadDialog() {
+    const dialogRef = this.dialog.open(UploadDialogComponent, {
+      width: '50%',
+      height: '50%',
+      data: { fileType: 'vcf', titleText: 'Upload VCF Files' }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // refresh datasource
+      //wait 2 sec
+      (async () => {
+        await this.delay(2000);
+        this.refresh();
+      })();
+    });
+  }
 
 }

@@ -1,17 +1,13 @@
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-4">
     <app-main-selection></app-main-selection>
 
-    <div class="row">
-      <div class="col-md-6">
-        <app-tree [title]="getCovariateTitle()" [description]="getCovariateDescription()"
-          matTooltip="Select variables to be used as covariates. can be factors or quantitative">loading</app-tree>
-      </div>
-      <div class="col-md-6">
-        <app-tree [title]="getTraitTitle()" [description]="getTraitDescription()"
-          matTooltip="Select variables to be analyzed in CAPE">loading</app-tree>
-      </div>
-    </div>
+    <app-tree [title]="getTraitTitle()" [description]="getTraitDescription()"
+      matTooltip="Select variables to be analyzed in CAPE">loading</app-tree>
+    <br>
+    <app-tree [title]="getCovariateTitle()" [description]="getCovariateDescription()"
+      matTooltip="Select variables to be used as covariates. can be factors or quantitative">loading</app-tree>
+
     <br>
     <p>There are {{ numberOfIndividuals }} individuals with the selected traits measured.</p>
 
@@ -88,7 +84,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-8">
     <app-plot></app-plot>
   </div>
 </div>
