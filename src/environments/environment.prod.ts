@@ -1,8 +1,8 @@
-const API_URL = 'http://bhcape01.jax.org:5000/api';
+const API_URL = 'https://bhcape01.jax.org:5000/api';
 
 export const environment = {
   production: true,
-  FILE_URL: 'http://bhcape01.jax.org:8080',
+  FILE_URL: 'https://bhcape01.jax.org',
   V1_URL: API_URL + '/v1',
   AUTH_URL: API_URL + '/auth',
   DATA_FILE_URL: API_URL + '/datafiles',

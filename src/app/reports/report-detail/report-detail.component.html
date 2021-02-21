@@ -13,11 +13,12 @@
     </mat-card-content>
     <mat-grid-list cols="2" rowHeight="2:1" >
       <mat-grid-tile *ngFor="let image of reportImages" [colspan]=1 [rowspan]=1 [style.background]="lightblue">
-        <a href="{{image + '.pdf'}}" target="_blank">
+        <iframe src="cape_results.html" name="page"></iframe>
+        <a href=[reportPageUrl] target="page">Results</a>   
+        <!-- <a href="{{image + '.pdf'}}" target="_blank">
           <img mat-card-image src="{{image + '.jpg'}}"  alt="image"/>
-          <!-- [style.width.%]="image.width" /> -->
           <p>{{image}}</p>
-        </a>
+        </a> -->
       </mat-grid-tile>
     </mat-grid-list>
   </div>

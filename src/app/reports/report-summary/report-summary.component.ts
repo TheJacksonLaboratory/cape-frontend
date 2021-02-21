@@ -3,6 +3,8 @@ import { Report } from 'src/app/_models';
 import { Router } from '@angular/router';
 import { ReportsService } from 'src/app/_services';
 import { environment } from 'src/environments/environment';
+import { ElementRef } from '@angular/core';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-report-summary',
@@ -14,12 +16,11 @@ export class ReportSummaryComponent implements OnInit {
   @Input()
   report: Report;
   reportImage: string;
-
+  
   constructor(private router: Router, private reportService: ReportsService) { 
   }
   ngOnInit(): void {
     this.reportImage = environment.FILE_URL + this.report.paths[0] + ".jpg";
-
   }
 
   openReport(element: Report) {

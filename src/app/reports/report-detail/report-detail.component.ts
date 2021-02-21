@@ -15,6 +15,7 @@ export class ReportDetailComponent implements OnInit {
   @Input()
   report: Report = new Report();
   reportImages: string[] = [];
+  reportPageUrl: string;
   imagesLeftColumn: string[] = [];
   imagesRightColumn: string[] = [];
   routeSubscription: Subscription;
@@ -38,6 +39,7 @@ export class ReportDetailComponent implements OnInit {
           else
             this.imagesRightColumn[index] = value;
         });
+        this.reportPageUrl = environment.FILE_URL + resp.result_page
       }, err => {
         // TODO: display our server error dialog?
         console.log(err);
