@@ -2,24 +2,14 @@
   <div class="card-header card-header-primary">
     <h3 class="card-title">{{ report.title }}</h3>
     <h4 class="card-subtitle">{{ report.date_created }}</h4>
-    <p class="card-category">{{ report.description }}</p>
+    <p class="card-category">{{ description }}
+      <a [href]='reportPageUrl'> Results</a>
+    </p>
   </div>
 
   <div class="card-body">
     <mat-card-content>
-      <p>
-        {{report.description}}
-      </p>
+      <iframe id="reportHtml" [src]='sanitizedReportPageUrl'></iframe>
     </mat-card-content>
-    <mat-grid-list cols="2" rowHeight="2:1" >
-      <mat-grid-tile *ngFor="let image of reportImages" [colspan]=1 [rowspan]=1 [style.background]="lightblue">
-        <iframe src="cape_results.html" name="page"></iframe>
-        <a href=[reportPageUrl] target="page">Results</a>   
-        <!-- <a href="{{image + '.pdf'}}" target="_blank">
-          <img mat-card-image src="{{image + '.jpg'}}"  alt="image"/>
-          <p>{{image}}</p>
-        </a> -->
-      </mat-grid-tile>
-    </mat-grid-list>
   </div>
 </div>
