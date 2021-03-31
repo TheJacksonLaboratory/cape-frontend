@@ -17,6 +17,7 @@ export class ReportDetailComponent implements OnInit {
   report: Report = new Report();
   reportImages: string[] = [];
   sanitizedReportPageUrl: SafeResourceUrl;
+  reportRootUrl: string;
   reportPageUrl: string;
   imagesLeftColumn: string[] = [];
   imagesRightColumn: string[] = [];
@@ -42,6 +43,7 @@ export class ReportDetailComponent implements OnInit {
           else
             this.imagesRightColumn[index] = value;
         });
+        this.reportRootUrl = environment.FILE_URL + resp.root_url;
         this.reportPageUrl = environment.FILE_URL + resp.result_page;
         this.sanitizedReportPageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.reportPageUrl);
         this.description = 'This page is a generated HTML file. In order to visualize the result plots, click on the following link.';

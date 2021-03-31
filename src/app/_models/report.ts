@@ -6,9 +6,10 @@ export class Report {
     job_id: number;
     description: string;
     paths: string[];
+    root_url: string;
     result_page: string;
 
-    constructor(id?: number, date_created?: Date, title?: string, author?: string, job_id?: number, description?: string, paths?: string[], result_page?: string) {
+    constructor(id?: number, date_created?: Date, title?: string, author?: string, job_id?: number, description?: string, paths?: string[], root_url?: string, result_page?: string) {
         this.id = id;
         this.date_created = date_created;
         this.title = title;
@@ -16,7 +17,8 @@ export class Report {
         this.job_id = job_id;
         this.description = description;
         this.paths = paths;
-        this.result_page = result_page
+        this.root_url = root_url;
+        this.result_page = result_page;
     }
 
     private static toReport(obj: any): Report {
@@ -28,6 +30,7 @@ export class Report {
         report.job_id = obj['job_id'];
         report.description = obj['description'];
         report.paths = obj['paths'];
+        report.root_url = obj['root_url'];
         report.result_page = obj['result_page'];
         return report;
     }
