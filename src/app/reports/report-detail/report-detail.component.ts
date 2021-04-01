@@ -16,9 +16,9 @@ export class ReportDetailComponent implements OnInit {
   @Input()
   report: Report = new Report();
   reportImages: string[] = [];
-  sanitizedReportPageUrl: SafeResourceUrl;
-  reportRootUrl: string;
-  reportPageUrl: string;
+  sanitizedResultPageUrl: SafeResourceUrl;
+  resultFolderUrl: string;
+  resultPageUrl: string;
   imagesLeftColumn: string[] = [];
   imagesRightColumn: string[] = [];
   routeSubscription: Subscription;
@@ -43,10 +43,11 @@ export class ReportDetailComponent implements OnInit {
           else
             this.imagesRightColumn[index] = value;
         });
-        this.reportRootUrl = environment.FILE_URL + resp.root_url;
-        this.reportPageUrl = environment.FILE_URL + resp.result_page;
-        this.sanitizedReportPageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.reportPageUrl);
-        this.description = 'This page is a generated HTML file. In order to visualize the result plots, click on the following link.';
+        this.resultFolderUrl = environment.FILE_URL + resp.result_folder;
+        console.log(this.resultFolderUrl);
+        this.resultPageUrl = environment.FILE_URL + resp.result_page;
+        this.sanitizedResultPageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.resultPageUrl + "?dummyVar=" + (new Date()).getTime());
+        this.description = 'This page is an HTML rendered at the end of the analysis. In order to download the result plots, click on the following link:';
       }, err => {
         // TODO: display our server error dialog?
         console.log(err);

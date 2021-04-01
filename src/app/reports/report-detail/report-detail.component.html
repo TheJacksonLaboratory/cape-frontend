@@ -2,14 +2,13 @@
   <div class="card-header card-header-primary">
     <h3 class="card-title">{{ report.title }}</h3>
     <h4 class="card-subtitle">{{ report.date_created }}</h4>
-    <p class="card-category">{{ description }}
-      <a [href]='reportRootUrl'><b> RESULTS</b></a>
-    </p>
+    <p class="card-category">{{ description }} <a href="{{ resultFolderUrl }}"> Results</a></p>
+    
   </div>
 
   <div class="card-body">
     <mat-card-content>
-      <iframe id="reportHtml" [src]='sanitizedReportPageUrl'></iframe>
+      <iframe id="reportHtml" [src]='sanitizedResultPageUrl'></iframe>
     </mat-card-content>
   </div>
 </div>
