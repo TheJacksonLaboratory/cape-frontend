@@ -1,4 +1,4 @@
-const API_URL = 'https://bhcape01.jax.org/api';
+const API_URL = 'https://cape.jax.org/api';
 
 export const environment = {
   production: true,
