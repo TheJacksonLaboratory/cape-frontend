@@ -14,9 +14,9 @@ export const ROUTES: RouteInfo[] = [
     { path: '/parameters', title: 'Parameters', icon: 'developer_board', class: ''},
     { path: '/jobs', title: 'Analysis',  icon: 'access_time', class: '' },
     { path: '/reports', title: 'Reports',  icon: 'timeline', class: '' },
-    { path: '/notifications', title: 'Notifications',  icon: 'notifications', class: '' },
+    // { path: '/notifications', title: 'Notifications',  icon: 'notifications', class: '' },
     { path: '/about', title: 'About',  icon: 'explore', class: '' },
-    { path: '/administration', title: 'Administration',  icon: 'settings', class: 'admin-link' },
+    // { path: '/administration', title: 'Administration',  icon: 'settings', class: 'admin-link' },
 ];
 
 @Component({

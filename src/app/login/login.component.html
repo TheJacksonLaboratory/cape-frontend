@@ -28,7 +28,8 @@
       <button class="login-button" [disabled]="loading" mat-raised-button (click)="login()" color="primary">Login</button>
     </mat-card-actions>
     <p>You don't have an account?
-        <a routerLink="/register" class="btn btn-link">Register</a>
+        <!-- <a routerLink="/register" class="btn btn-link">Register</a> -->
+        <a role="button" (click)="loginAsGuest()" class="btn btn-link">Login as Guest</a>
     </p>
   </mat-card-content>
 </mat-card>

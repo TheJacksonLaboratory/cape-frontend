@@ -35,15 +35,15 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button disabled="{{element.status=='In Progress'}}" mat-icon-button type="submit" color="primary"
+            <button disabled="{{isDisabled(element)}}" mat-icon-button type="submit" color="primary"
               class="pull-right" matTooltip="Delete this Analysis" (click)="deleteJob(element)">
               <mat-icon matSuffix>delete</mat-icon>
             </button>
-            <button mat-icon-button type="submit" color="primary" class="pull-right" matTooltip="Cancel this Analysis"
+            <button disabled="{{isDisabled(element)}}" mat-icon-button type="submit" color="primary" class="pull-right" matTooltip="Cancel this Analysis"
               (click)="cancelJob(element)">
               <mat-icon matSuffix>stop</mat-icon>
             </button>
-            <button disabled="{{element.status=='In Progress'}}" mat-icon-button type="submit" color="primary"
+            <button disabled="{{isDisabled(element)}}" mat-icon-button type="submit" color="primary"
               class="pull-right" matTooltip="Run this Analysis" (click)="runJob(element)">
               <mat-icon matSuffix>play_arrow</mat-icon>
             </button>

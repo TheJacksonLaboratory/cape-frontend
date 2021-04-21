@@ -12,6 +12,7 @@ import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.
 import { Parameters } from '../_models/parameters';
 import { JobService } from '../_services/job.service';
 import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
+import { SpinnerDialogComponent } from '../components/spinner-dialog/spinner-dialog.component';
 
 
 @Component({
@@ -32,6 +33,10 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<DataFile>;
   expandedElement: DataFile | null;
 
+  isDisabled: boolean;
+
+  // spinnerDialogRef: any;
+
   error = '';
   loading = false;
   private dataFileSub: Subscription;
@@ -46,6 +51,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   // @Inject(MAT_DIALOG_DATA) public data: any
 
   ngOnInit() {
+    this.isDisabled = this.auth.getUsername() == "guest";
     this.dataFileSub = this.dataFilesService.getDataFilesAndParameters().subscribe(resp => {
       this.dataSource = new MatTableDataSource(resp);
     }, err => {
@@ -186,7 +192,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     const msgData = { 'title': 'Delete Data File' };
     msgData['description'] = 'Delete the Data File named "' + element.filename + '" ?';
     const userId = this.auth.getUserId();
-    const dataFileService = this.dataFilesService.deleteDataFile(element.id, userId);
+    
     // const dialogRef = this.openDialog(msgData, dataFileService);
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       width: '400px',
@@ -194,10 +200,12 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'ok') {
-        dataFileService.subscribe(data => {
+        //this.openSpinnerDialog();
+        this.dataFilesService.deleteDataFile(element.id, userId).subscribe(data => {
           msgData['description'] = data['message'];
           console.log(data['message']);
           this.refresh();
+          //this.spinnerDialogRef.close();
           // this.openResultDialog(msgData);
         }, error => {
           this.error = error;
@@ -205,11 +213,20 @@ export class DataFilesComponent implements OnInit, OnDestroy {
           this.loading = false;
           msgData['title'] = 'Error';
           msgData['description'] = error;
+          //this.spinnerDialogRef.close();
           this.openResultDialog(msgData);
         });
       }
     });
   }
+
+//  openSpinnerDialog() {
+//    console.log("open spinner dialog");
+//    this.spinnerDialogRef = this.dialog.open(SpinnerDialogComponent, {
+//      panelClass: 'transparent',
+//      disableClose: true
+//    });
+//  }
 
   /**
    * 

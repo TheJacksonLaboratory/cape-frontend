@@ -75,6 +75,22 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
   }
 
+  loginAsGuest(): void {
+    this.submitted = true;
+    this.error = '';
+    this.loading = true;
+    this.authenticationService.login("guest", "guestp@55word")
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.router.navigate([this.returnUrl]);
+        },
+        error => {
+          this.error = error.message;
+          this.loading = false;
+        });
+  }
+
   register(): void {
     this.router.navigate(['/register']);
   }

@@ -22,7 +22,7 @@
       <div class="row">
         <button mat-raised-button type="submit" class="btn btn-info pull-right"
           matTooltip="Saves the parameters file associated with the parameters set up on this page"
-          (click)='saveParametersFile()' [disabled]="this.parameters.title == undefined">
+          (click)='saveParametersFile()' [disabled]="isDisabled()">
           <mat-icon matSuffix>create</mat-icon>
           Save Parameter File
         </button>

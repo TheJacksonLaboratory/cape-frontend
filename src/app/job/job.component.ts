@@ -3,7 +3,7 @@ import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/m
 import { Router } from '@angular/router';
 import { Subscription, Observable, interval } from 'rxjs';
 
-import { JobService, AlertService, ReportsService } from '../_services';
+import { JobService, AlertService, ReportsService, AuthenticationService } from '../_services';
 import { Job } from '../_models/job';
 import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.component';
 import { startWith, switchMap } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class JobComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
 
-  constructor(private jobService: JobService, private reportService: ReportsService,
+  constructor(private auth: AuthenticationService, private jobService: JobService, private reportService: ReportsService,
     private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef,
     private router: Router) { }
   // public dialogRef: MatDialogRef<MessageDialogComponent>
@@ -242,6 +242,13 @@ export class JobComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  /**
+   * Returns true if progress is running or if username is "guest"
+   */
+  isDisabled(element: any) {
+    return element.status=='In Progress' || this.auth.getUsername() == 'guest';
   }
 
   private openResultDialog(data: any) {

@@ -230,6 +230,13 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * Returns true if user is "guest" or parameter set up title is undefined
+   */
+  isDisabled() {
+    return this.authService.getUsername()=="guest" || this.parameters.title == undefined;
+  }
+
   private openMessageDialog(title: string, message: string) {
     const msgData = { 'title': title };
     msgData['description'] = message;

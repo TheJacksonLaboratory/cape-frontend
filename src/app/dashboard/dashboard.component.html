@@ -26,43 +26,27 @@
 <div class="row">
   <br>
 </div>
-<!-- <div class="row">
-  <div class="col-lg-6 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-header card-header-warning card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">scatter_plot</i>
-        </div>
-        <p class="card-title">Exome Sequenced Samples: <strong>{{mmrdbStats.exomeSamplesCount | number}}</strong></p>
-        <p class="card-title">Whole Genome Sequenced Samples: <strong>{{mmrdbStats.wholeGenomeSamplesCount | number}}</strong></p>
-        <p class="card-title">SNP and Indel Variations: <strong>{{mmrdbStats.snpIndelVariantsCount | number}}</strong></p>
-        <p class="card-title">Structural Variations: <strong>{{mmrdbStats.svVariantsCount | number}}</strong></p>
-        <p class="card-title">Sequenced Strains With Medelian Diseases: <strong>{{mmrdbStats.strainCount | number}}</strong></p>
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">table_chart</i> MMRDB database stats
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-6 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-header card-header-danger card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">pie_chart</i>
-        </div>
-        <h5 class="card-title">Mendelian Pathogenic Mutations</h5>
-        <p class="card-title">Confirmed SNP and Small Indel Mutations: <strong>{{mmrdbStats.confirmedSnpIndelMutationCount | number}}</strong></p>
-        <p class="card-title">Confirmed Structural Mutations: <strong>{{mmrdbStats.confirmedSVMutationCount| number}}</strong></p>
-        <p class="card-title">Likely Pathogenic SNP and Small Indel Mutations: <strong>{{mmrdbStats.snpIndelCandidateCount | number}}</strong></p>
-        <p class="card-title">Likely Pathogenic Structural Mutations: <strong>{{mmrdbStats.svMutantCandidateCount | number}}</strong></p>
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">table_chart</i> Analysis Stats
+<div *ngIf="isGuest()" class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-10">
+            <h4>You are logged in as a Guest user</h4>
+            <p>If you do not have Jax profile and would like to unlock all the features available on the Cape Wbe Application, you can contact <a href="mailto:baha.elkassaby@jax.org">baha.elkassaby@jax.org</a> in order to get an active Cape user profile.</p>
+            <p>As Guest user, the unlocked features of the application are the following:</p>
+            <ul>
+              <li>Cape parameter set up UI</li>
+              <li>Phenotype plotting</li>
+              <li>Cape parameter YAML download</li>
+              <li>Admin user example Jobs</li>
+              <li>Admin user example Reports</li>
+            </ul>   
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+</div>
+

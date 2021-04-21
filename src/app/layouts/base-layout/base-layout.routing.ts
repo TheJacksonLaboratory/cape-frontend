@@ -22,5 +22,5 @@ export const BaseLayoutRoutes: Routes = [
     { path: 'jobs', component: JobComponent, canActivate: [AuthGuard] },
     { path: 'reports', component: ReportGridComponent, canActivate: [AuthGuard] },
     { path: 'report-detail', component: ReportDetailComponent, canActivate: [AuthGuard] },
-    { path: 'administration', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }}
+    // { path: 'administration', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }}
 ];

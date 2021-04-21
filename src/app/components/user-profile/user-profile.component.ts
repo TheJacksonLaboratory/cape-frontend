@@ -23,7 +23,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   });
   private userSub: Subscription;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.userSub = this.userService.getCurrentUser().subscribe(resp => {
@@ -34,6 +34,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         username: resp.username,
         password: resp.password
       });
+      // if guest user, the form is disabled
+      if(resp.username == "guest") {
+        this.profileForm.disable();
+      }
     }, err => {
       // TODO: display our server error dialog?
       console.log(err);
