@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'about',
@@ -9,7 +9,18 @@ import {Router} from "@angular/router";
 
 export class AboutComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  selectedTab: any;
 
-  ngOnInit() { }
+  constructor(private route: ActivatedRoute) { }
+
+  ngOnInit() {
+
+      this.route.paramMap.subscribe(paramsIn => {
+
+          const selectedTabIn = paramsIn.get('selectedTab');
+          if (selectedTabIn) {
+              this.selectedTab = selectedTabIn;
+          }
+      });
+  }
 }

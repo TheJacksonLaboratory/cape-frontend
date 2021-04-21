@@ -330,6 +330,9 @@
     @include set-background-color-button($white-color);
     @include sidebar-active-color($black-color);
   }
+  &[data-color="blue"]{
+    @include set-background-color-button($brand-blue);
+  }
 
   &[data-background-color="red"] {
     @include sidebar-background-color($brand-danger, $white-color);
