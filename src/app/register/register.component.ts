@@ -28,23 +28,23 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.registerForm = this.formBuilder.group({
-    //   first_name: ['', Validators.required],
-    //   last_name: ['', Validators.required],
-    //   username: ['', Validators.required],
-    //   email: ['', [Validators.required, Validators.email]],
-    //   password: ['', [Validators.required, Validators.minLength(6)]]
-    // });
     this.registerForm = this.formBuilder.group({
-      first_name: {value: null, disabled: true},
-      last_name: {value: null, disabled: true},
-      username: {value: null, disabled: true},
-      email: {value: null, disabled: true},
-      password: {value: null, disabled: true}
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
+    // this.registerForm = this.formBuilder.group({
+    //   first_name: {value: null, disabled: true},
+    //   last_name: {value: null, disabled: true},
+    //   username: {value: null, disabled: true},
+    //   email: {value: null, disabled: true},
+    //   password: {value: null, disabled: true}
+    // });
 
      // disable form after 2s
-     setTimeout(() => this.registerForm.disable(), 2000);
+    //  setTimeout(() => this.registerForm.disable(), 2000);
   }
 
   // convenience getter for easy access to form fields
@@ -64,10 +64,11 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.alertService.success('Registration successful', true);
+          this.alertService.success('Registration', true);
           // Open dialog to let user know of successful registration
-          const msgData = { 'title': 'Registration successful' };
-          msgData['description'] = data['message'];
+          const msgData = { 'title': 'Registration', 
+                            'description': data['message'], 
+                            'displayCancelButton': false };
           this.openResultDialog(msgData);
         },
         error => {
@@ -83,7 +84,10 @@ export class RegisterComponent implements OnInit {
       data: data
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.router.navigate(['/login']);
+      if (!data['description'].startsWith('The following error occured')) {
+        this.router.navigate(['/login']);
+      }
+      this.loading = false;
       console.log(result);
     });
   }

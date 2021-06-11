@@ -10,12 +10,16 @@ export class MessageDialogComponent {
 
   messageTitle: string;
   messageDescription: string;
+  displayCancelButton = true;
 
   constructor(
     public dialogRef: MatDialogRef<MessageDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.messageTitle = data['title'];
       this.messageDescription = data['description'];
+      if (data['displayCancelButton'] != undefined){
+        this.displayCancelButton = data['displayCancelButton'];
+      }
     }
 
   onOkClick(): void {

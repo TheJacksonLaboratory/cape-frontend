@@ -38,7 +38,12 @@ export class UserService {
 
     register(user: any) {
         return this.http.post(`${environment.USER_URL}/register`, user,
-            { headers: new HttpHeaders({ 'Content-Type': 'application/json' })})
+            { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) })
+            .catch(UserService._handleError);
+    }
+
+    confirm(token: string) {
+        return this.http.get(`${environment.USER_URL}/confirm/` + token)
             .catch(UserService._handleError);
     }
 

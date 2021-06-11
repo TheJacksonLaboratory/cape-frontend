@@ -25,6 +25,7 @@ import { ParametersModule } from './parameters';
 import { SharedModule } from './shared/shared.module';
 import { AuthGuard } from './_guards';
 import { RegisterComponent } from './register/register.component'
+import { ConfirmComponent } from './confirm/confirm.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { RegisterComponent } from './register/register.component'
         FooterComponent,
         SidebarComponent,
         NavbarComponent,
-        RegisterComponent
+        RegisterComponent,
+        ConfirmComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

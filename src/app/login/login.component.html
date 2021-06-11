@@ -5,10 +5,12 @@
   </mat-card-header>
 
   <mat-card-content>
-
+    <div>You can login to the CAPE application using a Jax username. If you are not a part of the Jackson Laboratory,
+      you can create a CAPE user profile using the 'Register' link below.</div>
     <form id="loginForm">
       <mat-form-field appearance="outline" matTooltip="Username">
-        <input name="username" matInput placeholder="Jax username (ex: jsmith)" [(ngModel)]="username" (keyup)="onKey($event)" required>
+        <input name="username" matInput placeholder="Jax username (ex: jsmith)" [(ngModel)]="username"
+          (keyup)="onKey($event)" required>
       </mat-form-field>
       <mat-form-field appearance="outline" matTooltip="Password">
         <input name="password" matInput placeholder="Enter your password" [(ngModel)]="password"
@@ -25,11 +27,21 @@
 
     </form>
     <mat-card-actions class="center">
-      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login()" color="primary">Login</button>
+      <button class="login-button" [disabled]="loading" mat-raised-button (click)="login()"
+        color="primary">Login</button>
     </mat-card-actions>
-    <p>You don't have an account?
-        <!-- <a routerLink="/register" class="btn btn-link">Register</a> -->
-        <a role="button" (click)="loginAsGuest()" class="btn btn-link">Login as Guest</a>
-    </p>
+    <div class="row">
+      <br>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p>You don't have a Jax user account?
+          <a routerLink="/register" class="btn btn-link">Register</a>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <a role="button" (click)="loginAsGuest()" class="btn btn-link col-md-12">Login as Guest</a>
+    </div>
   </mat-card-content>
 </mat-card>
