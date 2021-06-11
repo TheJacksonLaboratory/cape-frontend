@@ -1,0 +1,14 @@
+<mat-card class="confirmed-card">
+    <mat-card-header>
+        <mat-card-title>CAPE User Confirmation</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div *ngIf="confirmed">
+            <p >
+                {{ message }}
+            </p>
+            <a *ngIf="!confirming" routerLink="/login" class="btn btn-link">Go To Login Page</a>
+        </div>
+        <div *ngIf="!confirmed">Confirming </div>
+    </mat-card-content>
+</mat-card>
