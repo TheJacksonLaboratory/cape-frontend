@@ -25,10 +25,9 @@ export class ConfirmComponent implements OnInit {
     this.activatedroute.paramMap.subscribe(params => {
       this.token = params.get('token');
       this.userService.confirm(this.token).subscribe(resp => {
-        this.message = resp['message'][0];
-        var respCode = resp['message'][1];
+        this.message = resp.body['message'];
         this.confirming = false;
-        if (respCode == 200) {
+        if (resp.status == 200) {
           this.confirmed = true;
         } else {
           this.confirming = true;

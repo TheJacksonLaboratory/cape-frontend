@@ -43,7 +43,7 @@ export class UserService {
     }
 
     confirm(token: string) {
-        return this.http.get(`${environment.USER_URL}/confirm/` + token)
+        return this.http.get(`${environment.USER_URL}/confirm/` + token, {observe: 'response'})
             .catch(UserService._handleError);
     }
 
