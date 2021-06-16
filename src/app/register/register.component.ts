@@ -84,9 +84,7 @@ export class RegisterComponent implements OnInit {
       data: data
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (!data['description'].startsWith('The following error occured')) {
-        this.router.navigate(['/login']);
-      }
+      this.router.navigate(['/login']);
       this.loading = false;
       console.log(result);
     });
