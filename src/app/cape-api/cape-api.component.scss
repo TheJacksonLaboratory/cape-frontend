@@ -1,0 +1,46 @@
+a {
+  color: #9c27b0;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.h3, h3 {
+  font-family: Roboto,Helvetica,Arial,sans-serif;
+  font-weight: 300;
+  font-size: 1.5625rem;
+  line-height: 1.4em;
+}
+
+.card {
+  margin-top: 0px;
+}
+
+.learn-more-button {
+  display: block;
+  border: none;
+  height: 50px;
+  color:#fff;
+  background: #3458bf;
+}
+.code-container {
+  height: 270px;
+  overflow: auto;
+  background-color: lightblue;
+}
+.small-code-container {
+  overflow: auto;
+  background-color: lightblue;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0 0 32px;
+  width: 100%;
+}
+table, th, td {
+  border: 0.5px black solid;
+}

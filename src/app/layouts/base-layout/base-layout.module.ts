@@ -17,6 +17,7 @@ import { ReportGridComponent } from '../../reports/report-grid/report-grid.compo
 import { ReportListComponent } from '../../reports/report-list/report-list.component';
 import { ReportSummaryComponent } from '../../reports/report-summary/report-summary.component';
 import { CustomMaterialModule } from '../../material.module';
+import { CapeApiComponent } from 'src/app/cape-api';
 import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { GroupListComponent} from '../../groups/group-list/group-list.component';
 import { ParametersModule } from 'src/app/parameters';
@@ -53,6 +54,7 @@ import { UploadDialogComponent } from 'src/app/data-files/upload-dialog/upload-d
     ReportSummaryComponent,
     UserProfileComponent,
     GroupListComponent,
+    CapeApiComponent,
     DataFilesComponent,
     UploadDialogComponent,
     AdminComponent,
