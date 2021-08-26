@@ -44,8 +44,7 @@ import { SpinnerDialogComponent } from 'src/app/components/spinner-dialog/spinne
     MatTooltipModule,
     CustomMaterialModule,
     ParametersModule,
-    MatProgressSpinnerModule,
-    SpinnerDialogComponent
+    MatProgressSpinnerModule
   ],
   declarations: [
     AboutComponent,
@@ -60,7 +59,9 @@ import { SpinnerDialogComponent } from 'src/app/components/spinner-dialog/spinne
     DataFilesComponent,
     UploadDialogComponent,
     AdminComponent,
-    JobComponent
+    JobComponent,
+    SpinnerDialogComponent
+
   ],
   providers: [
     ReportsService,
