@@ -29,6 +29,7 @@ import { JobComponent } from 'src/app/job/job.component';
 import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 import { ReportDetailComponent } from 'src/app/reports/report-detail/report-detail.component';
 import { UploadDialogComponent } from 'src/app/data-files/upload-dialog/upload-dialog.component';
+import { SpinnerDialogComponent } from 'src/app/components/spinner-dialog/spinner-dialog.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { UploadDialogComponent } from 'src/app/data-files/upload-dialog/upload-d
     MatTooltipModule,
     CustomMaterialModule,
     ParametersModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    SpinnerDialogComponent
   ],
   declarations: [
     AboutComponent,
