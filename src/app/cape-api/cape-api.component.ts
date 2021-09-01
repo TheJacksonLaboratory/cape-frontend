@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: 'cape-api',
@@ -12,15 +12,15 @@ export class CapeApiComponent implements OnInit {
   selectedTab: any;
 
   bashGetToken = `TOKEN=$(curl -s -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' --data '{"username":"{myusername}","password":"{mypassword}","rememberMe":false}' https://bhcape01.jax.org/api/auth/login | jq -r '.access_token’)`;
-  
-  pythonGetToken = 
-  `import requests, json
+
+  pythonGetToken =
+    `import requests, json
 data = { 'username' : 'myusername', 'password' : 'mypassword' }
 r = requests.post('https://bhcape01.jax.org/api/auth/login', data=json.dumps(data), verify=False)
 token = json.loads(r.text)['access_token']`;
 
   javaGetToken =
-  `import java.nio.charset.StandardCharsets;
+    `import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
   
@@ -54,9 +54,9 @@ public class Login {
         }
     }
 }`;
-  
+
   rGetToken =
-  `library(httr)
+    `library(httr)
 secret = "{username: myusername, password: mypassword}"
 token <- POST (url = "https://bhcape01.jax.org/api/auth/login", 
                add_headers("API-KEY" = "xxx", "VERSION" = "1", 
@@ -64,40 +64,40 @@ token <- POST (url = "https://bhcape01.jax.org/api/auth/login",
                            "Accept" = "application/json; charset=UTF-8"), 
                            body = "{username: myusername, password: mypassword}")`;
 
-  authResponse = 
-  `{
+  authResponse =
+    `{
     "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mjk4OTQ2NDEsIm5iZiI6MTYyOTg5NDY0MSwianRpIjoiYmJkYzY0ZTAtOTFkNy00MzYyLWI0ODktODg5OTVjNjExMjhmIiwiZXhwIjoxNjMyNDg2NjQxLCJpZGVudGl0eSI6eyJ1c2VyX2lkIjoyLCJmaXJzdF9uYW1lIjoiQmFoYSIsImxhc3RfbmFtZSI6IkVsIEthc3NhYnkiLCJlbWFpbCI6IkJhaGEuRWxLYXNzYWJ5QGpheC5vcmciLCJ1c2VybmFtZSI6ImVsa2FzYiIsInJvbGVzIjp7ImFkbWluIjpmYWxzZSwidXNlciI6dHJ1ZX0sImNvbmZpcm1lZCI6dHJ1ZSwiZ3JvdXBzIjpbInJlc2VhcmNoLXdpZGUtdXNlcnMiLCJDR1JQLWJoY2FwZTAybGQiLCJDLUJJRyIsIkNHUlAtc3VtbmVyLWxvZ2luIiwiQVpSLTJGQS1QaWxvdCIsIkdDUC1nZWRpLXNhbmRib3gtbmMtMDEtVXNlciIsInJzdHVkaW8tdXNlcnMiLCJPMzY1LVZpc2lvLVBsYW4yIiwiQ0dSUC13aW50ZXItbG9naW4iLCJDR1JQLWJoY2FwZTAxIiwiQk9YLUpBWF9BbGxfVXNlcnMiLCJHUlAtQkhfSERyaXZlX01pZ3JhdGlvbiIsIkNHUlAtY3RtdnIwMWx0IiwiTzM2NS1GYWN1bHR5LUEzLUJhc2UiLCJHUlAtV2ViRXhVc2VycyIsIkdSUC1BQUQtSVQtUGlsb3QiLCJWUE4tMkZBIiwiR29vZ2xlVXNlcnMiLCJFeGNoYW5nZSAyMDEzIFVzZXJzIiwiQ0dSUC1oZWxpeCIsImNzLWFsbCIsImNhcnRlcmxhYiIsIkNHUlAtY2FydGVyZGV2IiwiaHBjLXVzZXJzIiwiQURNLVN0cmljdFBhc3N3b3JkcyIsIkZBU1BFWC1VU0VSUyIsIkNHUlAtZG9ua2V5IiwiY3NzYyIsImNvbXBzY2kiXX0sInR5cGUiOiJyZWZyZXNoIn0.8n0eQWP1qLWDuOdNCvfFukqe5zNQr3EdY3HbRdWeE3Y",
     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mjk4OTQ2NDEsIm5iZiI6MTYyOTg5NDY0MSwianRpIjoiZDUwZThiNmUtY2E0ZS00YWFlLTg4YzctNWFiNzY2ZDIwNzdhIiwiZXhwIjoxNjI5ODk1NTQxLCJpZGVudGl0eSI6eyJ1c2VyX2lkIjoyLCJmaXJzdF9uYW1lIjoiQmFoYSIsImxhc3RfbmFtZSI6IkVsIEthc3NhYnkiLCJlbWFpbCI6IkJhaGEuRWxLYXNzYWJ5QGpheC5vcmciLCJ1c2VybmFtZSI6ImVsa2FzYiIsInJvbGVzIjp7ImFkbWluIjpmYWxzZSwidXNlciI6dHJ1ZX0sImNvbmZpcm1lZCI6dHJ1ZSwiZ3JvdXBzIjpbInJlc2VhcmNoLXdpZGUtdXNlcnMiLCJDR1JQLWJoY2FwZTAybGQiLCJDLUJJRyIsIkNHUlAtc3VtbmVyLWxvZ2luIiwiQVpSLTJGQS1QaWxvdCIsIkdDUC1nZWRpLXNhbmRib3gtbmMtMDEtVXNlciIsInJzdHVkaW8tdXNlcnMiLCJPMzY1LVZpc2lvLVBsYW4yIiwiQ0dSUC13aW50ZXItbG9naW4iLCJDR1JQLWJoY2FwZTAxIiwiQk9YLUpBWF9BbGxfVXNlcnMiLCJHUlAtQkhfSERyaXZlX01pZ3JhdGlvbiIsIkNHUlAtY3RtdnIwMWx0IiwiTzM2NS1GYWN1bHR5LUEzLUJhc2UiLCJHUlAtV2ViRXhVc2VycyIsIkdSUC1BQUQtSVQtUGlsb3QiLCJWUE4tMkZBIiwiR29vZ2xlVXNlcnMiLCJFeGNoYW5nZSAyMDEzIFVzZXJzIiwiQ0dSUC1oZWxpeCIsImNzLWFsbCIsImNhcnRlcmxhYiIsIkNHUlAtY2FydGVyZGV2IiwiaHBjLXVzZXJzIiwiQURNLVN0cmljdFBhc3N3b3JkcyIsIkZBU1BFWC1VU0VSUyIsIkNHUlAtZG9ua2V5IiwiY3NzYyIsImNvbXBzY2kiXX0sImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.jzhHmda5-Zq0KZdIXXBmNv2yGPYmbQzhyOk9-ljLgoE"
 }`;
 
-  userRegisterParameters = 
-  `{first_name: '', last_name: '', 
+  userRegisterParameters =
+    `{first_name: '', last_name: '', 
  username: '', email: '', 
  password: ''}`;
 
-  addDatafileParameters = 
-  `{'file':fileblob} +
+  addDatafileParameters =
+    `{'file':fileblob} +
 HTTP header:
 {'Content-Type': 'multipart/form-data',
 'Authorization': 'access_token'}`;
-  userConfirmParameters =  `/{email_token}`;
+  userConfirmParameters = `/{email_token}`;
   userResponse = `{'message': 'Success message'}, Status code`;
   dataFileIdAuthParams =
-`{'datafile_id':'integer'} +
+    `{'datafile_id':'integer'} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
 
   authParameter =
-  `HTTP header:
+    `HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
   bashGetCurrentUser = `curl -H 'Accept: application/json' -H "Authorization: Bearer \${TOKEN}" https://bhcape01.jax.org/api/user/current`;
   pythonGetCurrentUser =
-  `import requests
+    `import requests
 response = requests.get('https://bhcape01.jax.org/api/user/current', headers={'Authorization': 'access_token'})`;
-  javaGetCurrentUser = 
-  `HttpURLConnection connection = null;
+  javaGetCurrentUser =
+    `HttpURLConnection connection = null;
 try{
     // Created URL for connection
     URL url = new URL("https://bhcape01.jax.org/api/user/current");
@@ -129,70 +129,70 @@ try{
  } finally {
     connection.disconnect();
  }`;
-rGetUserCurrent =
-`library(httr)
+  rGetUserCurrent =
+    `library(httr)
 secret = "{username: myusername, password: mypassword}"
 response <- GET (url = "https://bhcape01.jax.org/api/user/current", 
                  add_headers("Authorization" = paste("Bearer", <access_token>), 
                              "Content-Type" = "application/json; charset=UTF-8",
                              "Accept" = "application/json; charset=UTF-8")})`;
-datafileIdParameter = `{'datafile_id':'integer'}`;
-datafileIdPhenoParameter = 
-`{'datafile_id':'integer',
+  datafileIdParameter = `{'datafile_id':'integer'}`;
+  datafileIdPhenoParameter =
+    `{'datafile_id':'integer',
 'phenotype_name':'string'} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
-datafileIdPhenosParameter = 
-`{'datafile_id':'integer',
+  datafileIdPhenosParameter =
+    `{'datafile_id':'integer',
 'phenotype_names':'string[]'} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
-jobIdAuthParameter = 
-`{'id':'integer'} +
+  jobIdAuthParameter =
+    `{'id':'integer'} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
-getStatusResponse = 
-`{'state': PENDING,
+  getStatusResponse =
+    `{'state': PENDING,
 'current': 0,
 'total': 1,
 'status': 'Pending...'}`;
-getProgressResponse = 
-`{'message': file_content}`;
-getProgressParameters = 
-`?id={integer} +
+  getProgressResponse =
+    `{'message': file_content}`;
+  getProgressParameters =
+    `?id={integer} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
-getDeleteParameters = 
-`{'id':'integer'} +
+  getDeleteParameters =
+    `{'id':'integer'} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
-getReportParameters = 
-`?id={integer}&job_id={integer} +
+  getReportParameters =
+    `?id={integer}&job_id={integer} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
-createReportParameter = 
-`{'job_id':'integer'} +
+  createReportParameter =
+    `{'job_id':'integer'} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
-deleteReportParameter = 
-`{'report_id':'integer'} +
+  deleteReportParameter =
+    `{'report_id':'integer'} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
-createParameterParams = 
-`{'parameters':[param1:'', param2:''...]} + 
+  createParameterParams =
+    `{'parameters':[param1:'', param2:''...]} + 
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
-createParameterParamsFull =
-`{ 'parameters': [title: string,
+  createParameterParamsFull =
+    `{ 'parameters': [title: string,
 covariate_selection: string[],
 trait_selection: string[],
 normalize: boolean,
@@ -219,8 +219,8 @@ yaml_file: string,
 date_created: Date,
 user_id: number,
 datafile_id: number]}`;
-getParameterFileParams =
-`{'param_id':'integer'} +
+  getParameterFileParams =
+    `{'param_id':'integer'} +
 HTTP header:
 { 'Content-Type': 'application/json', 
 'Authorization': 'access_token' }`;
@@ -229,12 +229,51 @@ HTTP header:
 
   ngOnInit() {
 
-      this.route.paramMap.subscribe(paramsIn => {
+    this.route.paramMap.subscribe(paramsIn => {
 
-          const selectedTabIn = paramsIn.get('selectedTab');
-          if (selectedTabIn) {
-              this.selectedTab = selectedTabIn;
-          }
+      const selectedTabIn = paramsIn.get('selectedTab');
+      if (selectedTabIn) {
+        this.selectedTab = selectedTabIn;
+      }
+    });
+  }
+
+  private getToc(content: any) {
+    // create div
+    var div, target;
+    // read content into div:
+    div.innerHTML = content;
+
+    // create an array of headlines:
+    // initialize table of contents(toc) and select all level 1 and 2 headers, reading them into an array:
+    var myArrayOfNodes = [].slice.call(div.querySelectorAll("h1, h2"));
+
+    // 
+    var toc = document.createElement("ul");
+    var pointer = toc;
+    var myArrayOfNodes = [].slice.call(div.querySelectorAll("h1, h2"));
+
+    // loop through the array of headlines
+    myArrayOfNodes.forEach(
+      function (value, key, listObj) {
+        console.log(value.tagName + ": " + value.innerHTML);
+
+        // if we have detected a top level headline:
+        if ("H1" == value.tagName) {
+          // reset the pointer to top level:
+          pointer = toc;
+        }
+
+        // if we are at top level and we have detected a headline level 2
+        if ("H2" == value.tagName && pointer == toc) {
+          // create a nested unordered list
+          pointer = pointer.appendChild(document.createElement("ul"));
+        }
+
+        // for each headline, create a list item with the corresponding HTML content:
+        var li = target.appendChild(document.createElement("li"));
+        li.innerHTML = value.innerHTML;
       });
   }
+
 }

@@ -18,39 +18,39 @@
           <tr>
             <th>Endpoint name</th>
             <th>Description</th>
-            <th>Request url example</th>
+            <th>Request url</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><code>auth</code></td>
             <td>Authentication endpoint</td>
-            <td>https://bhcape01.jax.org/api/auth/login</td>
+            <td>https://bhcape01.jax.org/api/auth</td>
           </tr>
           <tr>
             <td><code>user</code></td>
             <td>User endpoint</td>
-            <td>https://bhcape01.jax.org/api/user/register</td>
+            <td>https://bhcape01.jax.org/api/user</td>
           </tr>
           <tr>
             <td><code>datafiles</code></td>
             <td>Data files endpoint</td>
-            <td>https://bhcape01.jax.org/api/datafiles/get_datafiles</td>
+            <td>https://bhcape01.jax.org/api/datafiles</td>
           </tr>
           <tr>
             <td><code>jobs</code></td>
             <td>Analysis endpoint</td>
-            <td>https://bhcape01.jax.org/api/jobs/create_run</td>
+            <td>https://bhcape01.jax.org/api/jobs</td>
           </tr>
           <tr>
             <td><code>reports</code></td>
             <td>Reports/results endpoint</td>
-            <td>https://bhcape01.jax.org/api/reports/get_all</td>
+            <td>https://bhcape01.jax.org/api/reports</td>
           </tr>
           <tr>
             <td><code>parameters</code></td>
             <td>Parameter endpoint</td>
-            <td>https://bhcape01.jax.org/api/save_parameter_file</td>
+            <td>https://bhcape01.jax.org/api/parameters</td>
           </tr>
         </tbody>
       </table>
@@ -160,7 +160,7 @@
             <td><code>register</code></td>
             <td>Register a new user</td>
             <td>
-              <pre>{{userRegisterParameters}}</pre>
+              <pre>{{userRegisterParameters}}<sup>1</sup></pre>
             </td>
             <td>POST</td>
             <td>Message, Status code</td>
@@ -169,7 +169,7 @@
           <tr>
             <td><code>confirm</code></td>
             <td>Confirm new user with the token sent to email</td>
-            <td>{{userConfirmParameters}}</td>
+            <td>{{userConfirmParameters}}<sup>2</sup></td>
             <td>GET</td>
             <td>Message, Status code</td>
             <td>No</td>
@@ -178,7 +178,7 @@
             <td><code>current</code></td>
             <td>Returns the current user</td>
             <td>
-              <pre>{{authParameter}}</pre>
+              <pre>{{authParameter}}<sup>3</sup></pre>
             </td>
             <td>GET</td>
             <td>JSON user object</td>
@@ -196,6 +196,13 @@
           </tr>
         </tbody>
       </table>
+      <p>
+        <small>
+          <sup>1</sup>Parameter as a JSON payload <br>
+          <sup>2</sup>Unique parameter after URL path<br>
+          <sup>3</sup>HTTP Header parameters<br>
+        </small>
+      </p>
 
       <p>Here is an example for the HTTP request <code>current</code> with the following URL
         <code>https://bhcape01.jax.org/api/user/current</code> in different programming languages. The HTTP request
@@ -451,7 +458,7 @@
             <td><code>get</code></td>
             <td>Get a report for a given id and job id</td>
             <td>
-              <pre>{{getReportParameters}}</pre>
+              <pre>{{getReportParameters}}<sup>4</sup></pre>
             </td>
             <td>GET</td>
             <td>JSON Report object</td>
@@ -477,9 +484,11 @@
             <td>Message, Status Code</td>
             <td>Yes</td>
           </tr>
-
         </tbody>
       </table>
+      <p>
+        <small><sup>4</sup>URL parameters</small>
+      </p>
     </div>
 
     <div>
@@ -546,205 +555,4 @@
 
   </div>
 
-
-  <!-- <div class="columnify" contents [scrollingView]="container" #container>
-
-    <div [contentsSection]="'sending-http-requests'">
-      <h1>Sending HTTP requests</h1>
-      <p>The CAPE API is based on HTTP requests. There are three types of HTTP requests used by the API: GET, POST and
-        PUT.</p>
-
-      <p>Ut tristique odio commodo nunc placerat, id scelerisque ante vulputate. Sed ac ornare massa. Donec placerat
-        elit
-        quis nulla porttitor pulvinar. Maecenas id leo feugiat, pulvinar augue ac, tempus velit. Duis at facilisis nunc.
-        Curabitur dolor felis, ultricies eu porta ac, eleifend vitae tortor. Curabitur ac volutpat risus, ut vehicula
-        risus. Vivamus elit lectus, eleifend id est in, pulvinar tempor quam. Nam in sem ligula. Integer efficitur lacus
-        in massa laoreet faucibus.</p>
-      <p>Fusce vitae elit ac massa feugiat porttitor. Aliquam pulvinar viverra erat. Nulla facilisi. Duis molestie
-        mauris
-        urna, a gravida lectus gravida ac. Vestibulum blandit orci non lobortis tincidunt. Donec non laoreet risus,
-        lobortis ultricies sem. Nam auctor euismod urna, efficitur fermentum purus ullamcorper commodo. Duis venenatis
-        nisl consequat consectetur porta.</p>
-      <p>Curabitur eget nisi at lacus fermentum viverra eu at metus. Nunc rhoncus euismod purus, non rhoncus odio
-        viverra
-        non. Curabitur iaculis eleifend elit vitae consequat. Fusce eu lorem nisl. Vestibulum eu ultrices arcu. Vivamus
-        non volutpat orci. Morbi sed odio ante. Curabitur sit amet nunc vulputate, dapibus quam pellentesque, semper
-        nisi.
-        Nam mattis id felis ac dictum.</p>
-      <p>Donec quam sapien, venenatis vitae bibendum eget, condimentum a est. Nullam dignissim dolor diam, vel convallis
-        erat viverra non. Aliquam dictum feugiat porta. Donec pulvinar dui non neque placerat tempus. Morbi rhoncus
-        tortor
-        a ligula dignissim, at vestibulum ex semper. Curabitur tincidunt, dui at maximus bibendum, neque urna suscipit
-        nunc, ut tincidunt tellus erat ut augue. Vestibulum a blandit leo. Nunc tellus dui, tempor sit amet lacinia ut,
-        cursus ac dui. Nulla sed sem arcu. Mauris eu nisl vitae purus elementum euismod sit amet gravida velit. Mauris
-        eu
-        justo et ex convallis cursus. Suspendisse et odio porta, tempus sapien eu, pretium tellus. Donec non maximus
-        odio.
-      </p>
-    </div>
-
-    <div [contentsSection]="'section-two'">
-      <h1>Section Two</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt libero leo. Nunc in urna libero. Morbi
-        quam sem, tempor quis sollicitudin ut, congue vitae enim. Interdum et malesuada fames ac ante ipsum primis in
-        faucibus. Fusce sit amet ex quis lorem tempus sodales. Mauris eget quam eget lacus vulputate egestas sed non
-        tortor. Ut aliquam nulla ut turpis accumsan, et blandit nulla feugiat. Donec neque risus, ornare posuere
-        imperdiet
-        ut, auctor et magna. Ut justo sem, tempus sit amet risus at, efficitur sodales nulla. Quisque et nibh lacinia,
-        gravida metus ac, scelerisque nisi.</p>
-      <p>Ut tristique odio commodo nunc placerat, id scelerisque ante vulputate. Sed ac ornare massa. Donec placerat
-        elit
-        quis nulla porttitor pulvinar. Maecenas id leo feugiat, pulvinar augue ac, tempus velit. Duis at facilisis nunc.
-        Curabitur dolor felis, ultricies eu porta ac, eleifend vitae tortor. Curabitur ac volutpat risus, ut vehicula
-        risus. Vivamus elit lectus, eleifend id est in, pulvinar tempor quam. Nam in sem ligula. Integer efficitur lacus
-        in massa laoreet faucibus.</p>
-      <p>Fusce vitae elit ac massa feugiat porttitor. Aliquam pulvinar viverra erat. Nulla facilisi. Duis molestie
-        mauris
-        urna, a gravida lectus gravida ac. Vestibulum blandit orci non lobortis tincidunt. Donec non laoreet risus,
-        lobortis ultricies sem. Nam auctor euismod urna, efficitur fermentum purus ullamcorper commodo. Duis venenatis
-        nisl consequat consectetur porta.</p>
-      <p>Curabitur eget nisi at lacus fermentum viverra eu at metus. Nunc rhoncus euismod purus, non rhoncus odio
-        viverra
-        non. Curabitur iaculis eleifend elit vitae consequat. Fusce eu lorem nisl. Vestibulum eu ultrices arcu. Vivamus
-        non volutpat orci. Morbi sed odio ante. Curabitur sit amet nunc vulputate, dapibus quam pellentesque, semper
-        nisi.
-        Nam mattis id felis ac dictum.</p>
-      <p>Donec quam sapien, venenatis vitae bibendum eget, condimentum a est. Nullam dignissim dolor diam, vel convallis
-        erat viverra non. Aliquam dictum feugiat porta. Donec pulvinar dui non neque placerat tempus. Morbi rhoncus
-        tortor
-        a ligula dignissim, at vestibulum ex semper. Curabitur tincidunt, dui at maximus bibendum, neque urna suscipit
-        nunc, ut tincidunt tellus erat ut augue. Vestibulum a blandit leo. Nunc tellus dui, tempor sit amet lacinia ut,
-        cursus ac dui. Nulla sed sem arcu. Mauris eu nisl vitae purus elementum euismod sit amet gravida velit. Mauris
-        eu
-        justo et ex convallis cursus. Suspendisse et odio porta, tempus sapien eu, pretium tellus. Donec non maximus
-        odio.
-      </p>
-    </div>
-
-    <div [contentsSection]="'section-three'">
-      <h1>Section Three</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt libero leo. Nunc in urna libero. Morbi
-        quam sem, tempor quis sollicitudin ut, congue vitae enim. Interdum et malesuada fames ac ante ipsum primis in
-        faucibus. Fusce sit amet ex quis lorem tempus sodales. Mauris eget quam eget lacus vulputate egestas sed non
-        tortor. Ut aliquam nulla ut turpis accumsan, et blandit nulla feugiat. Donec neque risus, ornare posuere
-        imperdiet
-        ut, auctor et magna. Ut justo sem, tempus sit amet risus at, efficitur sodales nulla. Quisque et nibh lacinia,
-        gravida metus ac, scelerisque nisi.</p>
-      <p>Ut tristique odio commodo nunc placerat, id scelerisque ante vulputate. Sed ac ornare massa. Donec placerat
-        elit
-        quis nulla porttitor pulvinar. Maecenas id leo feugiat, pulvinar augue ac, tempus velit. Duis at facilisis nunc.
-        Curabitur dolor felis, ultricies eu porta ac, eleifend vitae tortor. Curabitur ac volutpat risus, ut vehicula
-        risus. Vivamus elit lectus, eleifend id est in, pulvinar tempor quam. Nam in sem ligula. Integer efficitur lacus
-        in massa laoreet faucibus.</p>
-      <p>Fusce vitae elit ac massa feugiat porttitor. Aliquam pulvinar viverra erat. Nulla facilisi. Duis molestie
-        mauris
-        urna, a gravida lectus gravida ac. Vestibulum blandit orci non lobortis tincidunt. Donec non laoreet risus,
-        lobortis ultricies sem. Nam auctor euismod urna, efficitur fermentum purus ullamcorper commodo. Duis venenatis
-        nisl consequat consectetur porta.</p>
-      <p>Curabitur eget nisi at lacus fermentum viverra eu at metus. Nunc rhoncus euismod purus, non rhoncus odio
-        viverra
-        non. Curabitur iaculis eleifend elit vitae consequat. Fusce eu lorem nisl. Vestibulum eu ultrices arcu. Vivamus
-        non volutpat orci. Morbi sed odio ante. Curabitur sit amet nunc vulputate, dapibus quam pellentesque, semper
-        nisi.
-        Nam mattis id felis ac dictum.</p>
-      <p>Donec quam sapien, venenatis vitae bibendum eget, condimentum a est. Nullam dignissim dolor diam, vel convallis
-        erat viverra non. Aliquam dictum feugiat porta. Donec pulvinar dui non neque placerat tempus. Morbi rhoncus
-        tortor
-        a ligula dignissim, at vestibulum ex semper. Curabitur tincidunt, dui at maximus bibendum, neque urna suscipit
-        nunc, ut tincidunt tellus erat ut augue. Vestibulum a blandit leo. Nunc tellus dui, tempor sit amet lacinia ut,
-        cursus ac dui. Nulla sed sem arcu. Mauris eu nisl vitae purus elementum euismod sit amet gravida velit. Mauris
-        eu
-        justo et ex convallis cursus. Suspendisse et odio porta, tempus sapien eu, pretium tellus. Donec non maximus
-        odio.
-      </p>
-    </div>
-
-    <div [contentsSection]="'section-four'">
-      <h1>Section Four</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt libero leo. Nunc in urna libero. Morbi
-        quam sem, tempor quis sollicitudin ut, congue vitae enim. Interdum et malesuada fames ac ante ipsum primis in
-        faucibus. Fusce sit amet ex quis lorem tempus sodales. Mauris eget quam eget lacus vulputate egestas sed non
-        tortor. Ut aliquam nulla ut turpis accumsan, et blandit nulla feugiat. Donec neque risus, ornare posuere
-        imperdiet
-        ut, auctor et magna. Ut justo sem, tempus sit amet risus at, efficitur sodales nulla. Quisque et nibh lacinia,
-        gravida metus ac, scelerisque nisi.</p>
-      <p>Ut tristique odio commodo nunc placerat, id scelerisque ante vulputate. Sed ac ornare massa. Donec placerat
-        elit
-        quis nulla porttitor pulvinar. Maecenas id leo feugiat, pulvinar augue ac, tempus velit. Duis at facilisis nunc.
-        Curabitur dolor felis, ultricies eu porta ac, eleifend vitae tortor. Curabitur ac volutpat risus, ut vehicula
-        risus. Vivamus elit lectus, eleifend id est in, pulvinar tempor quam. Nam in sem ligula. Integer efficitur lacus
-        in massa laoreet faucibus.</p>
-      <p>Fusce vitae elit ac massa feugiat porttitor. Aliquam pulvinar viverra erat. Nulla facilisi. Duis molestie
-        mauris
-        urna, a gravida lectus gravida ac. Vestibulum blandit orci non lobortis tincidunt. Donec non laoreet risus,
-        lobortis ultricies sem. Nam auctor euismod urna, efficitur fermentum purus ullamcorper commodo. Duis venenatis
-        nisl consequat consectetur porta.</p>
-      <p>Curabitur eget nisi at lacus fermentum viverra eu at metus. Nunc rhoncus euismod purus, non rhoncus odio
-        viverra
-        non. Curabitur iaculis eleifend elit vitae consequat. Fusce eu lorem nisl. Vestibulum eu ultrices arcu. Vivamus
-        non volutpat orci. Morbi sed odio ante. Curabitur sit amet nunc vulputate, dapibus quam pellentesque, semper
-        nisi.
-        Nam mattis id felis ac dictum.</p>
-      <p>Donec quam sapien, venenatis vitae bibendum eget, condimentum a est. Nullam dignissim dolor diam, vel convallis
-        erat viverra non. Aliquam dictum feugiat porta. Donec pulvinar dui non neque placerat tempus. Morbi rhoncus
-        tortor
-        a ligula dignissim, at vestibulum ex semper. Curabitur tincidunt, dui at maximus bibendum, neque urna suscipit
-        nunc, ut tincidunt tellus erat ut augue. Vestibulum a blandit leo. Nunc tellus dui, tempor sit amet lacinia ut,
-        cursus ac dui. Nulla sed sem arcu. Mauris eu nisl vitae purus elementum euismod sit amet gravida velit. Mauris
-        eu
-        justo et ex convallis cursus. Suspendisse et odio porta, tempus sapien eu, pretium tellus. Donec non maximus
-        odio.
-      </p>
-    </div>
-
-
-    <div [contentsSection]="'section-five'">
-      <h1>Section Five</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt libero leo. Nunc in urna libero. Morbi
-        quam sem, tempor quis sollicitudin ut, congue vitae enim. Interdum et malesuada fames ac ante ipsum primis in
-        faucibus. Fusce sit amet ex quis lorem tempus sodales. Mauris eget quam eget lacus vulputate egestas sed non
-        tortor. Ut aliquam nulla ut turpis accumsan, et blandit nulla feugiat. Donec neque risus, ornare posuere
-        imperdiet
-        ut, auctor et magna. Ut justo sem, tempus sit amet risus at, efficitur sodales nulla. Quisque et nibh lacinia,
-        gravida metus ac, scelerisque nisi.</p>
-      <p>Ut tristique odio commodo nunc placerat, id scelerisque ante vulputate. Sed ac ornare massa. Donec placerat
-        elit
-        quis nulla porttitor pulvinar. Maecenas id leo feugiat, pulvinar augue ac, tempus velit. Duis at facilisis nunc.
-        Curabitur dolor felis, ultricies eu porta ac, eleifend vitae tortor. Curabitur ac volutpat risus, ut vehicula
-        risus. Vivamus elit lectus, eleifend id est in, pulvinar tempor quam. Nam in sem ligula. Integer efficitur lacus
-        in massa laoreet faucibus.</p>
-      <p>Fusce vitae elit ac massa feugiat porttitor. Aliquam pulvinar viverra erat. Nulla facilisi. Duis molestie
-        mauris
-        urna, a gravida lectus gravida ac. Vestibulum blandit orci non lobortis tincidunt. Donec non laoreet risus,
-        lobortis ultricies sem. Nam auctor euismod urna, efficitur fermentum purus ullamcorper commodo. Duis venenatis
-        nisl consequat consectetur porta.</p>
-      <p>Curabitur eget nisi at lacus fermentum viverra eu at metus. Nunc rhoncus euismod purus, non rhoncus odio
-        viverra
-        non. Curabitur iaculis eleifend elit vitae consequat. Fusce eu lorem nisl. Vestibulum eu ultrices arcu. Vivamus
-        non volutpat orci. Morbi sed odio ante. Curabitur sit amet nunc vulputate, dapibus quam pellentesque, semper
-        nisi.
-        Nam mattis id felis ac dictum.</p>
-      <p>Donec quam sapien, venenatis vitae bibendum eget, condimentum a est. Nullam dignissim dolor diam, vel convallis
-        erat viverra non. Aliquam dictum feugiat porta. Donec pulvinar dui non neque placerat tempus. Morbi rhoncus
-        tortor
-        a ligula dignissim, at vestibulum ex semper. Curabitur tincidunt, dui at maximus bibendum, neque urna suscipit
-        nunc, ut tincidunt tellus erat ut augue. Vestibulum a blandit leo. Nunc tellus dui, tempor sit amet lacinia ut,
-        cursus ac dui. Nulla sed sem arcu. Mauris eu nisl vitae purus elementum euismod sit amet gravida velit. Mauris
-        eu
-        justo et ex convallis cursus. Suspendisse et odio porta, tempus sapien eu, pretium tellus. Donec non maximus
-        odio.
-      </p>
-    </div>
-  
-    <div class="table-column">
-      <ul class="contents-table" contentsTable [scrollingView]="container">
-        <li><a href="#sending-http-requests" contentsLink (click)="animateScroll('#sending-http-requests')">Sending HTTP
-            requests</a></li>
-        <li><a href="#section-two" contentsLink (click)="animateScroll('#section-two')">Section Two</a></li>
-        <li><a href="#section-three" contentsLink (click)="animateScroll('#section-three')">Section Three</a></li>
-        <li><a href="#section-four" contentsLink (click)="animateScroll('#section-four')">Section Four</a></li>
-        <li><a href="#section-five" contentsLink (click)="animateScroll('#section-five')">Section Five</a></li>
-      </ul>
-    </div>
-  </div> -->
 </div>
