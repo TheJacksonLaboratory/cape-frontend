@@ -1,0 +1,51 @@
+// change this to change the left border color and the link text color
+$accent-color: #0288d1;
+
+:host ::ng-deep #container {
+  top: 35px;
+  position: sticky;
+  width: 100%;
+  padding: 5px 0 10px 10px;
+  border-left: 4px solid $accent-color;
+}
+
+:host ::ng-deep .title {
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  // text-transform: capitalize; // Add this back if you want the title to auto-capitalize words
+}
+
+* {
+  font-size: 13px;
+}
+
+:host ::ng-deep a {
+  color: rgba(0, 0, 0, .54);
+  transition: color .1s;
+  line-height: 16px;
+  margin: 8px 0 0;
+  position: relative;
+  text-decoration: none;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+}
+
+:host ::ng-deep a:hover {
+  color: $accent-color !important;
+}
+
+:host ::ng-deep a:active {
+  color: $accent-color;
+}
+
+:host ::ng-deep a.level-1 {
+  margin-left: 12px;
+}
+
+:host ::ng-deep a.level-2 {
+  margin-left: 24px;
+}

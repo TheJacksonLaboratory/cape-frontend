@@ -5,552 +5,586 @@
   </div>
 
   <div class="card-body">
-    <div>
-      <h4><b>Sending HTTP requests</b></h4>
-      The CAPE API is based on HTTP requests. There are three types of HTTP requests used by the API: GET, POST and PUT.
-      The base URL for the API is accessible from inside the Jackson Laboratory VPN at the following address:
-      <a href="https://bhcape01.jax.org/api">htts://bhcape01.jax.org/api</a> and a list of the following end-points can
-      be viewed thanks to the Swagger-UI interface available at this URL.
-      <br>
-      <br>
-      <table>
-        <thead>
-          <tr>
-            <th>Endpoint name</th>
-            <th>Description</th>
-            <th>Request url</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>auth</code></td>
-            <td>Authentication endpoint</td>
-            <td>https://bhcape01.jax.org/api/auth</td>
-          </tr>
-          <tr>
-            <td><code>user</code></td>
-            <td>User endpoint</td>
-            <td>https://bhcape01.jax.org/api/user</td>
-          </tr>
-          <tr>
-            <td><code>datafiles</code></td>
-            <td>Data files endpoint</td>
-            <td>https://bhcape01.jax.org/api/datafiles</td>
-          </tr>
-          <tr>
-            <td><code>jobs</code></td>
-            <td>Analysis endpoint</td>
-            <td>https://bhcape01.jax.org/api/jobs</td>
-          </tr>
-          <tr>
-            <td><code>reports</code></td>
-            <td>Reports/results endpoint</td>
-            <td>https://bhcape01.jax.org/api/reports</td>
-          </tr>
-          <tr>
-            <td><code>parameters</code></td>
-            <td>Parameter endpoint</td>
-            <td>https://bhcape01.jax.org/api/parameters</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="row">
+      <div class="col-md-10">
+        <div>
+          <h4 id="sending-http-requests"><b>Sending HTTP requests</b></h4>
+          The CAPE API is based on HTTP requests. There are three types of HTTP requests used by the API: GET, POST and
+          PUT.
+          The base URL for the API is accessible from inside the Jackson Laboratory VPN at the following address:
+          <a href="https://bhcape01.jax.org/api">htts://bhcape01.jax.org/api</a> and a list of the following end-points
+          can
+          be viewed thanks to the Swagger-UI interface available at this URL.
+          <br>
+          <br>
+          <table>
+            <thead>
+              <tr>
+                <th>Endpoint name</th>
+                <th>Description</th>
+                <th>Request url</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>auth</code></td>
+                <td>Authentication endpoint</td>
+                <td>https://bhcape01.jax.org/api/auth</td>
+              </tr>
+              <tr>
+                <td><code>user</code></td>
+                <td>User endpoint</td>
+                <td>https://bhcape01.jax.org/api/user</td>
+              </tr>
+              <tr>
+                <td><code>datafiles</code></td>
+                <td>Data files endpoint</td>
+                <td>https://bhcape01.jax.org/api/datafiles</td>
+              </tr>
+              <tr>
+                <td><code>jobs</code></td>
+                <td>Analysis endpoint</td>
+                <td>https://bhcape01.jax.org/api/jobs</td>
+              </tr>
+              <tr>
+                <td><code>reports</code></td>
+                <td>Reports/results endpoint</td>
+                <td>https://bhcape01.jax.org/api/reports</td>
+              </tr>
+              <tr>
+                <td><code>parameters</code></td>
+                <td>Parameter endpoint</td>
+                <td>https://bhcape01.jax.org/api/parameters</td>
+              </tr>
+            </tbody>
+          </table>
 
-      <h6>Responses</h6>
-      <p>After an HTTP request has been made to the <code>auth</code> endpoint, all responses with status different than
-        HTTP SUCCESS (where status codes 200–299) contain a body with a single JSON object consisting of the following
-        fields: "error_code" and "message".
-        Possible response type include the following:
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Response type</th>
-            <th>Description</th>
-            <th>Status code</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Success</td>
-            <td>The request has succeeded</td>
-            <td>200 (OK)</td>
-          </tr>
-          <tr>
-            <td>HTTPException</td>
-            <td>HTTP request exception</td>
-            <td>400 (Bad Request)</td>
-          </tr>
-          <tr>
-            <td>InvalidCredentials</td>
-            <td>Username and/or password are invalid</td>
-            <td>401 (Unauthorized)</td>
-          </tr>
-          <tr>
-            <td>SQLAlchemyError</td>
-            <td>Database related error</td>
-            <td>500 (Internal Server Error)</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          <h6 id="responses">Responses</h6>
+          <p>After an HTTP request has been made to the <code>auth</code> endpoint, all responses with status different
+            than
+            HTTP SUCCESS (where status codes 200–299) contain a body with a single JSON object consisting of the
+            following
+            fields: "error_code" and "message".
+            Possible response type include the following:
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>Response type</th>
+                <th>Description</th>
+                <th>Status code</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Success</td>
+                <td>The request has succeeded</td>
+                <td>200 (OK)</td>
+              </tr>
+              <tr>
+                <td>HTTPException</td>
+                <td>HTTP request exception</td>
+                <td>400 (Bad Request)</td>
+              </tr>
+              <tr>
+                <td>InvalidCredentials</td>
+                <td>Username and/or password are invalid</td>
+                <td>401 (Unauthorized)</td>
+              </tr>
+              <tr>
+                <td>SQLAlchemyError</td>
+                <td>Database related error</td>
+                <td>500 (Internal Server Error)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h4 id="authentication-endpoint"><b>Authentication</b></h4>
+          <p>The CAPE API endpoints require users/services to authenticate using JSON Web Token (JWT) as a way to create
+            a
+            timed authenticated session. After a token expires, the user/service has to re-authenticate to generate a
+            new
+            JWT. The authentication of the API is done with the <code>auth</code> endpoint
+            (<code>https://bhcape01.jax.org/api/auth</code>).</p>
+          <p>There are two methods that can be called. The first one is the <code>login</code> method
+            (<code>https://bhcape01.jax.org/api/auth/login</code>) and the other HTTP request available on the
+            authorization
+            endpoint is <code>refresh</code>, which creates a new access token from a refresh token
+            (<code>https://bhcape01.jax.org/api/auth/refresh</code>). Both use the POST request method.
+          </p>
+          <p>Below are all the different methods that can be called in the auth URL, in different programming languages.
+          </p>
+          <br>
+          <h6 id="bash-example">Bash</h6>
+          <p>In Bash, HTTP requests can be made with tools like <a href="https://curl.se/">CURL</a> and <a
+              href="https://stedolan.github.io/jq/">jq</a>. First we authenticate to retrieve the JWT token using the
+            "auth" endpoint:</p>
+          <pre class="small-code-container">{{bashGetToken}}</pre>
+          <p>This bearer token will be passed in the authorization header of one of the chosen HTTP requests of the API
+            endpoints.</p>
+          <br>
 
-    <div>
-      <h4><b>Authentication</b></h4>
-      <p>The CAPE API endpoints require users/services to authenticate using JSON Web Token (JWT) as a way to create a
-        timed authenticated session. After a token expires, the user/service has to re-authenticate to generate a new
-        JWT. The authentication of the API is done with the <code>auth</code> endpoint
-        (<code>https://bhcape01.jax.org/api/auth</code>).</p>
-      <p>There are two methods that can be called. The first one is the <code>login</code> method
-        (<code>https://bhcape01.jax.org/api/auth/login</code>) and the other HTTP request available on the authorization
-        endpoint is <code>refresh</code>, which creates a new access token from a refresh token
-        (<code>https://bhcape01.jax.org/api/auth/refresh</code>). Both use the POST request method.
-      </p>
-      <p>Below are all the different methods that can be called in the auth URL, in different programming languages.</p>
-      <br>
-      <h6>Bash</h6>
-      <p>In Bash, HTTP requests can be made with tools like <a href="https://curl.se/">CURL</a> and <a
-          href="https://stedolan.github.io/jq/">jq</a>. First we authenticate to retrieve the JWT token using the
-        "auth" endpoint:</p>
-      <pre class="small-code-container">{{bashGetToken}}</pre>
-      <p>This bearer token will be passed in the authorization header of one of the chosen HTTP requests of the API
-        endpoints.</p>
-      <br>
+          <h6 id="python-example">Python</h6>
+          <p>In Python, a JWT token is retrieved using the following code example:</p>
+          <pre class="small-code-container">{{pythonGetToken}}</pre>
+          <br>
 
-      <h6>Python</h6>
-      <p>In Python, a JWT token is retrieved using the following code example:</p>
-      <pre class="small-code-container">{{pythonGetToken}}</pre>
-      <br>
+          <h6 id="java-example">Java</h6>
+          <p>Below is a code snippet in Java showing how to call the "auth" endpoint and generate the JWT token:</p>
+          <pre class="code-container">{{javaGetToken}}</pre>
+          <br>
 
-      <h6>Java</h6>
-      <p>Below is a code snippet in Java showing how to call the "auth" endpoint and generate the JWT token:</p>
-      <pre class="code-container">{{javaGetToken}}</pre>
-      <br>
+          <h6 id="r-example">R</h6>
+          <p>Using the "httr" R library, the following code will retrieve the corresponding token:</p>
+          <pre class="small-code-container">{{rGetToken}}</pre>
+          <br>
 
-      <h6>R</h6>
-      <p>Using the "httr" R library, the following code will retrieve the corresponding token:</p>
-      <pre class="small-code-container">{{rGetToken}}</pre>
-      <br>
+          <p>Finally, a successfull response JSON object will contain the JWT token and will look like the following:
+          </p>
+          <pre class="small-code-container">{{authResponse}}</pre>
+          <br>
+        </div>
+        <br>
+        <div>
+          <h4 id="user-endpoint"><b>User</b></h4>
+          <p>The <code>user</code> endpoint (<code>https://bhcape01.jax.org/api/user</code>) has a few methods, which do
+            not
+            require to authenticate: <code>register</code> (<code>https://bhcape01.jax.org/api/user/register</code>) and
+            <code>confirm</code> (<code>https://bhcape01.jax.org/api/user/confirm</code>).
+          </p>
+          <p>Below are all the existing methods on the <code>user</code> endpoint:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Method name</th>
+                <th>Description</th>
+                <th>Parameters</th>
+                <th>Type</th>
+                <th>Response</th>
+                <th>Authentication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>register</code></td>
+                <td>Register a new user</td>
+                <td>
+                  <pre>{{userRegisterParameters}}<sup>1</sup></pre>
+                </td>
+                <td>POST</td>
+                <td>Message, Status code</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td><code>confirm</code></td>
+                <td>Confirm new user with the token sent to email</td>
+                <td>{{userConfirmParameters}}<sup>2</sup></td>
+                <td>GET</td>
+                <td>Message, Status code</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td><code>current</code></td>
+                <td>Returns the current user</td>
+                <td>
+                  <pre>{{authParameter}}<sup>3</sup></pre>
+                </td>
+                <td>GET</td>
+                <td>JSON user object</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_groups</code></td>
+                <td>Returns the groups of the current user</td>
+                <td>
+                  <pre>{{authParameter}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON Group object</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <small>
+              <sup>1</sup>Parameter as a JSON payload <br>
+              <sup>2</sup>Unique parameter after URL path<br>
+              <sup>3</sup>HTTP Header parameters<br>
+            </small>
+          </p>
 
-      <p>Finally, a successfull response JSON object will contain the JWT token and will look like the following:</p>
-      <pre class="small-code-container">{{authResponse}}</pre>
-      <br>
-    </div>
+          <p>Here is an example for the HTTP request <code>current</code> with the following URL
+            <code>https://bhcape01.jax.org/api/user/current</code> in different programming languages. The HTTP request
+            (where authentication is needed) requires the JWT <code>access_token</code> to be added to the HTTPHeader
+            payload. This token will have been previously retrieved from the <code>auth/login</code> request.
+          </p>
 
-    <br>
-    <div>
-      <h4><b>User</b></h4>
-      <p>The <code>user</code> endpoint (<code>https://bhcape01.jax.org/api/user</code>) has a few methods, which do not
-        require to authenticate: <code>register</code> (<code>https://bhcape01.jax.org/api/user/register</code>) and
-        <code>confirm</code> (<code>https://bhcape01.jax.org/api/user/confirm</code>).
-      </p>
-      <p>Below are all the existing methods on the <code>user</code> endpoint:</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Method name</th>
-            <th>Description</th>
-            <th>Parameters</th>
-            <th>Type</th>
-            <th>Response</th>
-            <th>Authentication</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>register</code></td>
-            <td>Register a new user</td>
-            <td>
-              <pre>{{userRegisterParameters}}<sup>1</sup></pre>
-            </td>
-            <td>POST</td>
-            <td>Message, Status code</td>
-            <td>No</td>
-          </tr>
-          <tr>
-            <td><code>confirm</code></td>
-            <td>Confirm new user with the token sent to email</td>
-            <td>{{userConfirmParameters}}<sup>2</sup></td>
-            <td>GET</td>
-            <td>Message, Status code</td>
-            <td>No</td>
-          </tr>
-          <tr>
-            <td><code>current</code></td>
-            <td>Returns the current user</td>
-            <td>
-              <pre>{{authParameter}}<sup>3</sup></pre>
-            </td>
-            <td>GET</td>
-            <td>JSON user object</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_groups</code></td>
-            <td>Returns the groups of the current user</td>
-            <td>
-              <pre>{{authParameter}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON Group object</td>
-            <td>Yes</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>
-        <small>
-          <sup>1</sup>Parameter as a JSON payload <br>
-          <sup>2</sup>Unique parameter after URL path<br>
-          <sup>3</sup>HTTP Header parameters<br>
-        </small>
-      </p>
+          <h6 id="bash-user-example">Bash</h6>
+          <p>We use <code>CURL</code> to make this request. The token <code>access_token</code> is expected after the
+            "Authorization: Bearer".</p>
+          <pre class="small-code-container">{{bashGetCurrentUser}}</pre>
+          <br>
 
-      <p>Here is an example for the HTTP request <code>current</code> with the following URL
-        <code>https://bhcape01.jax.org/api/user/current</code> in different programming languages. The HTTP request
-        (where authentication is needed) requires the JWT <code>access_token</code> to be added to the HTTPHeader
-        payload. This token will have been previously retrieved from the <code>auth/login</code> request.
-      </p>
+          <h6 id="python-user-example">Python</h6>
+          <p>The HTTP request in Python is done with the <code>requests</code> library. The token
+            <code>access_token</code>
+            is expected in the headers of the HTTP call.</p>
+          <pre class="small-code-container">{{pythonGetCurrentUser}}</pre>
+          <br>
 
-      <h6>Bash</h6>
-      <p>We use <code>CURL</code> to make this request. The token <code>access_token</code> is expected after the
-        "Authorization: Bearer".</p>
-      <pre class="small-code-container">{{bashGetCurrentUser}}</pre>
-      <br>
+          <h6 id="java-user-example">Java</h6>
+          <p>The Java equivalent HTTP request is the following:</p>
+          <pre class="code-container">{{javaGetCurrentUser}}</pre>
+          <br>
 
-      <h6>Python</h6>
-      <p>The HTTP request in Python is done with the <code>requests</code> library. The token <code>access_token</code>
-        is expected in the headers of the HTTP call.</p>
-      <pre class="small-code-container">{{pythonGetCurrentUser}}</pre>
-      <br>
+          <h6 id="r-user-example">R</h6>
+          <p>Finally, the R equivalent HTTP request with the help of the
+            <code><a hreaf="https://httr.r-lib.org/reference/">httr</a></code>
+          </p>
+          <pre class="small-code-container">{{rGetUserCurrent}}</pre>
+          <br>
+        </div>
+        <div>
+          <h4 id="datafiles-endpoint"><b>Datafiles</b></h4>
+          <p>The <code>datafiles</code> endpoint (<code>https://bhcape01.jax.org/api/datafiles</code>) is useful to view
+            existing datafiles and their corresponding data (phenotype data for instance). The methods of this endpoint are
+            the following:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Method name</th>
+                <th>Description</th>
+                <th>Parameters</th>
+                <th>Type</th>
+                <th>Response</th>
+                <th>Authentication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>add_datafile</code></td>
+                <td>Add/upload a new datafile</td>
+                <td>
+                  <pre>{{addDatafileParameters}}</pre>
+                </td>
+                <td>POST</td>
+                <td>Message, status code</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>delete_datafile</code></td>
+                <td>delete an existing datafile</td>
+                <td>
+                  <pre>{{dataFileIdAuthParams}}</pre>
+                </td>
+                <td>POST</td>
+                <td>Message, status code</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_datafiles</code></td>
+                <td>Return all the datafiles of current user</td>
+                <td>
+                  <pre>{{authParameter}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON datafiles objects</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_datafiles_parameters</code></td>
+                <td>Returns all the datafiles and corresponding parameters for current user</td>
+                <td>
+                  <pre>{{authParameter}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON datafiles objects</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_phenotypes</code></td>
+                <td>Returns all phenotypes for a datafile</td>
+                <td>
+                  <pre>{{dataFileIdAuthParams}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON phenotypes objects</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_parameter_files</code></td>
+                <td>Returns the parameter files for a datafile</td>
+                <td>
+                  <pre>{{dataFileIdAuthParams}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON parameters objects</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_phenotype_values</code></td>
+                <td>Returns the phenotypes values for a datafile</td>
+                <td>
+                  <pre>{{datafileIdPhenoParameter}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON phenotypes objects</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_pearson_coefficients</code></td>
+                <td>Returns the pearson coefficients given a list of phenotypes</td>
+                <td>
+                  <pre>{{datafileIdPhenosParameter}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON pearson coefficients objects</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    
+        <div>
+          <h4 id="jobs-endpoint"><b>Jobs/Analysis</b></h4>
+          <p>The <code>jobs</code> endpoint (<code>https://bhcape01.jax.org/api/jobs</code>) can be used to create, run,
+            stop, delete jobs/analysis. It has the following methods:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Method name</th>
+                <th>Description</th>
+                <th>Parameters</th>
+                <th>Type</th>
+                <th>Response</th>
+                <th>Authentication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>create_run</code></td>
+                <td>Create and run an anlysis</td>
+                <td>
+                  <pre>{{authParameter}}</pre>
+                </td>
+                <td>POST</td>
+                <td>Message, Status Code</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>run</code></td>
+                <td>Run an anlysis</td>
+                <td>
+                  <pre>{{authParameter}}</pre>
+                </td>
+                <td>POST</td>
+                <td>Message, Status Code</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_all</code></td>
+                <td>Returns all analysis for the current user</td>
+                <td>
+                  <pre>{{authParameter}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON Jobs objects</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>status</code></td>
+                <td>Returns the status of the given analysis/job</td>
+                <td>
+                  <pre>{{jobIdAuthParameter}}</pre>
+                </td>
+                <td>GET</td>
+                <td>{{getStatusResponse}}</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>progress</code></td>
+                <td>Returns the progress of the given job</td>
+                <td>
+                  <pre>{{getProgressParameters}}</pre>
+                </td>
+                <td>GET</td>
+                <td>{{getProgressResponse}}</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>delete_job</code></td>
+                <td>Delete job/analysis with given id</td>
+                <td>
+                  <pre>{{getDeleteParameters}}</pre>
+                </td>
+                <td>GET</td>
+                <td>Message, Status Code</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>cancel</code></td>
+                <td>Cancel job/analysis with given id</td>
+                <td>
+                  <pre>{{getDeleteParameters}}</pre>
+                </td>
+                <td>GET</td>
+                <td>Message, Status Code</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+    
+        </div>
+    
+        <div>
+          <h4 id="reports-endpoint"><b>Reports</b></h4>
+          <p>The <code>reports</code> endpoint (<code>https://bhcape01.jax.org/api/reports</code>) can be used to create,
+            retrieve, delete reports. It has the following methods:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Method name</th>
+                <th>Description</th>
+                <th>Parameters</th>
+                <th>Type</th>
+                <th>Response</th>
+                <th>Authentication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>get_all</code></td>
+                <td>Get all reports for current user</td>
+                <td>
+                  <pre>{{authParameter}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON Report Object</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get</code></td>
+                <td>Get a report for a given id and job id</td>
+                <td>
+                  <pre>{{getReportParameters}}<sup>4</sup></pre>
+                </td>
+                <td>GET</td>
+                <td>JSON Report object</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>create</code></td>
+                <td>create the report given the job id</td>
+                <td>
+                  <pre>{{createReportParameter}}</pre>
+                </td>
+                <td>POST</td>
+                <td>Message, Status Code</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>delete</code></td>
+                <td>Delete report with given Id</td>
+                <td>
+                  <pre>{{deleteReportParameter}}</pre>
+                </td>
+                <td>POST</td>
+                <td>Message, Status Code</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <small><sup>4</sup>URL parameters</small>
+          </p>
+        </div>
+    
+        <div>
+          <h4 id="parameters-endpoint"><b>Parameters</b></h4>
+          <p>Finally, the <code>parameters</code> endpoint (<code>https://bhcape01.jax.org/api/parameters</code>) is used to
+            create,
+            retrieve, delete parameter files. The methods available are the following:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Method name</th>
+                <th>Description</th>
+                <th>Parameters</th>
+                <th>Type</th>
+                <th>Response</th>
+                <th>Authentication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>save_parameter_file</code></td>
+                <td>Save a parameter file given a json payload of parameters</td>
+                <td>
+                  <pre>{{createParameterParams}}</pre>
+                </td>
+                <td>POST</td>
+                <td>Message, Status Code</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_parameter_file</code></td>
+                <td>Get a parameter file for a given id</td>
+                <td>
+                  <pre>{{getParameterFileParams}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON Parameter object</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>get_parameter_files</code></td>
+                <td>Retrieve all parameter files for current user</td>
+                <td>
+                  <pre>{{authParameter}}</pre>
+                </td>
+                <td>GET</td>
+                <td>JSON of Parameters objects</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td><code>delete_parameter_file</code></td>
+                <td>Delete parameter file with given Id</td>
+                <td>
+                  <pre>{{getParameterFileParams}}</pre>
+                </td>
+                <td>POST</td>
+                <td>Message, Status Code</td>
+                <td>Yes</td>
+              </tr>
+    
+            </tbody>
+          </table>
+    
+        </div>
 
-      <h6>Java</h6>
-      <p>The Java equivalent HTTP request is the following:</p>
-      <pre class="code-container">{{javaGetCurrentUser}}</pre>
-      <br>
+      </div>
+      <div class="col-md-2">
+        <table-of-contents listTitle="Overview Content">
+          <a pageScroll href="#sending-http-requests">Sending HTTP requests</a>
+          <a class="level-1" pageScroll href="#responses">Responses</a>
+          <a pageScroll href="#authentication-endpoint">Authentication</a>
+          <a class="level-1" pageScroll href="#bash-example">Bash example</a>
+          <a class="level-1" pageScroll href="#python-example">Python example</a>
+          <a class="level-1" pageScroll href="#java-example">Java example</a>
+          <a class="level-1" pageScroll href="#r-example">R example</a>
+          <a pageScroll href="#user-endpoint">User</a>
+          <a class="level-1" pageScroll href="#bash-user-example">Bash example</a>
+          <a class="level-1" pageScroll href="#python-user-example">Python example</a>
+          <a class="level-1" pageScroll href="#java-user-example">Java example</a>
+          <a class="level-1" pageScroll href="#r-user-example">R example</a>
+          <a pageScroll href="#datafiles-endpoint">Datafiles</a>
+          <a pageScroll href="#jobs-endpoint">Jobs/Analysis</a>
+          <a pageScroll href="#reports-endpoint">Reports</a>
+          <a pageScroll href="#parameters-endpoint">Parameters</a>
 
-      <h6>R</h6>
-      <p>Finally, the R equivalent HTTP request with the help of the
-        <code><a hreaf="https://httr.r-lib.org/reference/">httr</a></code>
-      </p>
-      <pre class="small-code-container">{{rGetUserCurrent}}</pre>
-      <br>
-
-    </div>
-
-    <div>
-      <h4><b>Datafiles</b></h4>
-      <p>The <code>datafiles</code> endpoint (<code>https://bhcape01.jax.org/api/datafiles</code>) is useful to view
-        existing datafiles and their corresponding data (phenotype data for instance). The methods of this endpoint are
-        the following:</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Method name</th>
-            <th>Description</th>
-            <th>Parameters</th>
-            <th>Type</th>
-            <th>Response</th>
-            <th>Authentication</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>add_datafile</code></td>
-            <td>Add/upload a new datafile</td>
-            <td>
-              <pre>{{addDatafileParameters}}</pre>
-            </td>
-            <td>POST</td>
-            <td>Message, status code</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>delete_datafile</code></td>
-            <td>delete an existing datafile</td>
-            <td>
-              <pre>{{dataFileIdAuthParams}}</pre>
-            </td>
-            <td>POST</td>
-            <td>Message, status code</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_datafiles</code></td>
-            <td>Return all the datafiles of current user</td>
-            <td>
-              <pre>{{authParameter}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON datafiles objects</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_datafiles_parameters</code></td>
-            <td>Returns all the datafiles and corresponding parameters for current user</td>
-            <td>
-              <pre>{{authParameter}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON datafiles objects</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_phenotypes</code></td>
-            <td>Returns all phenotypes for a datafile</td>
-            <td>
-              <pre>{{dataFileIdAuthParams}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON phenotypes objects</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_parameter_files</code></td>
-            <td>Returns the parameter files for a datafile</td>
-            <td>
-              <pre>{{dataFileIdAuthParams}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON parameters objects</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_phenotype_values</code></td>
-            <td>Returns the phenotypes values for a datafile</td>
-            <td>
-              <pre>{{datafileIdPhenoParameter}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON phenotypes objects</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_pearson_coefficients</code></td>
-            <td>Returns the pearson coefficients given a list of phenotypes</td>
-            <td>
-              <pre>{{datafileIdPhenosParameter}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON pearson coefficients objects</td>
-            <td>Yes</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div>
-      <h4><b>Jobs/Analysis</b></h4>
-      <p>The <code>jobs</code> endpoint (<code>https://bhcape01.jax.org/api/jobs</code>) can be used to create, run,
-        stop, delete jobs/analysis. It has the following methods:</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Method name</th>
-            <th>Description</th>
-            <th>Parameters</th>
-            <th>Type</th>
-            <th>Response</th>
-            <th>Authentication</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>create_run</code></td>
-            <td>Create and run an anlysis</td>
-            <td>
-              <pre>{{authParameter}}</pre>
-            </td>
-            <td>POST</td>
-            <td>Message, Status Code</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>run</code></td>
-            <td>Run an anlysis</td>
-            <td>
-              <pre>{{authParameter}}</pre>
-            </td>
-            <td>POST</td>
-            <td>Message, Status Code</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_all</code></td>
-            <td>Returns all analysis for the current user</td>
-            <td>
-              <pre>{{authParameter}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON Jobs objects</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>status</code></td>
-            <td>Returns the status of the given analysis/job</td>
-            <td>
-              <pre>{{jobIdAuthParameter}}</pre>
-            </td>
-            <td>GET</td>
-            <td>{{getStatusResponse}}</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>progress</code></td>
-            <td>Returns the progress of the given job</td>
-            <td>
-              <pre>{{getProgressParameters}}</pre>
-            </td>
-            <td>GET</td>
-            <td>{{getProgressResponse}}</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>delete_job</code></td>
-            <td>Delete job/analysis with given id</td>
-            <td>
-              <pre>{{getDeleteParameters}}</pre>
-            </td>
-            <td>GET</td>
-            <td>Message, Status Code</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>cancel</code></td>
-            <td>Cancel job/analysis with given id</td>
-            <td>
-              <pre>{{getDeleteParameters}}</pre>
-            </td>
-            <td>GET</td>
-            <td>Message, Status Code</td>
-            <td>Yes</td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
-
-    <div>
-      <h4><b>Reports</b></h4>
-      <p>The <code>reports</code> endpoint (<code>https://bhcape01.jax.org/api/reports</code>) can be used to create,
-        retrieve, delete reports. It has the following methods:</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Method name</th>
-            <th>Description</th>
-            <th>Parameters</th>
-            <th>Type</th>
-            <th>Response</th>
-            <th>Authentication</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>get_all</code></td>
-            <td>Get all reports for current user</td>
-            <td>
-              <pre>{{authParameter}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON Report Object</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get</code></td>
-            <td>Get a report for a given id and job id</td>
-            <td>
-              <pre>{{getReportParameters}}<sup>4</sup></pre>
-            </td>
-            <td>GET</td>
-            <td>JSON Report object</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>create</code></td>
-            <td>create the report given the job id</td>
-            <td>
-              <pre>{{createReportParameter}}</pre>
-            </td>
-            <td>POST</td>
-            <td>Message, Status Code</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>delete</code></td>
-            <td>Delete report with given Id</td>
-            <td>
-              <pre>{{deleteReportParameter}}</pre>
-            </td>
-            <td>POST</td>
-            <td>Message, Status Code</td>
-            <td>Yes</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>
-        <small><sup>4</sup>URL parameters</small>
-      </p>
-    </div>
-
-    <div>
-      <h4><b>Parameters</b></h4>
-      <p>Finally, the <code>parameters</code> endpoint (<code>https://bhcape01.jax.org/api/parameters</code>) is used to create,
-        retrieve, delete parameter files. The methods available are the following:</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Method name</th>
-            <th>Description</th>
-            <th>Parameters</th>
-            <th>Type</th>
-            <th>Response</th>
-            <th>Authentication</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>save_parameter_file</code></td>
-            <td>Save a parameter file given a json payload of parameters</td>
-            <td>
-              <pre>{{createParameterParams}}</pre>
-            </td>
-            <td>POST</td>
-            <td>Message, Status Code</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_parameter_file</code></td>
-            <td>Get a parameter file for a given id</td>
-            <td>
-              <pre>{{getParameterFileParams}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON Parameter object</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>get_parameter_files</code></td>
-            <td>Retrieve all parameter files for current user</td>
-            <td>
-              <pre>{{authParameter}}</pre>
-            </td>
-            <td>GET</td>
-            <td>JSON of Parameters objects</td>
-            <td>Yes</td>
-          </tr>
-          <tr>
-            <td><code>delete_parameter_file</code></td>
-            <td>Delete parameter file with given Id</td>
-            <td>
-              <pre>{{getParameterFileParams}}</pre>
-            </td>
-            <td>POST</td>
-            <td>Message, Status Code</td>
-            <td>Yes</td>
-          </tr>
-
-        </tbody>
-      </table>
-
+        </table-of-contents>
+      </div>
     </div>
 
   </div>
