@@ -39,7 +39,7 @@
               class="pull-right" matTooltip="Delete this Analysis" (click)="deleteJob(element)">
               <mat-icon matSuffix>delete</mat-icon>
             </button>
-            <button disabled="{{isDisabled(element)}}" mat-icon-button type="submit" color="primary" class="pull-right" matTooltip="Cancel this Analysis"
+            <button disabled="{{!isDisabled(element)}}" mat-icon-button type="submit" color="primary" class="pull-right" matTooltip="Cancel this Analysis"
               (click)="cancelJob(element)">
               <mat-icon matSuffix>stop</mat-icon>
             </button>

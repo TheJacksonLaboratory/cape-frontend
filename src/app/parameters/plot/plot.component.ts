@@ -193,7 +193,7 @@ export class PlotComponent implements OnInit, OnDestroy {
     const phenotypeName = dataKeys.next()['value'];
     let data = [];
     let layout = {};
-    const height = 700;
+    const height = 800;
     // const width = 800;
     const phenotypeNumber = this.dataMap.size;
 
@@ -695,7 +695,8 @@ export class PlotComponent implements OnInit, OnDestroy {
           height: height,
           autoexpand: 'true',
           autosize: 'true',
-          plot_bgcolor: 'rgba(228, 222, 249, 0.65)'
+          plot_bgcolor: 'rgba(228, 222, 249, 0.65)',
+          legend: {"orientation": "h"}
         };
       }
     }
