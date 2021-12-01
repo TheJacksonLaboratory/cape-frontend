@@ -248,9 +248,9 @@ export class DataFilesService {
         return Observable.throwError(error.message || 'Server Error');
     }
 
-    uploadWithProgress(file: File): Observable<any> {
+    uploadWithProgress(files: any): Observable<any> {
         const formData = new FormData();
-        formData.append("file", file, file.name);
+        Array.prototype.forEach.call(files, file => formData.append('files[]', file, file.name));
         this.httpOptions = {
             headers: new HttpHeaders({ 'Authorization': 'currentUser' }),
             params: new HttpParams(),

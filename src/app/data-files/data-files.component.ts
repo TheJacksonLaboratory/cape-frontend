@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef, Inject } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -12,7 +11,6 @@ import { MessageDialogComponent } from '../shared/message-dialog/message-dialog.
 import { Parameters } from '../_models/parameters';
 import { JobService } from '../_services/job.service';
 import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
-import { SpinnerDialogComponent } from '../components/spinner-dialog/spinner-dialog.component';
 
 
 @Component({
@@ -292,8 +290,8 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   public openDataFileUploadDialog() {
     const dialogRef = this.dialog.open(UploadDialogComponent, {
       width: '50%',
-      height: '50%',
-      data: { fileType: 'vcf', titleText: 'Upload VCF Files' }
+      height: '65%',
+      data: { fileType: 'csv, zip, rds, rdata', titleText: 'Upload data Files' }
     });
     dialogRef.afterClosed().subscribe(result => {
       // refresh datasource

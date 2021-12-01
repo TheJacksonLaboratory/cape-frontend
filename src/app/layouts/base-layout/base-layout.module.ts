@@ -29,7 +29,6 @@ import { JobComponent } from 'src/app/job/job.component';
 import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 import { ReportDetailComponent } from 'src/app/reports/report-detail/report-detail.component';
 import { UploadDialogComponent } from 'src/app/data-files/upload-dialog/upload-dialog.component';
-import { SpinnerDialogComponent } from 'src/app/components/spinner-dialog/spinner-dialog.component';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { TableOfContentsComponent } from 'src/app/components/table-of-contents/table-of-contents.component';
@@ -65,7 +64,6 @@ import { TableOfContentsComponent } from 'src/app/components/table-of-contents/t
     UploadDialogComponent,
     AdminComponent,
     JobComponent,
-    SpinnerDialogComponent,
     TableOfContentsComponent
 
   ],
@@ -76,7 +74,7 @@ import { TableOfContentsComponent } from 'src/app/components/table-of-contents/t
   ],
   entryComponents: [
     UploadDialogComponent
-  ],
+    ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 
 })
