@@ -1,18 +1,28 @@
 <mat-card class="report">
-  <mat-card-content matTooltip="Open report" (click)="openReport(report)">
-      <mat-card-title>
-        {{ report.title }}
-      </mat-card-title>
-      <div class="panel-body">
-        <div class='cover-photo-holder'>
-
-          <img mat-card-image src="{{reportImage}}" (click)="openReport(report)" />
-        </div>
-        <p>{{ report.description }}</p>
-        <div>
-          <div class='data-title'>Author:</div>
-          <div>{{ report.author }}</div>
+  <mat-card-content>
+    <mat-card-title matTooltip="Open report" (click)="openReport(report)">
+      {{ report.title }}
+    </mat-card-title>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel-body">
+            <div class='cover-photo-holder'>
+    
+              <img mat-card-image src="{{reportImage}}" (click)="openReport(report)" />
+            </div>
+            <p>{{ report.description }}</p>
+            <div>
+              <div class='data-title'>Author:</div>
+              <div>{{ report.author }}</div>
+            </div>
+          </div>
         </div>
       </div>
+      
+      <mat-card-actions>
+        <button mat-button matTooltip="Open report" (click)="openReport(report)">OPEN</button>
+        <!--<button mat-button>EDIT</button>-->
+        <button mat-button matTooltip="Delete this report" (click)="deleteReport(report)">DELETE</button>
+      </mat-card-actions>
   </mat-card-content>
 </mat-card>

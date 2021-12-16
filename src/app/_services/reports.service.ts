@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular
 import { throwError, Observable } from 'rxjs';
 import { Job, Report } from '../_models';
 import { environment } from 'src/environments/environment';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -42,30 +43,45 @@ export class ReportsService {
       .catch(ReportsService._handleError);
   }
 
- /**
-  * Get Report for report id
-  */
+  /**
+   * Get Report for report id
+   */
   getReport(reportId: number) {
     const params = new HttpParams().set('id', String(reportId));
     return this.http.get<Report>(environment.REPORT_URL + '/get', { params: params })
       .catch(ReportsService._handleError);
   }
 
- /**
-  * Get Report for given job id
-  */
- getReportByJobId(jobId: number) {
-  const params = new HttpParams().set('job_id', String(jobId));
-  return this.http.get<Report>(environment.REPORT_URL + '/get', { params: params })
-    .catch(ReportsService._handleError);
-}
+  /**
+   * Get Report for given job id
+   */
+  getReportByJobId(jobId: number) {
+    const params = new HttpParams().set('job_id', String(jobId));
+    return this.http.get<Report>(environment.REPORT_URL + '/get', { params: params })
+      .catch(ReportsService._handleError);
+  }
 
-   /**
-  * Get files for Report with report id
-  */
- getFiles(reportId: number) {
-  const params = new HttpParams().set('report_id', String(reportId));
-  return this.http.get(environment.REPORT_URL + '/files', { params: params })
-    .catch(ReportsService._handleError);
-}
+  /**
+ * Get files for Report with report id
+ */
+  getFiles(reportId: number) {
+    const params = new HttpParams().set('report_id', String(reportId));
+    return this.http.get(environment.REPORT_URL + '/files', { params: params })
+      .catch(ReportsService._handleError);
+  }
+
+  /**
+   * Delete report
+   * @param reportId 
+   * @param userId 
+   */
+  deleteReport(reportId: any, userId: any) {
+    return this.http.post<any>(environment.REPORT_URL + '/delete',
+            { 'report_id': reportId, 'user_id': userId }, this.httpOptions)
+            .pipe(map(file => {
+                const jsonString = JSON.stringify(file);
+                const jsonObj = JSON.parse(jsonString);
+                return jsonObj;
+            })).catch(ReportsService._handleError);
+  }
 }
