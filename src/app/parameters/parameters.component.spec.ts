@@ -4,7 +4,7 @@ import { ParametersComponent } from './parameters.component';
 import { CtSelectionComponent } from './ct-selection/ct-selection.component';
 import {
   MatIconModule, MatCardModule, MatTabsModule, MatSelectModule,
-  MatFormFieldModule, MatTooltipModule, MatButtonToggleModule, MatTreeModule, MatDialog, MatInputModule
+  MatFormFieldModule, MatTooltipModule, MatButtonToggleModule, MatTreeModule, MatDialog, MatInputModule, MatChipsModule
 } from '@angular/material';
 import { SingleLocusScanComponent } from './single-locus-scan/single-locus-scan.component';
 import { MarkerSelectionComponent } from './marker-selection/marker-selection.component';
@@ -47,7 +47,8 @@ describe('ParametersComponent', () => {
         RouterTestingModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        PlotlyModule
+        PlotlyModule,
+        MatChipsModule
       ],
       declarations: [
         ParametersComponent,

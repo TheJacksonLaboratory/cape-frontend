@@ -22,7 +22,7 @@ class MockReportService {
   }
 }
 
-describe('ReportSummaryComponent', () => {
+describe('ReportDetailComponent', () => {
   let component: ReportDetailComponent;
   let fixture: ComponentFixture<ReportDetailComponent>;
   let reportsService: ReportsService;
