@@ -9,14 +9,17 @@ import { User } from '../_models';
 
 import * as JWT from 'jwt-decode';
 
+
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
 
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+  private userSubject: BehaviorSubject<User>;
+  public user: Observable<User>;
 
   // http options used for making API calls
-  private httpOptions: any;
+  private httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
   // the actual JWT token
   public token: string;
@@ -25,66 +28,81 @@ export class AuthenticationService {
   public errors: any = [];
 
   constructor(private http: HttpClient, private router: Router) {
-    this.httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'currentUser' })
-    };
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
+    this.userSubject = new BehaviorSubject<User>(null);
+    this.user = this.userSubject.asObservable();
   }
 
-  public get currentUserValue(): User {
-    return this.currentUserSubject.value;
+  public get userValue(): User {
+    return this.userSubject.value;
   }
 
   public getUserFullname() {
-    if (this.currentUserValue == null)
+    if (this.userSubject == null)
       return '';
-    let identity = JWT(this.currentUserValue.access_token).identity;
+    let identity = JWT(this.userValue.access_token).sub;
     return identity.first_name + ' ' + identity.last_name;
   }
 
   public getUsername() {
-    if (this.currentUserValue == null)
+    if (this.userSubject == null)
       return '';
-    let identity = JWT(this.currentUserValue.access_token).identity;
+    let identity = JWT(this.userValue.access_token).sub;
     return identity.username;
   }
 
   public getUserId() {
-    if (this.currentUserValue == null)
+    if (this.userSubject == null)
       return '';
-    let identity = JWT(this.currentUserValue.access_token).identity;
+    let identity = JWT(this.userValue.access_token).sub;
     return identity.user_id;
   }
 
-  /**
-   * Login using LDAP authentication or using saved hashed password in DB
-   * @param username LDAP username or username in DB
-   * @param password pass
-   */
-  login(username: string, password: string) {
-    return this.http.post<any>(environment.AUTH_URL + '/login', { username, password }) // , this.httpOptions)
-      .pipe(map(res => {
-        // login successful if there's a jwt token in the response
-        if (res && res.access_token) {
-          this.token = res;
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(res));
-          // store the time at which the token should expire
-          const timeToLogin = Date.now() + 86400000; // 1 day
-          localStorage.setItem('timer', JSON.stringify(timeToLogin));
-
-          this.currentUserSubject.next(res);
-        }
-        return res;
-      }));
+  isAuthenticated() {
+    console.log('is user authenticated? ');
+    // Send request to backend to check auth status
+    return this.http.get<any>(environment.AUTH_URL + '/verify');
   }
 
+  login(username: string, password: string) {
+    return this.http.post<any>(environment.AUTH_URL + '/login', { username, password }, this.httpOptions)
+      .pipe(map(user => {
+        this.userSubject.next(user);
+        this.startRefreshTokenTimer();
+        return user;
+      }));
+  }
 
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    this.userSubject.next(null);
     this.router.navigate(['login']);
+  }
+
+  refreshToken() {
+    return this.http.post<any>(`${environment.AUTH_URL}/refresh`, {}, { withCredentials: true })
+      .pipe(map((user) => {
+        this.userSubject.next(user);
+        this.startRefreshTokenTimer();
+        return user;
+      }));
+  }
+
+  // helper methods
+
+  private refreshTokenTimeout;
+
+  private startRefreshTokenTimer() {
+    // parse json object from base64 encoded jwt token
+    const jwtToken = JSON.parse(atob(this.userValue.access_token.split('.')[1]));
+
+    // set a timeout to refresh the token a minute before it expires
+    const expires = new Date(jwtToken.exp * 1000);
+    const timeout = expires.getTime() - Date.now() - (60 * 1000);
+    this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+  }
+
+  private stopRefreshTokenTimer() {
+    clearTimeout(this.refreshTokenTimeout);
   }
 }

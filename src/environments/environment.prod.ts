@@ -2,6 +2,7 @@ const API_URL = 'https://cape.jax.org/api';
 
 export const environment = {
   production: true,
+  API_URL: API_URL,
   FILE_URL: 'https://cape.jax.org/results',
   V1_URL: API_URL + '/v1',
   AUTH_URL: API_URL + '/auth',
