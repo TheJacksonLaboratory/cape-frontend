@@ -1,14 +1,10 @@
-# Front
+# CAPE web Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.5.
+CAPE Web is a Single-Page Authentication Web Application used to interact with [CAPE Web Backend](https://github.com/TheJacksonLaboratory/cape-backend). It is a user interface meant to access the [CAPE analysis R package](https://github.com/TheJacksonLaboratory/cape) and it enables users to run analysis through the Webapp. It was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
