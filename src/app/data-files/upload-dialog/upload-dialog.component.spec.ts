@@ -1,5 +1,6 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialog, MatProgressBarModule } from '@angular/material';
+import { MatDialog, MatDialogModule, MatDialogRef, MatProgressBarModule, MAT_DIALOG_DATA } from '@angular/material';
 import { DataFilesService } from 'src/app/_services';
 
 import { UploadDialogComponent } from './upload-dialog.component';
@@ -13,11 +14,15 @@ describe('UploadDialogComponent', () => {
       declarations: [ UploadDialogComponent ],
       imports: [
         MatProgressBarModule,
-
+        MatDialogModule
       ],
       providers: [
         DataFilesService,
         { provide: MatDialog, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef,useValue: {} },
+        HttpHandler,
+        HttpClient
       ]
     })
     .compileComponents();

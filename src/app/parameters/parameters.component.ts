@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { saveAs } from 'file-saver';
 
 import { ParametersService, AuthenticationService, AlertService } from '../_services';
 import { DescriptionComponent } from '../shared/description/description.component';
@@ -30,9 +31,9 @@ export class ParametersComponent implements OnInit, OnDestroy, AfterViewInit {
   parameters: Parameters;
 
   // documentation
-  @ViewChild(SingleLocusScanComponent, { static: false }) singleScanChildDoc: SingleLocusScanComponent;
-  @ViewChild(MarkerSelectionComponent, { static: false }) markerSelectionChildDoc: MarkerSelectionComponent;
-  @ViewChild(PairScanComponent, { static: false }) pairScanChildDoc: PairScanComponent;
+  @ViewChild(SingleLocusScanComponent) singleScanChildDoc: SingleLocusScanComponent;
+  @ViewChild(MarkerSelectionComponent) markerSelectionChildDoc: MarkerSelectionComponent;
+  @ViewChild(PairScanComponent) pairScanChildDoc: PairScanComponent;
   singleLocusScanDocumentation: string;
   markerSelectionDocumentation: string;
   pairScanDocumentation: string;

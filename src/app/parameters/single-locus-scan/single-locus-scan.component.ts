@@ -6,8 +6,7 @@ import { ParametersService } from 'src/app/_services';
 import { Documentation } from '../documentation';
 import { Parameters } from '../../_models/parameters';
 import { ActivatedRoute } from '@angular/router';
-import { MatChipInputEvent } from '@angular/material';
-import { stringify } from 'querystring';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 
 @Component({

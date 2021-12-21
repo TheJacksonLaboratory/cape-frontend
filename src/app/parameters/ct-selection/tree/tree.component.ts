@@ -3,7 +3,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import {of as ofObservable, Observable, BehaviorSubject, Subscription, throwError } from 'rxjs';
 
 import { ParametersService, DataFilesService } from 'src/app/_services';
@@ -190,7 +190,7 @@ export class PhenotypeDatabase {
     providers: [PhenotypeDatabase]
 })
 export class TreeComponent implements OnInit, OnDestroy {
-    @ViewChild('tree', {static: false}) tree: any;
+    @ViewChild('tree') tree: any;
 
     viewAsTree = true;
 

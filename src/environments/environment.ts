@@ -6,6 +6,7 @@ const API_URL = 'http://localhost:5000/api';
 
 export const environment = {
   production: false,
+  API_URL: API_URL,
   FILE_URL: 'http://localhost:8080',
   V1_URL: API_URL + '/v1',
   AUTH_URL: API_URL + '/auth',

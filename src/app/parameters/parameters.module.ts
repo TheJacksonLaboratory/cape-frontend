@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTreeModule,
-         MatCardModule,
-         MatSelectModule,
-         MatIconModule,
-         MatInputModule,
-         MatRadioModule,
-         MatTabsModule,
-         MatButtonModule,
-         MatTooltipModule,
-         MatExpansionModule,
-         MatMenuModule,
-         MatButtonToggleModule,
-         MatChipsModule} from '@angular/material';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule} from '@angular/material/select';
+import { MatIconModule} from '@angular/material/icon';
+import { MatInputModule} from '@angular/material/input';
+import { MatRadioModule} from '@angular/material/radio';
+import { MatTabsModule} from '@angular/material/tabs';
+import { MatButtonModule} from '@angular/material/button';
+import { MatTooltipModule} from '@angular/material/tooltip';
+import { MatExpansionModule} from '@angular/material/expansion';
+import { MatMenuModule} from '@angular/material/menu';
+import { MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatChipsModule} from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FlexLayoutModule } from '@angular/flex-layout';
+// import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PlotlyModule } from 'angular-plotly.js';
@@ -40,7 +40,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     MatSelectModule,
     MatIconModule,
     MatCheckboxModule,
-    FlexLayoutModule.withConfig({addFlexToParent: false}),
+    // FlexLayoutModule.withConfig({addFlexToParent: false}),
     FormsModule,
     ReactiveFormsModule,
     MatRadioModule,

@@ -1,9 +1,9 @@
 // iframe {
-//   height:calc(100vh - 4px);
-//   width:calc(100vw - 4px);
-//   box-sizing: border-box;
+//   width: 100%;
+//   height: 700px;
 // }
 iframe {
-  width: 100%;
-  height: 700px;
+  // width: 1px;
+  min-width: 100%;
+  height: 1000px;
 }

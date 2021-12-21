@@ -245,7 +245,7 @@ export class DataFilesService {
         console.log('error handler')
         //console.log (error)
 
-        return Observable.throwError(error.message || 'Server Error');
+        return throwError(error.message || 'Server Error');
     }
 
     uploadWithProgress(files: any): Observable<any> {

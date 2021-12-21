@@ -38,6 +38,7 @@ describe('CtSelectionComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         BrowserAnimationsModule,
+        PlotlyModule
       ],
       declarations: [
         CtSelectionComponent,
