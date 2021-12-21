@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -39,8 +42,8 @@ export class DataFilesComponent implements OnInit, OnDestroy {
   loading = false;
   private dataFileSub: Subscription;
 
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private auth: AuthenticationService, private dataFilesService: DataFilesService, private jobService: JobService,
     private alertService: AlertService, private dialog: MatDialog, private changeDetectorRefs: ChangeDetectorRef,
@@ -55,6 +58,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     }, err => {
       // TODO: display our server error dialog?
       console.log(err);
+      this.error = err.error.message || err.error || err.message;
     });
     this.changeDetectorRefs.detectChanges();
   }
@@ -190,7 +194,7 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     const msgData = { 'title': 'Delete Data File' };
     msgData['description'] = 'Delete the Data File named "' + element.filename + '" ?';
     const userId = this.auth.getUserId();
-    
+
     // const dialogRef = this.openDialog(msgData, dataFileService);
     const dialogRef = this.dialog.open(MessageDialogComponent, {
       width: '400px',
@@ -218,13 +222,13 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     });
   }
 
-//  openSpinnerDialog() {
-//    console.log("open spinner dialog");
-//    this.spinnerDialogRef = this.dialog.open(SpinnerDialogComponent, {
-//      panelClass: 'transparent',
-//      disableClose: true
-//    });
-//  }
+  //  openSpinnerDialog() {
+  //    console.log("open spinner dialog");
+  //    this.spinnerDialogRef = this.dialog.open(SpinnerDialogComponent, {
+  //      panelClass: 'transparent',
+  //      disableClose: true
+  //    });
+  //  }
 
   /**
    * 

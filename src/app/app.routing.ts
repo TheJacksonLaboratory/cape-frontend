@@ -23,7 +23,7 @@ const appRoutes: Routes = [
       children: [
           {
         path: '',
-        loadChildren: './layouts/base-layout/base-layout.module#BaseLayoutModule'
+        loadChildren: () => import('./layouts/base-layout/base-layout.module').then(m => m.BaseLayoutModule)
     }]},
 
     // otherwise redirect to home

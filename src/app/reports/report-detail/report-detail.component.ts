@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Report } from 'src/app/_models';
-import { throwError, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ReportsService } from 'src/app/_services';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -44,7 +44,6 @@ export class ReportDetailComponent implements OnInit {
             this.imagesRightColumn[index] = value;
         });
         this.resultFolderUrl = environment.FILE_URL + resp.result_folder;
-        console.log(this.resultFolderUrl);
         this.resultPageUrl = environment.FILE_URL + resp.result_page;
         this.sanitizedResultPageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.resultPageUrl + "?dummyVar=" + (new Date()).getTime());
         this.description = 'This page is an HTML rendered at the end of the analysis. In order to download the result plots, click on the following link:';

@@ -3,11 +3,8 @@ import { Report } from 'src/app/_models';
 import { Router } from '@angular/router';
 import { AlertService, AuthenticationService, ReportsService } from 'src/app/_services';
 import { environment } from 'src/environments/environment';
-import { ElementRef } from '@angular/core';
-import { ViewChild } from '@angular/core';
 import { MessageDialogComponent } from 'src/app/shared/message-dialog/message-dialog.component';
-import { MatDialog } from '@angular/material';
-import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-report-summary',
