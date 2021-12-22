@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatCardModule, MatGridListModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { Observable, of } from 'rxjs';
 
 import { ReportDetailComponent } from './report-detail.component';

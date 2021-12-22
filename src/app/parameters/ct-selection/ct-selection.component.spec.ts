@@ -4,9 +4,18 @@ import { CtSelectionComponent } from './ct-selection.component';
 import { MainSelectionComponent } from './main-selection/main-selection.component';
 import { TreeComponent } from './tree/tree.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSelectModule, MatFormFieldModule, MatInputModule, MatOptionModule,
-  MatIconModule, MatCardModule, MatExpansionModule, MatRadioModule, MatButtonToggleModule,
-  MatButtonModule, MatTreeModule, MatDialog } from '@angular/material';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatDialog } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';

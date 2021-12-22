@@ -1,10 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
-import {
-    MatCardModule, MatFormFieldModule, MatInputModule, MatIconModule,
-    MatProgressBarModule, MatDialog
-} from '@angular/material';
+import { MatCardModule} from '@angular/material/card';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule} from '@angular/material/input';
+import { MatIconModule} from '@angular/material/icon';
+import { MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AlertService } from '../_services/alert.service';
