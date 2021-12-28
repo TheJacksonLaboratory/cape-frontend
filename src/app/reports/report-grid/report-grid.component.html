@@ -4,6 +4,6 @@
         <p class="card-category">List of analysis reports</p>
     </div>
     <div class="card-body">
-        <app-report-summary *ngFor="let report of reports" [report]="report"></app-report-summary>
+        <app-report-summary *ngFor="let report of reports" [report]="report" (refreshEvent)="refresh()"></app-report-summary>
     </div>
 </div>

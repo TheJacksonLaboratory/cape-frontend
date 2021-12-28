@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Report } from 'src/app/_models';
 import { Router } from '@angular/router';
 import { AlertService, AuthenticationService, ReportsService } from 'src/app/_services';
@@ -12,7 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./report-summary.component.css']
 })
 export class ReportSummaryComponent implements OnInit {
-
+  @Output() refreshEvent = new EventEmitter<string>();
+  
   @Input()
   report: Report;
   reportImage: string;
@@ -45,7 +46,7 @@ export class ReportSummaryComponent implements OnInit {
         this.reportService.deleteReport(element.id, userId).subscribe(data => {
           msgData['description'] = data['message'];
           console.log(data['message']);
-          this.refresh();
+          this.refreshEvent.next('report');
         }, error => {
           this.error = error;
           this.alertService.error(error);
@@ -65,14 +66,8 @@ export class ReportSummaryComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       // refresh datasource
-      this.refresh();
+      this.refreshEvent.next('report');
     });
   }
-  /**
-   * Refresh the grid of reports
-   */
-   refresh() {
-    // redirect to report page to refresh automatically.
-    this.router.navigate(['/reports']);
-  }
+
 }
