@@ -23,7 +23,6 @@ export class ReportGridComponent implements OnInit {
       // TODO: display our server error dialog?
       console.log(err);
     });
-    console.log('grid loaded');
   }
 
   ngOnDestroy() {
