@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { JobComponent } from './job.component';
-import { AlertService } from '../_services';
+import { AlertService, AuthenticationService, JobService } from '../_services';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('JobComponent', () => {
@@ -32,6 +32,8 @@ describe('JobComponent', () => {
       ],
       declarations: [JobComponent],
       providers: [
+        AuthenticationService,
+        JobService,
         AlertService,
         { provide: MatDialog, useValue: {} },
       ]

@@ -2,12 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Observable, of } from 'rxjs';
 
 import { ReportSummaryComponent } from './report-summary.component';
 import { Report } from 'src/app/_models/report';
-import { ReportsService } from 'src/app/_services';
-import { HttpClientModule } from '@angular/common/http';
+import { AuthenticationService, ReportsService } from 'src/app/_services';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -28,6 +26,7 @@ describe('ReportSummaryComponent', () => {
       ],
       declarations: [ReportSummaryComponent],
       providers: [
+        AuthenticationService,
         { provide: ReportsService }
       ]
     })

@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataFile } from '../_models/datafile';
 import { DataFilesComponent } from '.';
 import { DataFilesService } from '../_services/data-files.service';
-import { AlertService } from '../_services';
+import { AlertService, AuthenticationService } from '../_services';
 import { Parameters } from '../_models';
 
 const PARAMETER_FILES1 = [
@@ -116,6 +116,7 @@ describe('DataFilesComponent', () => {
             ],
             providers: [
                 AlertService,
+                AuthenticationService,
                 { provide: MatDialog, useValue: {} },
                 { provide: DataFilesService, useClass: MockDataFilesService }
             ]
