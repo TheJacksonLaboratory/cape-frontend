@@ -1,7 +1,7 @@
-﻿import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+﻿import { EventEmitter, Injectable, Output } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
@@ -12,6 +12,8 @@ import * as JWT from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
+
+  @Output() fireIsLoggedIn: EventEmitter<any> = new EventEmitter<any>();
 
   private userSubject: BehaviorSubject<User>;
   public user: Observable<User>;
@@ -37,30 +39,30 @@ export class AuthenticationService {
   }
 
   public getUserFullname() {
-    if (this.userSubject == null)
+    if (this.userValue == null)
       return '';
     let identity = JWT(this.userValue.access_token).sub;
     return identity.first_name + ' ' + identity.last_name;
   }
 
   public getUsername() {
-    if (this.userSubject == null)
+    if (this.userValue == null)
       return '';
     let identity = JWT(this.userValue.access_token).sub;
     return identity.username;
   }
 
   public getUserId() {
-    if (this.userSubject == null)
+    if (this.userValue == null)
       return '';
     let identity = JWT(this.userValue.access_token).sub;
     return identity.user_id;
   }
 
   isAuthenticated() {
-    console.log('is user authenticated? ');
     // Send request to backend to check auth status
-    return this.http.get<any>(environment.AUTH_URL + '/verify');
+    return this.http.post<any>(environment.AUTH_URL + '/verify', this.httpOptions)
+      .catch(AuthenticationService._handleError);;
   }
 
   login(username: string, password: string) {
@@ -68,15 +70,20 @@ export class AuthenticationService {
       .pipe(map(user => {
         this.userSubject.next(user);
         this.startRefreshTokenTimer();
+        this.fireIsLoggedIn.emit(user);
         return user;
       }));
   }
 
+  getLoggedInEmitter() {
+    return this.fireIsLoggedIn;
+  }
+
   logout() {
-    // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    this.stopRefreshTokenTimer();
     this.userSubject.next(null);
-    this.router.navigate(['login']);
+    this.router.navigate(['/logout']);
   }
 
   refreshToken() {
@@ -93,6 +100,8 @@ export class AuthenticationService {
   private refreshTokenTimeout;
 
   private startRefreshTokenTimer() {
+    if (this.userValue == null)
+      return;
     // parse json object from base64 encoded jwt token
     const jwtToken = JSON.parse(atob(this.userValue.access_token.split('.')[1]));
 
@@ -104,5 +113,9 @@ export class AuthenticationService {
 
   private stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
+  }
+
+  private static _handleError(err: HttpErrorResponse | any) {
+    return throwError(err.message || 'Error: Unable to complete request.');
   }
 }

@@ -171,6 +171,10 @@ export class DataFilesComponent implements OnInit, OnDestroy {
     return this.auth.getUserFullname();
   }
 
+  isAuthenticated() {
+    return this.auth.isAuthenticated();
+  }
+
   /**
    * Run a job with this file as input
    * @param element row element

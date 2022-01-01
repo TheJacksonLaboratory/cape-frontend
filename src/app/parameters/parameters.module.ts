@@ -67,6 +67,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ParametersComponent,
     CtSelectionComponent,
     TreeComponent,
+    PlotComponent,
     MainSelectionComponent,
     MarkerSelectionComponent,
     SingleLocusScanComponent,

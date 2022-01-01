@@ -30,6 +30,8 @@ import { AlertService } from '../_services/alert.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PlotComponent } from './plot/plot.component';
 import { PlotlyModule } from 'angular-plotly.js';
+import { AuthenticationService } from '../_services';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ParametersComponent', () => {
   let component: ParametersComponent;
@@ -55,6 +57,7 @@ describe('ParametersComponent', () => {
         MatButtonToggleModule,
         MatTreeModule,
         RouterTestingModule,
+        HttpClientTestingModule,
         HttpClientModule,
         BrowserAnimationsModule,
         PlotlyModule,
@@ -71,6 +74,7 @@ describe('ParametersComponent', () => {
         TreeComponent
       ],
       providers: [
+        AuthenticationService,
         AlertService,
         { provide: MatDialog, useValue: {} }
       ]

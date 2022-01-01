@@ -1,7 +1,6 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AuthenticationService, AlertService } from '../_services';
@@ -36,7 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // reset login status
-    this.authenticationService.logout();
+    // this.authenticationService.logout();
     this.alertSub = this.alertService.getMessage().subscribe(alert => {
       if (alert !== undefined && alert.type === 'error') {
         this.error = alert.message;

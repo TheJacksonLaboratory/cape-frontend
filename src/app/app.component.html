@@ -1,1 +1,17 @@
-﻿﻿<router-outlet></router-outlet>
+﻿﻿<div class="wrapper">
+    <div class="sidebar" data-color="blue" data-background-color="white" data-image="../../../assets/img/jax_large.jpg">
+        <app-sidebar></app-sidebar>
+        <div class="sidebar-background" style="background-image: url(../../../assets/img/jax_large.jpg)"></div>
+    </div>
+    <div class="main-panel">
+        <app-navbar></app-navbar>
+        <div class="main-content">
+            <div class="container-fluid">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <div>
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>
