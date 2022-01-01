@@ -75,9 +75,9 @@ export class AuthenticationService {
       }));
   }
 
-  getLoggedInEmitter() { 
-    return this.fireIsLoggedIn; 
-  } 
+  getLoggedInEmitter() {
+    return this.fireIsLoggedIn;
+  }
 
   logout() {
     localStorage.removeItem('currentUser');
@@ -117,5 +117,5 @@ export class AuthenticationService {
 
   private static _handleError(err: HttpErrorResponse | any) {
     return throwError(err.message || 'Error: Unable to complete request.');
-}
+  }
 }
